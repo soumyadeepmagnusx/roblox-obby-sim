@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Roblox 3D Obby Simulator Prototype</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: #7EC0EE;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+        }
+
+        /* Shift Lock Crosshair */
+        #shift-lock-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+        }
+        #shift-lock-crosshair::before, #shift-lock-crosshair::after {
+            content: '';
+            position: absolute;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        }
+        #shift-lock-crosshair::before {
+            top: 7px; left: 0; width: 16px; height: 2px;
+        }
+        #shift-lock-crosshair::after {
+            top: 0; left: 7px; width: 2px; height: 16px;
+        }
+
+        /* Roblox Top Bar */
+        #top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            background: linear-gradient(180deg, rgba(25, 27, 31, 0.92) 0%, rgba(25, 27, 31, 0.65) 100%);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bar-left, .bar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Stylized Roblox Logo */
+        .roblox-logo {
+            width: 26px;
+            height: 26px;
+            background: #FFFFFF;
+            transform: rotate(-15deg);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            transition: transform 0.15s ease;
+        }
+        .roblox-logo::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 10px;
+            height: 10px;
+            background: #191B1F;
+            border-radius: 2px;
+        }
+        .roblox-logo:hover {
+            transform: rotate(-15deg) scale(1.08);
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #FFFFFF;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.15s ease;
+        }
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Leaderboard Table */
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .stat-label {
+            color: #AAAAAA;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .stat-val {
+            color: #00FF88;
+        }
+
+        /* Health Bar */
+        .health-bar-container {
+            width: 110px;
+            height: 16px;
+            background: #333333;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        .health-bar-fill {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #2ECC71, #27AE60);
+            transition: width 0.2s ease;
+        }
+
+        /* In-game Chat Box */
+        #chat-widget {
+            position: absolute;
+            top: 60px;
+            left: 16px;
+            width: 320px;
+            background: rgba(25, 27, 31, 0.75);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: opacity 0.2s;
+        }
+        #chat-messages {
+            height: 140px;
+            overflow-y: auto;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 12px;
+            color: #FFFFFF;
+        }
+        #chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .chat-message {
+            line-height: 1.35;
+            word-break: break-word;
+        }
+        #chat-input-row {
+            display: flex;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        #chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 10px;
+            color: #FFFFFF;
+            font-size: 12px;
+            outline: none;
+        }
+        #chat-send-btn {
+            background: #0074E4;
+            color: #FFF;
+            border: none;
+            padding: 0 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Stage Toast Banner */
+        #stage-banner {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translate(-50%, -20px) scale(0.9);
+            background: rgba(25, 27, 31, 0.92);
+            border: 2px solid #00FF88;
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.35);
+            border-radius: 14px;
+            padding: 12px 30px;
+            color: #FFFFFF;
+            text-align: center;
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Roblox Gear Inventory Hotbar */
+        #gear-hotbar {
+            position: absolute;
+            top: 56px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 22;
+        }
+        .hotbar-slot {
+            width: 72px;
+            height: 56px;
+            background: rgba(25, 27, 31, 0.88);
+            backdrop-filter: blur(6px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #FFF;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+        .hotbar-slot:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .hotbar-slot.active {
+            border-color: #00FF88;
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.7);
+            background: rgba(0, 255, 136, 0.2);
+        }
+        .slot-num {
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            font-size: 10px;
+            color: #AAA;
+            font-weight: bold;
+        }
+        .slot-icon {
+            font-size: 18px;
+        }
+        .slot-name {
+            font-size: 9px;
+            font-weight: 600;
+            color: #DDD;
+        }
+
+        /* Bottom Controls Bar */
+        #bottom-bar {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+            background: rgba(25, 27, 31, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .hud-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            padding: 7px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .hud-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        .hud-btn.active {
+            background: #00FF88;
+            color: #111;
+            border-color: #00FF88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+        }
+        .hud-btn.danger {
+            background: rgba(231, 76, 60, 0.35);
+            border-color: #E74C3C;
+        }
+        .hud-btn.danger:hover {
+            background: #E74C3C;
+        }
+
+        /* Controls Helper Card */
+        #controls-badge {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(25, 27, 31, 0.7);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: #CCCCCC;
+            font-size: 11px;
+            line-height: 1.5;
+            z-index: 15;
+            pointer-events: none;
+        }
+        #controls-badge b {
+            color: #FFF;
+        }
+
+        /* Roblox Studio Builder Toolbar */
+        #studio-toolbar {
+            position: absolute;
+            bottom: 74px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 32, 38, 0.95);
+            border: 1px solid #00FF88;
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.25);
+            border-radius: 14px;
+            padding: 10px 16px;
+            z-index: 25;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            color: #FFFFFF;
+        }
+        .studio-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tool-chip {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFF;
+            cursor: pointer;
+        }
+        .tool-chip.selected {
+            background: #00FF88;
+            color: #111;
+            border-color: #00FF88;
+        }
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.1s;
+        }
+        .color-dot:hover, .color-dot.selected {
+            transform: scale(1.25);
+            border-color: #FFF;
+        }
+
+        /* Mobile Touch Controls */
+        #touch-controls {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            pointer-events: none;
+            z-index: 19;
+            display: none;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+        .dpad-container {
+            width: 130px;
+            height: 130px;
+            position: relative;
+            pointer-events: auto;
+        }
+        .dpad-btn {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFF;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        #touch-up { top: 0; left: 44px; }
+        #touch-down { bottom: 0; left: 44px; }
+        #touch-left { top: 44px; left: 0; }
+        #touch-right { top: 44px; right: 0; }
+
+        .jump-btn-container {
+            pointer-events: auto;
+            display: flex;
+            align-items: flex-end;
+        }
+        #touch-jump {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(0, 168, 89, 0.85);
+            border: 2px solid #FFF;
+            color: #FFF;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        /* Roblox Pause Modal */
+        #roblox-menu-modal {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 17, 21, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-card {
+            width: 380px;
+            background: #1E2026;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            color: #FFF;
+        }
+        .menu-title {
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+        }
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #FFF;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .menu-btn.primary {
+            background: #0074E4;
+            border-color: #0074E4;
+        }
+        .menu-btn.danger {
+            background: #E74C3C;
+            border-color: #E74C3C;
+        }
+
+        /* Show touch controls on small screens */
+        @media (max-width: 768px) {
+            #touch-controls { display: flex; }
+            #controls-badge { display: none; }
+            #chat-widget { width: 240px; }
+            .leaderboard { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D WebGL Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Center Shift-Lock Crosshair -->
+    <div id="shift-lock-crosshair"></div>
+
+    <!-- Top Roblox Navigation Bar -->
+    <div id="top-bar">
+        <div class="bar-left">
+            <div class="roblox-logo" onclick="window.game.ui.toggleMenu()" title="Roblox Menu"></div>
+            <div class="icon-btn" onclick="window.game.ui.toggleMenu()" title="Settings / Menu">☰</div>
+            <div class="icon-btn" onclick="toggleChat()" title="Chat Toggle">💬</div>
+            <div class="health-bar-container" title="Player Health (100 HP)">
+                <div id="hud-health-fill" class="health-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="bar-right">
+            <div class="leaderboard">
+                <div class="stat-item">
+                    <span class="stat-label">Player:</span>
+                    <span class="stat-val" style="color:#FFF;">Player1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Stage:</span>
+                    <span id="hud-stage" class="stat-val">1/6</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Coins:</span>
+                    <span id="hud-coins" class="stat-val" style="color:#FFD700;">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Deaths:</span>
+                    <span id="hud-deaths" class="stat-val" style="color:#FF6B6B;">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time:</span>
+                    <span id="hud-time" class="stat-val" style="color:#00F0FF;">00:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roblox Gear Hotbar (Slots 1-4) -->
+    <div id="gear-hotbar">
+        <div id="hotbar-slot-1" class="hotbar-slot" onclick="window.game.gears.equipSlot(1)" title="Press 1 to Equip/Unequip">
+            <span class="slot-num">1</span>
+            <span class="slot-icon">⚡</span>
+            <span class="slot-name">Speed Coil</span>
+        </div>
+        <div id="hotbar-slot-2" class="hotbar-slot" onclick="window.game.gears.equipSlot(2)" title="Press 2 to Equip/Unequip">
+            <span class="slot-num">2</span>
+            <span class="slot-icon">🌀</span>
+            <span class="slot-name">Gravity Coil</span>
+        </div>
+        <div id="hotbar-slot-3" class="hotbar-slot" onclick="window.game.gears.equipSlot(3)" title="Press 3 to Equip/Unequip (Lunge attack)">
+            <span class="slot-num">3</span>
+            <span class="slot-icon">⚔️</span>
+            <span class="slot-name">Sword</span>
+        </div>
+        <div id="hotbar-slot-4" class="hotbar-slot" onclick="window.game.gears.equipSlot(4)" title="Press 4 to Equip/Unequip (Click to grapple)">
+            <span class="slot-num">4</span>
+            <span class="slot-icon">🎯</span>
+            <span class="slot-name">Grapple</span>
+        </div>
+        <div id="hotbar-slot-5" class="hotbar-slot" onclick="window.game.physics.interactGrab(window.game.camera, window.game.player)" title="Press 5 or E to Grab/Throw Physics Crates">
+            <span class="slot-num">5 (E)</span>
+            <span class="slot-icon">🧲</span>
+            <span class="slot-name">Grab Gun</span>
+        </div>
+    </div>
+
+    <!-- Stage Cleared Banner Notification -->
+    <div id="stage-banner">
+        <div id="stage-banner-text">★ STAGE 1 ★</div>
+    </div>
+
+    <!-- Live Roblox In-game Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-messages"></div>
+        <div id="chat-input-row">
+            <input type="text" id="chat-input" placeholder="To chat click here or press / (/e dance, etc.)" maxlength="120" autocomplete="off">
+            <button id="chat-send-btn" onclick="window.game.ui.sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Studio Builder Toolbar -->
+    <div id="studio-toolbar">
+        <div class="studio-row">
+            <span style="font-size:12px; color:#AAA;">Type:</span>
+            <div class="tool-chip selected" onclick="selectTool('normal', this)">Solid Block</div>
+            <div class="tool-chip" onclick="selectTool('lava', this)" style="border-color:#E74C3C;">Killbrick (Lava)</div>
+            <div class="tool-chip" onclick="selectTool('bounce', this)" style="border-color:#F1C40F;">Bounce Pad</div>
+            <div class="tool-chip" onclick="selectTool('boost', this)" style="border-color:#00F0FF;">Speed Boost</div>
+            <div class="tool-chip" onclick="selectTool('coin', this)" style="border-color:#FFD700;">Coin</div>
+            <div class="tool-chip" onclick="selectTool('checkpoint', this)" style="border-color:#00FF88;">Checkpoint</div>
+        </div>
+        <div class="studio-row">
+            <span style="font-size:12px; color:#AAA;">Color:</span>
+            <div class="color-dot selected" style="background:#3498DB;" onclick="selectColor(0x3498DB, this)"></div>
+            <div class="color-dot" style="background:#2ECC71;" onclick="selectColor(0x2ECC71, this)"></div>
+            <div class="color-dot" style="background:#F1C40F;" onclick="selectColor(0xF1C40F, this)"></div>
+            <div class="color-dot" style="background:#E74C3C;" onclick="selectColor(0xE74C3C, this)"></div>
+            <div class="color-dot" style="background:#9B59B6;" onclick="selectColor(0x9B59B6, this)"></div>
+            <div class="color-dot" style="background:#FFFFFF;" onclick="selectColor(0xFFFFFF, this)"></div>
+            <div class="color-dot" style="background:#34495E;" onclick="selectColor(0x34495E, this)"></div>
+            <div class="color-dot" style="background:#A0522D;" onclick="selectColor(0xA0522D, this)"></div>
+            <div style="flex:1;"></div>
+            <button class="tool-chip" style="background:#E74C3C; border:none;" onclick="window.game.builder.clearCustomBlocks()">Clear Placed</button>
+        </div>
+        <div style="font-size:11px; color:#AAA; text-align:center;">
+            Grid Snap: 2 Studs | <b>Left-Click:</b> Place Block | <b>Right-Click:</b> Delete Block
+        </div>
+    </div>
+
+    <!-- Bottom Controls HUD Bar -->
+    <div id="bottom-bar">
+        <button id="btn-toggle-mode" class="hud-btn" onclick="window.game.ui.toggleStudioMode()">
+            🔨 Studio Mode
+        </button>
+        <button class="hud-btn" onclick="toggleAvatarShop()">
+            👕 Wardrobe
+        </button>
+        <button class="hud-btn" onclick="toggleEmotesModal()">
+            💃 Emotes
+        </button>
+        <button id="btn-atmosphere" class="hud-btn" onclick="cycleAtmosphere(this)">
+            ☀️ Day
+        </button>
+        <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
+            🔒 Shift Lock
+        </button>
+        <button class="hud-btn danger" onclick="window.game.player.die()" title="Break Joints and Respawn">
+            💀 Reset (R)
+        </button>
+        <button id="btn-music" class="hud-btn" onclick="toggleMusicBtn(this)">
+            🎵 Music
+        </button>
+        <button class="hud-btn" onclick="toggleBoomboxModal()">
+            📻 Boombox
+        </button>
+        <button class="hud-btn" onclick="window.game.ui.toggleMenu()">
+            ⚙️ Menu
+        </button>
+    </div>
+
+    <!-- Roblox Emotes Modal -->
+    <div id="emotes-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.8); backdrop-filter:blur(8px); z-index:106; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:340px;">
+            <div class="menu-title">
+                <span>💃 ROBLOX EMOTES</span>
+                <span style="cursor:pointer;" onclick="toggleEmotesModal()">✕</span>
+            </div>
+            <button class="menu-btn primary" onclick="window.game.emotes.playEmote('dance'); toggleEmotesModal();">🕺 Breakdance (/e dance)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('wave'); toggleEmotesModal();">👋 Friendly Wave (/e wave)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('cheer'); toggleEmotesModal();">🎉 Victory Cheer (/e cheer)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('point'); toggleEmotesModal();">👉 Point Forward (/e point)</button>
+            <button class="menu-btn danger" onclick="window.game.emotes.stopEmote(); toggleEmotesModal();">Stop Emoting</button>
+        </div>
+    </div>
+
+    <!-- Roblox Boombox & Jukebox Music Modal -->
+    <div id="boombox-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); z-index:107; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:440px; max-width:92%;">
+            <div class="menu-title">
+                <span>📻 ROBLOX BOOMBOX (JUKEBOX)</span>
+                <span style="cursor:pointer;" onclick="toggleBoomboxModal()">✕</span>
+            </div>
+
+            <!-- Current Track Display -->
+            <div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:12px; text-align:center; border:1px solid rgba(255,255,255,0.1);">
+                <div style="font-size:11px; color:#AAA; text-transform:uppercase;">Now Playing</div>
+                <div id="boombox-title" style="font-size:16px; font-weight:bold; color:#FFD700; margin:4px 0;">Purano Shei Diner Kotha</div>
+                <div id="boombox-artist" style="font-size:12px; color:#00FF88;">Bengali Classic / Rabindranath Tagore</div>
+            </div>
+
+            <!-- Track List Selector -->
+            <div>
+                <div style="font-size:12px; color:#AAA; margin-bottom:6px; font-weight:600;">SELECT SONG:</div>
+                <div style="display:flex; flex-direction:column; gap:6px; max-height:170px; overflow-y:auto;">
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(0)">🇧🇩 1. Purano Shei Diner Kotha (Tagore Classic)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(1)">🇧🇩 2. Ami Shudhu Cheyechi Tomay (Bengali Pop)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(2)">🌍 3. Faded - Alan Walker (Roblox Anthem)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(3)">🌍 4. Astronomia - Coffin Dance Meme</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(4)">🎮 5. Megalovania - Toby Fox (Gaming Anthem)</button>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div style="display:flex; justify-content:center; gap:12px;">
+                <button class="hud-btn" onclick="window.game.music.prevTrack()">⏮️ Prev</button>
+                <button id="boombox-play-btn" class="hud-btn active" style="font-size:15px; padding:6px 22px;" onclick="window.game.music.togglePlay()">▶️ Play</button>
+                <button class="hud-btn" onclick="window.game.music.nextTrack()">Next ⏭️</button>
+            </div>
+
+            <button class="menu-btn primary" onclick="toggleBoomboxModal()">Close Boombox</button>
+        </div>
+    </div>
+
+    <!-- Controls Helper Card -->
+    <div id="controls-badge">
+        <b>[W, A, S, D]</b> Move<br>
+        <b>[Space]</b> Jump<br>
+        <b>[Right-Click Drag]</b> Orbit Camera<br>
+        <b>[Scroll Wheel]</b> Zoom Cam<br>
+        <b>[Shift / Lock Button]</b> Shift-Lock Mode<br>
+        <b>[R]</b> Reset Character ("Oof!")<br>
+        <b>[B]</b> Toggle Roblox Studio Builder
+    </div>
+
+    <!-- Mobile Touch Controls -->
+    <div id="touch-controls">
+        <div class="dpad-container">
+            <div id="touch-up" class="dpad-btn">▲</div>
+            <div id="touch-down" class="dpad-btn">▼</div>
+            <div id="touch-left" class="dpad-btn">◀</div>
+            <div id="touch-right" class="dpad-btn">▶</div>
+        </div>
+        <div class="jump-btn-container">
+            <div id="touch-jump">JUMP</div>
+        </div>
+    </div>
+
+    <!-- Roblox Avatar Shop Modal -->
+    <div id="avatar-shop-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); z-index:105; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:480px; max-width:92%;">
+            <div class="menu-title">
+                <span>🛍️ ROBLOX AVATAR SHOP</span>
+                <span style="cursor:pointer;" onclick="toggleAvatarShop()">✕</span>
+            </div>
+            
+            <!-- Category: Hats -->
+            <div>
+                <div style="font-size:13px; color:#AAA; margin-bottom:6px; font-weight:600;">HATS & ACCESSORIES</div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button class="tool-chip" onclick="window.game.shop.equipHat('none')">None</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipHat('tophat')">🎩 Top Hat</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipHat('hardhat')">👷 Hardhat</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipHat('viking')">⚔️ Viking Horns</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipHat('headphones')">🎧 Neon Beats</button>
+                </div>
+            </div>
+
+            <!-- Category: Outfits & Skins -->
+            <div>
+                <div style="font-size:13px; color:#AAA; margin-bottom:6px; font-weight:600;">OUTFITS & SKINS</div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button class="tool-chip" onclick="window.game.shop.equipSkin('noob')">Classic Noob</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipSkin('ninja')">Midnight Ninja</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipSkin('guest')">Guest 666</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipSkin('gold')">Golden Legend</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipSkin('cyber')">Cyber Neon</button>
+                </div>
+            </div>
+
+            <!-- Category: Faces -->
+            <div>
+                <div style="font-size:13px; color:#AAA; margin-bottom:6px; font-weight:600;">FACES</div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button class="tool-chip" onclick="window.game.shop.equipFace('smile')">🙂 Classic Smile</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipFace('epic')">🤪 Epic Face</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipFace('shades')">😎 Cool Shades</button>
+                </div>
+            </div>
+
+            <!-- Category: Particle Trails -->
+            <div>
+                <div style="font-size:13px; color:#AAA; margin-bottom:6px; font-weight:600;">PARTICLE TRAILS</div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <button class="tool-chip" onclick="window.game.shop.equipTrail('none')">None</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipTrail('rainbow')">🌈 Rainbow</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipTrail('fire')">🔥 Flame</button>
+                    <button class="tool-chip" onclick="window.game.shop.equipTrail('sparkle')">✨ Sparkle</button>
+                </div>
+            </div>
+
+            <button class="menu-btn primary" onclick="toggleAvatarShop()">Done Dressing Up</button>
+        </div>
+    </div>
+
+    <!-- Roblox Pause / Settings Modal -->
+    <div id="roblox-menu-modal">
+        <div class="menu-card">
+            <div class="menu-title">
+                <span>ROBLOX SIMULATOR</span>
+                <span style="cursor:pointer;" onclick="window.game.ui.toggleMenu()">✕</span>
+            </div>
+            <button class="menu-btn primary" onclick="window.game.ui.toggleMenu()">Resume Game</button>
+            <button class="menu-btn" onclick="toggleAvatarShop(); window.game.ui.toggleMenu();">👕 Customize Avatar</button>
+            <button class="menu-btn danger" onclick="window.game.player.die(); window.game.ui.toggleMenu();">Reset Character (Oof!)</button>
+            <button class="menu-btn" onclick="toggleSoundMaster(this)">SFX Audio: ON</button>
+            <button class="menu-btn" onclick="toggleMusicModal(this)">Chiptune Music: OFF</button>
+            <div style="font-size:12px; color:#AAA; text-align:center; padding-top:6px;">
+                Roblox Obby Simulation Engine v2.0 • Built with Three.js & Web Audio
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="three.min.js"></script>
+    <script src="audio.js"></script>
+    <script src="player.js"></script>
+    <script src="security.js"></script>
+    <script src="gears.js"></script>
+    <script src="emotes.js"></script>
+    <script src="avatar_shop.js"></script>
+    <script src="world.js"></script>
+    <script src="builder.js"></script>
+    <script src="camera.js"></script>
+    <script src="ui.js"></script>
+    <script src="physics_objects.js"></script>
+    <script src="music_player.js"></script>
+    <script src="bots.js"></script>
+    <script src="network.js"></script>
+    <script src="game.js"></script>
+
+    <script>
+        function toggleChat() {
+            const chat = document.getElementById('chat-widget');
+            chat.style.display = (chat.style.display === 'none') ? 'flex' : 'none';
+        }
+
+        function toggleAvatarShop() {
+            const shop = document.getElementById('avatar-shop-modal');
+            const isShown = shop.style.display === 'flex';
+            shop.style.display = isShown ? 'none' : 'flex';
+        }
+
+        function toggleBoomboxModal() {
+            const modal = document.getElementById('boombox-modal');
+            const isShown = modal.style.display === 'flex';
+            modal.style.display = isShown ? 'none' : 'flex';
+        }
+
+        function toggleEmotesModal() {
+            const modal = document.getElementById('emotes-modal');
+            const isShown = modal.style.display === 'flex';
+            modal.style.display = isShown ? 'none' : 'flex';
+        }
+
+        let atmoIndex = 0;
+        const atmoModes = [
+            { mode: 'day', label: '☀️ Day' },
+            { mode: 'sunset', label: '🌅 Sunset' },
+            { mode: 'night', label: '🌙 Night' }
+        ];
+        function cycleAtmosphere(btn) {
+            atmoIndex = (atmoIndex + 1) % atmoModes.length;
+            const chosen = atmoModes[atmoIndex];
+            window.game.setAtmosphere(chosen.mode);
+            btn.innerHTML = chosen.label;
+            window.game.ui.addChatMessage('System', `Atmosphere changed to ${chosen.mode.toUpperCase()}!`, '#00FF88');
+        }
+
+        function toggleShiftLockBtn(btn) {
+            const active = window.game.cameraController.toggleShiftLock();
+            btn.innerHTML = active ? '🔒 Shift Lock: ON' : '🔒 Shift Lock: OFF';
+            if (active) btn.classList.add('active');
+            else btn.classList.remove('active');
+        }
+
+        function toggleMusicBtn(btn) {
+            const playing = window.game.sound.toggleBgm();
+            btn.innerHTML = playing ? '🎵 Music: ON' : '🎵 Music: OFF';
+            if (playing) btn.classList.add('active');
+            else btn.classList.remove('active');
+        }
+
+        function toggleMusicModal(btn) {
+            const playing = window.game.sound.toggleBgm();
+            btn.innerHTML = `Chiptune Music: ${playing ? 'ON' : 'OFF'}`;
+            const bottomBtn = document.getElementById('btn-music');
+            if (bottomBtn) {
+                bottomBtn.innerHTML = playing ? '🎵 Music: ON' : '🎵 Music: OFF';
+                if (playing) bottomBtn.classList.add('active');
+                else bottomBtn.classList.remove('active');
+            }
+        }
+
+        function toggleSoundMaster(btn) {
+            const enabled = window.game.sound.toggleSound();
+            btn.innerHTML = `SFX Audio: ${enabled ? 'ON' : 'OFF'}`;
+        }
+
+        function selectTool(type, el) {
+            document.querySelectorAll('#studio-toolbar .tool-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            window.game.builder.setBlockType(type);
+        }
+
+        function selectColor(hex, el) {
+            document.querySelectorAll('#studio-toolbar .color-dot').forEach(d => d.classList.remove('selected'));
+            el.classList.add('selected');
+            window.game.builder.setBlockType('normal', hex);
+        }
+    </script>
+</body>
+</html>
