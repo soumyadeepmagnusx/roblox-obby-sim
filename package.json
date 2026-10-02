@@ -1,0 +1,23 @@
+{
+  "name": "roblox-obby-sim",
+  "version": "2.0.0",
+  "description": "Roblox 3D Obby Simulation Platform with Real-Time Multiplayer, Bengali & English Music, Physics Puzzles, and Enterprise Security",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "roblox",
+    "threejs",
+    "game",
+    "multiplayer",
+    "websocket",
+    "3d",
+    "obby"
+  ],
+  "author": "Soumyadeep",
+  "license": "MIT"
+}
