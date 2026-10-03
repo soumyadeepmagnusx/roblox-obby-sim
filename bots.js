@@ -175,6 +175,10 @@ class RobloxBots {
             const randomBot = this.bots[Math.floor(Math.random() * this.bots.length)];
             const randomLine = this.chatLines[Math.floor(Math.random() * this.chatLines.length)];
             this.ui.addChatMessage(randomBot.name, randomLine, '#F39C12');
+
+            if (window.game && window.game.speechBubbles && randomBot.rig && randomBot.rig.group) {
+                window.game.speechBubbles.showBubble(randomBot.name, randomBot.rig.group, randomLine);
+            }
         }, 12000);
     }
 

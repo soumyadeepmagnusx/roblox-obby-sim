@@ -257,9 +257,18 @@ class RobloxNetwork {
             this.ping = Math.max(1, Date.now() - data.timestamp);
             this.updatePingUI(`${this.ping}ms`);
 
+        } else if (data.type === 'webrtc_signal') {
+            if (window.game && window.game.voice) {
+                window.game.voice.handleSignal(data.from, data.data);
+            }
+
         } else if (data.type === 'chat') {
             if (data.id !== this.myId) {
                 this.ui.addChatMessage(data.name || data.id, data.message, '#00D0FF');
+                const rp = this.remotePlayers.get(data.id);
+                if (rp && window.game && window.game.speechBubbles) {
+                    window.game.speechBubbles.showBubble(data.id, rp.group, data.message);
+                }
             }
 
         } else if (data.type === 'remote_block_place') {

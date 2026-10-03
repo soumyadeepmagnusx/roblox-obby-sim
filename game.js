@@ -36,10 +36,12 @@ class RobloxGame {
         this.physics = new RobloxPhysicsEngine(this.scene, this.world, this.sound);
 
         // Advanced Systems
+        this.speechBubbles = new RobloxSpeechBubbles(this.scene);
         this.vehicles = new RobloxVehicleManager(this.player, this.scene, this.particles, this.sound, this.ui);
         this.pets = new RobloxPetManager(this.player, this.scene, this.particles, this.sound, this.ui);
         this.collectibles = new RobloxCollectibles(this.scene, this.player, this.particles, this.sound, this.ui);
         this.combat = new RobloxCombatSystem(this.player, this.scene, this.particles, this.sound, this.ui, this.network);
+        this.voice = new RobloxVoiceChat(this.player, this.scene, this.network, this.ui, this.sound);
 
         // Speedrun Timer State
         this.speedrunTime = 0;
@@ -210,10 +212,12 @@ class RobloxGame {
 
             // Update advanced systems safely
             if (this.particles) this.particles.update(dt);
+            if (this.speechBubbles) this.speechBubbles.update(dt);
             if (this.vehicles) this.vehicles.update(dt, this.ui.inputState);
             if (this.pets) this.pets.update(dt);
             if (this.collectibles) this.collectibles.update(dt);
             if (this.combat) this.combat.update(dt, this.physics ? this.physics.crates : null);
+            if (this.voice) this.voice.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);

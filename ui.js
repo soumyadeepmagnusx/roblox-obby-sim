@@ -191,6 +191,11 @@ class RobloxUI {
             this.addChatMessage('Player1', cleanVal, '#3498DB');
             this.chatInput.value = '';
 
+            // Show 3D Speech Bubble over local player head
+            if (window.game && window.game.speechBubbles && this.player && this.player.group) {
+                window.game.speechBubbles.showBubble('me', this.player.group, cleanVal);
+            }
+
             // Broadcast to multiplayer server
             if (window.game && window.game.network) {
                 window.game.network.sendChat(cleanVal);
