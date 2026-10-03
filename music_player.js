@@ -1,9 +1,17 @@
 /**
  * Roblox Boombox & Jukebox Music Engine
  * Procedurally synthesizes authentic multi-instrument melodies:
- * - Bengali Classics & Popular Tunes (Purano Shei Diner Kotha, Ami Shudhu Cheyechi Tomay, Baul Folk Groove)
- * - Famous Global / English Anthems (Alan Walker - Faded, Astronomia, Megalovania, Never Gonna Give You Up)
- * Includes Boombox 3D shoulder accessory, track visualizer & UI controls.
+ * - Bengali Classics & Hits:
+ *     1. Purano Shei Diner Kotha (Rabindra Sangeet)
+ *     2. Ami Shudhu Cheyechi Tomay
+ *     3. Bojhena Shey Bojhena
+ *     4. Barandaye Roddur (Bhoomi Folk Rock)
+ * - Global Gaming Anthems:
+ *     5. Alan Walker - Faded
+ *     6. Alan Walker - The Spectre
+ *     7. Astronomia (Coffin Dance Anthem)
+ *     8. Megalovania (Undertale)
+ *     9. Bad Apple!! (Touhou Arcade Hit)
  */
 class RobloxMusicPlayer {
     constructor(soundEngine) {
@@ -23,9 +31,8 @@ class RobloxMusicPlayer {
             {
                 title: "Purano Shei Diner Kotha",
                 artist: "Bengali Classic / Rabindranath Tagore",
-                tempo: 220, // ms per beat
+                tempo: 220,
                 notes: [
-                    // C4=261.63, D4=293.66, E4=329.63, G4=392.00, A4=440.00, C5=523.25
                     { f: 392.00, d: 0.35, t: 'triangle' }, // G4: Pu-
                     { f: 392.00, d: 0.35, t: 'triangle' }, // G4: ra-
                     { f: 440.00, d: 0.45, t: 'triangle' }, // A4: no
@@ -60,11 +67,46 @@ class RobloxMusicPlayer {
                 ]
             },
             {
+                title: "Bojhena Shey Bojhena",
+                artist: "Bengali Romantic Theme",
+                tempo: 200,
+                notes: [
+                    { f: 392.00, d: 0.35, t: 'sine' }, // G4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 466.16, d: 0.45, t: 'sine' }, // Bb4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 392.00, d: 0.35, t: 'sine' }, // G4
+                    { f: 349.23, d: 0.45, t: 'triangle' }, // F4
+                    { f: 311.13, d: 0.55, t: 'sine' }, // Eb4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 311.13, d: 0.35, t: 'sine' }, // Eb4
+                    { f: 349.23, d: 0.40, t: 'triangle' }, // F4
+                    { f: 392.00, d: 0.75, t: 'sine' }  // G4
+                ]
+            },
+            {
+                title: "Barandaye Roddur",
+                artist: "Bhoomi (Bengali Folk Rock)",
+                tempo: 160,
+                notes: [
+                    { f: 293.66, d: 0.25, t: 'square' }, // D4
+                    { f: 369.99, d: 0.25, t: 'triangle' }, // F#4
+                    { f: 440.00, d: 0.35, t: 'sine' }, // A4
+                    { f: 493.88, d: 0.35, t: 'sine' }, // B4
+                    { f: 440.00, d: 0.25, t: 'triangle' }, // A4
+                    { f: 369.99, d: 0.25, t: 'square' }, // F#4
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4
+                    { f: 293.66, d: 0.45, t: 'sine' }, // D4
+                    { f: 329.63, d: 0.25, t: 'triangle' }, // E4
+                    { f: 369.99, d: 0.35, t: 'square' }, // F#4
+                    { f: 293.66, d: 0.75, t: 'sine' }  // D4
+                ]
+            },
+            {
                 title: "Faded",
-                artist: "Alan Walker (Global Anthem)",
+                artist: "Alan Walker (Global EDM)",
                 tempo: 190,
                 notes: [
-                    // F#4=369.99, G#4=415.30, A#4=466.16, C#5=554.37, D#5=622.25
                     { f: 369.99, d: 0.35, t: 'sine' }, // F#4
                     { f: 415.30, d: 0.35, t: 'sine' }, // G#4
                     { f: 466.16, d: 0.35, t: 'sine' }, // A#4
@@ -77,6 +119,25 @@ class RobloxMusicPlayer {
                     { f: 369.99, d: 0.35, t: 'sine' }, // F#4
                     { f: 415.30, d: 0.70, t: 'sine' }, // G#4
                     { f: 369.99, d: 0.85, t: 'sine' }  // F#4
+                ]
+            },
+            {
+                title: "The Spectre",
+                artist: "Alan Walker (EDM Anthem)",
+                tempo: 150,
+                notes: [
+                    { f: 329.63, d: 0.22, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.22, t: 'sawtooth' }, // G4
+                    { f: 440.00, d: 0.22, t: 'sawtooth' }, // A4
+                    { f: 493.88, d: 0.35, t: 'sawtooth' }, // B4
+                    { f: 587.33, d: 0.35, t: 'sawtooth' }, // D5
+                    { f: 523.25, d: 0.25, t: 'sawtooth' }, // C5
+                    { f: 493.88, d: 0.35, t: 'sawtooth' }, // B4
+                    { f: 440.00, d: 0.25, t: 'sawtooth' }, // A4
+                    { f: 392.00, d: 0.25, t: 'sawtooth' }, // G4
+                    { f: 440.00, d: 0.25, t: 'sawtooth' }, // A4
+                    { f: 493.88, d: 0.35, t: 'sawtooth' }, // B4
+                    { f: 329.63, d: 0.65, t: 'sawtooth' }  // E4
                 ]
             },
             {
@@ -113,6 +174,24 @@ class RobloxMusicPlayer {
                     { f: 293.66, d: 0.14, t: 'sawtooth' }, // D4
                     { f: 349.23, d: 0.14, t: 'sawtooth' }, // F4
                     { f: 392.00, d: 0.18, t: 'sawtooth' }  // G4
+                ]
+            },
+            {
+                title: "Bad Apple!!",
+                artist: "Alstroemeria Records (Arcade Hit)",
+                tempo: 130,
+                notes: [
+                    { f: 293.66, d: 0.16, t: 'sawtooth' }, // D4
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 349.23, d: 0.16, t: 'sawtooth' }, // F4
+                    { f: 392.00, d: 0.22, t: 'sawtooth' }, // G4
+                    { f: 440.00, d: 0.22, t: 'sawtooth' }, // A4
+                    { f: 466.16, d: 0.28, t: 'sawtooth' }, // Bb4
+                    { f: 440.00, d: 0.22, t: 'sawtooth' }, // A4
+                    { f: 392.00, d: 0.22, t: 'sawtooth' }, // G4
+                    { f: 349.23, d: 0.22, t: 'sawtooth' }, // F4
+                    { f: 329.63, d: 0.22, t: 'sawtooth' }, // E4
+                    { f: 293.66, d: 0.35, t: 'sawtooth' }  // D4
                 ]
             }
         ];
@@ -177,7 +256,6 @@ class RobloxMusicPlayer {
 
         if (note && note.t !== 'rest' && note.f > 0) {
             this.playTone(note.f, note.d, note.t);
-            // Randomize equalizer bars for active visualizer
             this.eqBars = this.eqBars.map(() => Math.floor(Math.random() * 80 + 20));
         } else {
             this.eqBars = [10, 15, 10, 20, 10];
@@ -200,7 +278,6 @@ class RobloxMusicPlayer {
         osc.type = type;
         osc.frequency.setValueAtTime(freq, now);
 
-        // Gentle attack and decay envelope
         gain.gain.setValueAtTime(0.001, now);
         gain.gain.linearRampToValueAtTime(this.volume, now + 0.04);
         gain.gain.exponentialRampToValueAtTime(0.001, now + duration);

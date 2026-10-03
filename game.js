@@ -1,5 +1,13 @@
 /**
  * Roblox Obby Simulator - Master Game Orchestrator
+ * Integrates:
+ * - Particle & FX Engine (sparks, smoke, floating damage numbers, confetti)
+ * - Vehicles & Mounts (Hoverboard & Jetpack)
+ * - 3D Pets & Mystery Egg Hatching Pedestal
+ * - Collectible 3D Gold Coins & Economy
+ * - PvP Combat, Health System & Rocket Launcher
+ * - Multi-Room WebSocket Multiplayer & Real-Time Sync
+ * - Speedrun Timer & Personal Bests
  */
 class RobloxGame {
     constructor() {
@@ -10,8 +18,9 @@ class RobloxGame {
         this.initLighting();
         this.initClouds();
 
-        // Components
+        // Core Components
         this.sound = window.soundEngine;
+        this.particles = new RobloxParticleEngine(this.scene);
         this.world = new RobloxWorld(this.scene, this.sound);
         this.player = new RobloxPlayer(this.scene, this.sound);
         this.security = new RobloxSecurity(this.player, this.world);
@@ -26,9 +35,32 @@ class RobloxGame {
         this.music = new RobloxMusicPlayer(this.sound);
         this.physics = new RobloxPhysicsEngine(this.scene, this.world, this.sound);
 
-        // Key 'E' for Physics Grab / Throw
+        // Advanced Systems
+        this.vehicles = new RobloxVehicleManager(this.player, this.scene, this.particles, this.sound, this.ui);
+        this.pets = new RobloxPetManager(this.player, this.scene, this.particles, this.sound, this.ui);
+        this.collectibles = new RobloxCollectibles(this.scene, this.player, this.particles, this.sound, this.ui);
+        this.combat = new RobloxCombatSystem(this.player, this.scene, this.particles, this.sound, this.ui, this.network);
+
+        // Speedrun Timer State
+        this.speedrunTime = 0;
+        this.speedrunActive = false;
+        this.speedrunCompleted = false;
+
+        // Interaction Key 'E': Physics Grab or Egg Hatching
         window.addEventListener('keydown', (e) => {
-            if ((e.key === 'e' || e.key === 'E') && document.activeElement.tagName !== 'INPUT') {
+            if (this.ui && this.ui.isChatFocused()) return;
+
+            if (e.key === 'e' || e.key === 'E') {
+                // Check if near Mystery Egg Pedestal
+                if (this.pets && this.pets.pedestalGroup) {
+                    const distToEgg = this.player.position.distanceTo(this.pets.pedestalGroup.position);
+                    if (distToEgg < 6.0) {
+                        this.pets.hatchEgg(this.collectibles);
+                        return;
+                    }
+                }
+
+                // Otherwise, physics crate grab / throw
                 const action = this.physics.interactGrab(this.camera, this.player);
                 if (action === 'grabbed') {
                     this.ui.addChatMessage('Physics', '📦 Grabbed physics crate! Press E or Click to THROW!', '#00FF88');
@@ -74,11 +106,9 @@ class RobloxGame {
     }
 
     initLighting() {
-        // Bright ambient daylight
         const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.65);
         this.scene.add(ambientLight);
 
-        // Directional Sun Light
         this.sun = new THREE.DirectionalLight(0xFFF6D5, 0.85);
         this.sun.position.set(40, 90, 40);
         this.sun.castShadow = true;
@@ -96,7 +126,6 @@ class RobloxGame {
         this.scene.add(this.sun);
     }
 
-    // Stylized blocky Roblox clouds in the sky
     initClouds() {
         const cloudGroup = new THREE.Group();
         const cloudMat = new THREE.MeshLambertMaterial({
@@ -143,11 +172,33 @@ class RobloxGame {
             });
         }
 
-        // Keep sun shadow following player for crisp shadows
+        // Keep sun shadow following player
         this.sun.position.x = this.player.position.x + 40;
         this.sun.position.z = this.player.position.z + 40;
         this.sun.target.position.copy(this.player.position);
         this.sun.target.updateMatrixWorld();
+
+        // Speedrun Timer Logic
+        if (this.player.currentStage > 0 && !this.speedrunCompleted) {
+            this.speedrunActive = true;
+            this.speedrunTime += dt;
+            const m = Math.floor(this.speedrunTime / 60);
+            const s = Math.floor(this.speedrunTime % 60);
+            const ms = Math.floor((this.speedrunTime * 100) % 100);
+            const timerEl = document.getElementById('stat-timer');
+            if (timerEl) {
+                timerEl.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
+            }
+
+            // Check if player completed final stage (Stage 6)
+            if (this.player.currentStage >= 6 && !this.speedrunCompleted) {
+                this.speedrunCompleted = true;
+                this.particles.spawnConfetti(this.player.position);
+                this.sound.playWin();
+                this.ui.showToastBanner(`🏆 OBBY COMPLETED IN ${timerEl ? timerEl.textContent : ''}!`);
+                this.ui.addChatMessage('Speedrun', `🏆 Finished the Obby in ${timerEl ? timerEl.textContent : ''}! Congratulations!`, '#FFD700');
+            }
+        }
 
         // Update player & camera
         this.player.update(dt, this.ui.inputState, this.cameraController.yaw, this.world);
@@ -156,7 +207,14 @@ class RobloxGame {
         // Update world hazards & stages
         this.world.update(dt, this.player);
 
-        // Update cosmetics trail, gears, emotes, physics, and multiplayer network
+        // Update advanced systems
+        this.particles.update(dt);
+        this.vehicles.update(dt, this.ui.inputState.keys);
+        this.pets.update(dt);
+        this.collectibles.update(dt);
+        this.combat.update(dt, this.physics ? this.physics.crates : null);
+
+        // Update standard subsystems
         this.shop.update(dt);
         this.bots.update(dt);
         this.gears.update(dt);

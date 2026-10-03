@@ -559,60 +559,92 @@
             <div class="health-bar-container" title="Player Health (100 HP)">
                 <div id="hud-health-fill" class="health-bar-fill"></div>
             </div>
+            <button class="topbar-action-btn" onclick="toggleInviteModal()" title="Play Online With Friends" style="background:#0074E4; border:none; color:#FFF; padding:5px 12px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:0 2px 8px rgba(0,116,228,0.4);">
+                👥 <span>Play With Friends</span>
+            </button>
+            <button class="topbar-action-btn" onclick="togglePetsModal()" title="Pets Inventory & Egg Shop" style="background:#8E44AD; border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(142,68,173,0.4);">
+                🐾 <span>Pets</span>
+            </button>
+            <button id="btn-hoverboard" class="topbar-action-btn" onclick="window.game.vehicles.toggleHoverboard()" title="Press H to toggle Hoverboard" style="background:rgba(255,255,255,0.12); border:1px solid rgba(0,255,255,0.3); color:#00FFFF; padding:5px 8px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">
+                🛹 <span>Board [H]</span>
+            </button>
+            <button id="btn-jetpack" class="topbar-action-btn" onclick="window.game.vehicles.toggleJetpack()" title="Press J to toggle Jetpack" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,85,0,0.3); color:#FF5500; padding:5px 8px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">
+                🚀 <span>Jetpack [J]</span>
+            </button>
         </div>
 
         <div class="bar-right">
             <div class="leaderboard">
-                <div class="stat-item">
-                    <span class="stat-label">Player:</span>
-                    <span class="stat-val" style="color:#FFF;">Player1</span>
-                </div>
                 <div class="stat-item">
                     <span class="stat-label">Stage:</span>
                     <span id="hud-stage" class="stat-val">1/6</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Coins:</span>
-                    <span id="hud-coins" class="stat-val" style="color:#FFD700;">0</span>
+                    <span id="stat-coins" class="stat-val" style="color:#FFD700;">100</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Deaths:</span>
                     <span id="hud-deaths" class="stat-val" style="color:#FF6B6B;">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Time:</span>
-                    <span id="hud-time" class="stat-val" style="color:#00F0FF;">00:00</span>
+                    <span class="stat-label">Timer:</span>
+                    <span id="stat-timer" class="stat-val" style="color:#00F0FF;">00:00.00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Room:</span>
+                    <span id="stat-room" class="stat-val" style="color:#00FF88;">Lobby</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Ping:</span>
+                    <span id="stat-ping" class="stat-val" style="color:#00FF88;">--ms</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Roblox Gear Hotbar (Slots 1-4) -->
+    <!-- Jetpack Fuel HUD Bar -->
+    <div id="jetpack-fuel-container" style="display:none; position:absolute; bottom:82px; left:50%; transform:translateX(-50%); width:220px; background:rgba(0,0,0,0.75); border:1px solid #FF5500; border-radius:10px; padding:6px 12px; text-align:center; z-index:30; box-shadow:0 4px 16px rgba(255,85,0,0.3);">
+        <div style="font-size:11px; font-weight:bold; color:#FF5500; margin-bottom:4px; display:flex; justify-content:space-between;">
+            <span>🚀 JETPACK THRUST FUEL</span>
+            <span id="jetpack-fuel-val">100%</span>
+        </div>
+        <div style="width:100%; height:8px; background:#222; border-radius:4px; overflow:hidden;">
+            <div id="jetpack-fuel-fill" style="width:100%; height:100%; background:linear-gradient(90deg, #FF3300, #FFCC00); transition:width 0.1s ease;"></div>
+        </div>
+    </div>
+
+    <!-- Roblox Gear Hotbar (Slots 1-6) -->
     <div id="gear-hotbar">
-        <div id="hotbar-slot-1" class="hotbar-slot" onclick="window.game.gears.equipSlot(1)" title="Press 1 to Equip/Unequip">
+        <div id="hotbar-slot-1" class="hotbar-slot" onclick="window.game.gears.equipSlot(1)" title="Press 1: Speed Coil (1.8x)">
             <span class="slot-num">1</span>
             <span class="slot-icon">⚡</span>
             <span class="slot-name">Speed Coil</span>
         </div>
-        <div id="hotbar-slot-2" class="hotbar-slot" onclick="window.game.gears.equipSlot(2)" title="Press 2 to Equip/Unequip">
+        <div id="hotbar-slot-2" class="hotbar-slot" onclick="window.game.gears.equipSlot(2)" title="Press 2: Gravity Coil (Moon Jump)">
             <span class="slot-num">2</span>
             <span class="slot-icon">🌀</span>
             <span class="slot-name">Gravity Coil</span>
         </div>
-        <div id="hotbar-slot-3" class="hotbar-slot" onclick="window.game.gears.equipSlot(3)" title="Press 3 to Equip/Unequip (Lunge attack)">
+        <div id="hotbar-slot-3" class="hotbar-slot" onclick="window.game.gears.equipSlot(3)" title="Press 3: Sword (PvP Slash)">
             <span class="slot-num">3</span>
             <span class="slot-icon">⚔️</span>
             <span class="slot-name">Sword</span>
         </div>
-        <div id="hotbar-slot-4" class="hotbar-slot" onclick="window.game.gears.equipSlot(4)" title="Press 4 to Equip/Unequip (Click to grapple)">
+        <div id="hotbar-slot-4" class="hotbar-slot" onclick="window.game.gears.equipSlot(4)" title="Press 4: Grapple Hook">
             <span class="slot-num">4</span>
             <span class="slot-icon">🎯</span>
             <span class="slot-name">Grapple</span>
         </div>
-        <div id="hotbar-slot-5" class="hotbar-slot" onclick="window.game.physics.interactGrab(window.game.camera, window.game.player)" title="Press 5 or E to Grab/Throw Physics Crates">
-            <span class="slot-num">5 (E)</span>
+        <div id="hotbar-slot-5" class="hotbar-slot" onclick="window.game.gears.equipSlot(5)" title="Press 5 or E: Physics Grab Gun">
+            <span class="slot-num">5</span>
             <span class="slot-icon">🧲</span>
             <span class="slot-name">Grab Gun</span>
+        </div>
+        <div id="hotbar-slot-6" class="hotbar-slot" onclick="window.game.gears.equipSlot(6)" title="Press 6: Rocket Launcher (Explosive)">
+            <span class="slot-num">6</span>
+            <span class="slot-icon">🚀</span>
+            <span class="slot-name">Rocket</span>
         </div>
     </div>
 
@@ -723,12 +755,16 @@
             <!-- Track List Selector -->
             <div>
                 <div style="font-size:12px; color:#AAA; margin-bottom:6px; font-weight:600;">SELECT SONG:</div>
-                <div style="display:flex; flex-direction:column; gap:6px; max-height:170px; overflow-y:auto;">
+                <div style="display:flex; flex-direction:column; gap:6px; max-height:190px; overflow-y:auto;">
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(0)">🇧🇩 1. Purano Shei Diner Kotha (Tagore Classic)</button>
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(1)">🇧🇩 2. Ami Shudhu Cheyechi Tomay (Bengali Pop)</button>
-                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(2)">🌍 3. Faded - Alan Walker (Roblox Anthem)</button>
-                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(3)">🌍 4. Astronomia - Coffin Dance Meme</button>
-                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(4)">🎮 5. Megalovania - Toby Fox (Gaming Anthem)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(2)">🇧🇩 3. Bojhena Shey Bojhena (Bengali Romance)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(3)">🇧🇩 4. Barandaye Roddur - Bhoomi (Folk Rock)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(4)">🌍 5. Faded - Alan Walker (Roblox Anthem)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(5)">🌍 6. The Spectre - Alan Walker (EDM Anthem)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(6)">🌍 7. Astronomia - Coffin Dance Meme</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(7)">🎮 8. Megalovania - Toby Fox (Gaming Anthem)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(8)">🎮 9. Bad Apple!! - Touhou Arcade Hit</button>
                 </div>
             </div>
 
@@ -842,6 +878,95 @@
         </div>
     </div>
 
+    <!-- Roblox Invite Friends & Multiplayer Rooms Modal -->
+    <div id="invite-friends-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); z-index:110; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:480px; max-width:92%;">
+            <div class="menu-title">
+                <span>👥 PLAY ONLINE WITH FRIENDS</span>
+                <span style="cursor:pointer;" onclick="toggleInviteModal()">✕</span>
+            </div>
+
+            <div style="background:rgba(0,116,228,0.15); border:1px solid #0074E4; border-radius:10px; padding:12px;">
+                <div style="font-size:11px; color:#AAAAAA; margin-bottom:4px; text-transform:uppercase; font-weight:600;">Current Room Share Link</div>
+                <div style="display:flex; gap:8px;">
+                    <input id="invite-link-input" type="text" readonly style="flex:1; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:#00FF88; padding:8px 10px; font-size:12px; font-family:monospace;" value="">
+                    <button class="menu-btn primary" style="padding:8px 14px; font-size:12px;" onclick="copyInviteLink()">📋 Copy</button>
+                </div>
+                <div id="copy-feedback" style="font-size:11px; color:#00FF88; margin-top:5px; height:14px; font-weight:bold;"></div>
+            </div>
+
+            <div>
+                <div style="font-size:12px; color:#AAA; margin-bottom:6px; font-weight:600;">JOIN OR CREATE A PRIVATE SQUAD ROOM:</div>
+                <div style="display:flex; gap:8px;">
+                    <input id="custom-room-input" type="text" placeholder="e.g. soumya-squad, obby-pro..." maxlength="20" style="flex:1; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:#FFF; padding:8px 10px; font-size:13px;">
+                    <button class="menu-btn" style="padding:8px 14px; font-size:13px;" onclick="joinCustomRoom()">Join</button>
+                </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:12px; font-size:12px; line-height:1.6; color:#DDD;">
+                <div style="font-weight:bold; color:#FFD700; margin-bottom:4px;">🌐 3 Ways Your Friends Can Join:</div>
+                <div><b>1. Same Wi-Fi (Instant LAN):</b> Friends open: <code style="color:#00FF88;">http://192.168.1.7:8080</code></div>
+                <div><b>2. 1-Click Internet Tunnel:</b> Run <code style="color:#00FFFF;">start_online_tunnel.bat</code> on your PC for an instant worldwide link!</div>
+                <div><b>3. Free Cloud Hosting:</b> Deploy to <a href="https://render.com" target="_blank" style="color:#0074E4; font-weight:bold;">Render.com</a> (WebSockets supported) or <a href="https://github.com/soumyadeepmagnusx/roblox-obby-sim" target="_blank" style="color:#0074E4; font-weight:bold;">GitHub Pages</a>.</div>
+            </div>
+
+            <button class="menu-btn primary" onclick="toggleInviteModal()">Done</button>
+        </div>
+    </div>
+
+    <!-- Roblox Pets & Egg Shop Modal -->
+    <div id="pets-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); z-index:109; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:480px; max-width:92%;">
+            <div class="menu-title">
+                <span>🐾 PETS INVENTORY & EGG SHOP</span>
+                <span style="cursor:pointer;" onclick="togglePetsModal()">✕</span>
+            </div>
+
+            <!-- Mystery Egg Pedestal Hatch Promo -->
+            <div style="background:linear-gradient(135deg, rgba(241,196,15,0.25), rgba(155,89,182,0.25)); border:1px solid #F1C40F; border-radius:10px; padding:12px; display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                    <div style="font-weight:bold; color:#FFD700; font-size:14px;">🥚 Mystery Pet Egg</div>
+                    <div style="font-size:11px; color:#AAA;">Hatch Rare, Epic & Legendary Pets!</div>
+                </div>
+                <button class="menu-btn primary" style="background:#F1C40F; color:#000; border:none; padding:8px 14px; font-weight:bold;" onclick="window.game.pets.hatchEgg(window.game.collectibles);">Hatch (50 Coins)</button>
+            </div>
+
+            <!-- Pet Catalog Grid -->
+            <div id="pets-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <!-- Doge -->
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; text-align:center;">
+                    <div style="font-size:24px;">🐕</div>
+                    <div style="font-weight:bold; color:#F1C40F; font-size:13px;">Neon Doge</div>
+                    <div style="font-size:10px; color:#AAA; margin:4px 0;">+25% Extra Gold Coins</div>
+                    <button class="tool-chip" style="width:100%;" onclick="window.game.pets.equipPet('doge'); togglePetsModal();">Equip</button>
+                </div>
+                <!-- Kitty -->
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; text-align:center;">
+                    <div style="font-size:24px;">🐱</div>
+                    <div style="font-weight:bold; color:#FF69B4; font-size:13px;">Pixel Kitty</div>
+                    <div style="font-size:10px; color:#AAA; margin:4px 0;">+35% Coins, +10% Speed</div>
+                    <button class="tool-chip" style="width:100%;" onclick="window.game.pets.equipPet('kitty'); togglePetsModal();">Equip</button>
+                </div>
+                <!-- Dragon -->
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; text-align:center;">
+                    <div style="font-size:24px;">🐉</div>
+                    <div style="font-weight:bold; color:#9B59B6; font-size:13px;">Cosmic Dragon</div>
+                    <div style="font-size:10px; color:#AAA; margin:4px 0;">+50% Coins, +25% Super Jump</div>
+                    <button class="tool-chip" style="width:100%;" onclick="window.game.pets.equipPet('dragon'); togglePetsModal();">Equip</button>
+                </div>
+                <!-- Dominus -->
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px; text-align:center;">
+                    <div style="font-size:24px;">👑</div>
+                    <div style="font-weight:bold; color:#E67E22; font-size:13px;">Golden Dominus</div>
+                    <div style="font-size:10px; color:#AAA; margin:4px 0;">2x Gold, +30% Speed & Jump!</div>
+                    <button class="tool-chip" style="width:100%;" onclick="window.game.pets.equipPet('dominus'); togglePetsModal();">Equip</button>
+                </div>
+            </div>
+
+            <button class="menu-btn primary" onclick="togglePetsModal()">Done</button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="three.min.js"></script>
     <script src="audio.js"></script>
@@ -857,6 +982,11 @@
     <script src="physics_objects.js"></script>
     <script src="music_player.js"></script>
     <script src="bots.js"></script>
+    <script src="particles.js"></script>
+    <script src="vehicles.js"></script>
+    <script src="pets.js"></script>
+    <script src="collectibles.js"></script>
+    <script src="combat.js"></script>
     <script src="network.js"></script>
     <script src="game.js"></script>
 
@@ -880,6 +1010,41 @@
 
         function toggleEmotesModal() {
             const modal = document.getElementById('emotes-modal');
+            const isShown = modal.style.display === 'flex';
+            modal.style.display = isShown ? 'none' : 'flex';
+        }
+
+        function toggleInviteModal() {
+            const modal = document.getElementById('invite-friends-modal');
+            const isShown = modal.style.display === 'flex';
+            modal.style.display = isShown ? 'none' : 'flex';
+            if (!isShown && window.game && window.game.network) {
+                window.game.network.updateRoomUI();
+            }
+        }
+
+        function copyInviteLink() {
+            const input = document.getElementById('invite-link-input');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value).then(() => {
+                const feedback = document.getElementById('copy-feedback');
+                feedback.textContent = '✓ Invite link copied to clipboard! Send to friends!';
+                setTimeout(() => { feedback.textContent = ''; }, 3000);
+            });
+        }
+
+        function joinCustomRoom() {
+            const input = document.getElementById('custom-room-input');
+            const room = input.value.trim();
+            if (room && window.game && window.game.network) {
+                window.game.network.joinRoom(room);
+                toggleInviteModal();
+            }
+        }
+
+        function togglePetsModal() {
+            const modal = document.getElementById('pets-modal');
             const isShown = modal.style.display === 'flex';
             modal.style.display = isShown ? 'none' : 'flex';
         }

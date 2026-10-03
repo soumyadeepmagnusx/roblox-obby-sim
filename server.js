@@ -1,7 +1,7 @@
 /**
- * Unified Multiplayer WebSocket & HTTP Server
+ * Unified Multiplayer WebSocket & HTTP Server with Rooms, PvP, and WebRTC Signaling
  * Zero-dependency RFC 6455 WebSocket implementation using standard Node.js libraries
- * Serves static game files on port 8080 and coordinates real-time multiplayer
+ * Supports private/public rooms, combat sync, collaborative building, and low latency
  */
 const http = require('http');
 const fs = require('fs');
@@ -18,15 +18,17 @@ const MIME_TYPES = {
     '.json': 'application/json',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
-    '.ico': 'image/x-icon'
+    '.ico': 'image/x-icon',
+    '.svg': 'image/svg+xml'
 };
 
-// Connected multiplayer clients: Map<id, { socket, playerInfo }>
+// Connected multiplayer clients: Map<id, { socket, id, room, info }>
 const clients = new Map();
 
 // HTTP Static File Server
 const server = http.createServer((req, res) => {
-    let reqPath = req.url.split('?')[0];
+    let reqUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    let reqPath = reqUrl.pathname;
     if (reqPath === '/' || reqPath === '') reqPath = '/index.html';
 
     const filePath = path.join(PUBLIC_DIR, reqPath);
@@ -48,7 +50,7 @@ const server = http.createServer((req, res) => {
         server.rateLimits.set(clientIp, limiter);
     } else {
         limiter.count++;
-        if (limiter.count > 180) { // Max 180 requests/min
+        if (limiter.count > 240) { // Max 240 requests/min
             res.writeHead(429, { 'Content-Type': 'text/plain' });
             res.end('Too Many Requests - Rate limit exceeded.');
             return;
@@ -106,20 +108,41 @@ server.on('upgrade', (req, socket, head) => {
 
     socket.write(headers.join('\r\n') + '\r\n\r\n');
 
+    // Extract requested room from URL query if present
+    let initialRoom = 'Lobby';
+    try {
+        const reqUrl = new URL(req.url, 'http://localhost');
+        if (reqUrl.searchParams.has('room')) {
+            initialRoom = reqUrl.searchParams.get('room').trim() || 'Lobby';
+        }
+    } catch (e) {}
+
     const clientId = 'Player_' + Math.floor(Math.random() * 8999 + 1000);
-    const clientRecord = { socket, id: clientId, info: {} };
+    const clientRecord = { socket, id: clientId, room: initialRoom, info: {} };
     clients.set(clientId, clientRecord);
 
-    console.log(`[Multiplayer] Client connected: ${clientId} (Total: ${clients.size})`);
+    console.log(`[Multiplayer] Client connected: ${clientId} in Room [${initialRoom}] (Total: ${clients.size})`);
 
-    // Notify the client of their assigned ID and current players
+    // Notify client of assignment and players in their room
+    const roomPlayers = Array.from(clients.values())
+        .filter(c => c.room === initialRoom)
+        .map(c => ({ id: c.id, ...c.info }));
+
     sendWsMessage(socket, {
         type: 'welcome',
         id: clientId,
-        players: Array.from(clients.values()).map(c => ({ id: c.id, ...c.info }))
+        room: initialRoom,
+        players: roomPlayers
     });
 
-    // Handle incoming WebSocket frames
+    // Notify others in room
+    broadcastWs({
+        type: 'player_join',
+        id: clientId,
+        room: initialRoom
+    }, clientId, initialRoom);
+
+    // Handle incoming frames
     socket.on('data', (buffer) => {
         const message = parseWsFrame(buffer);
         if (message) {
@@ -128,48 +151,124 @@ server.on('upgrade', (req, socket, head) => {
     });
 
     socket.on('close', () => {
+        const record = clients.get(clientId);
+        const room = record ? record.room : 'Lobby';
         clients.delete(clientId);
-        console.log(`[Multiplayer] Client disconnected: ${clientId}`);
-        broadcastWs({ type: 'player_leave', id: clientId });
+        console.log(`[Multiplayer] Client disconnected: ${clientId} from Room [${room}]`);
+        broadcastWs({ type: 'player_leave', id: clientId }, null, room);
     });
 
     socket.on('error', (err) => {
         console.error(`[Multiplayer] Socket error (${clientId}):`, err.message);
+        const record = clients.get(clientId);
+        const room = record ? record.room : 'Lobby';
         clients.delete(clientId);
+        broadcastWs({ type: 'player_leave', id: clientId }, null, room);
     });
 });
 
 function handleClientMessage(senderId, data) {
-    if (data.type === 'state_update') {
-        const client = clients.get(senderId);
-        if (client) {
-            client.info = data.payload;
-            // Broadcast state to all other players
-            broadcastWs({
-                type: 'player_update',
-                id: senderId,
-                payload: data.payload
-            }, senderId);
-        }
+    const client = clients.get(senderId);
+    if (!client) return;
+
+    if (data.type === 'join_room') {
+        const oldRoom = client.room;
+        const newRoom = (data.room || 'Lobby').trim();
+        if (oldRoom === newRoom) return;
+
+        // Leave old room
+        broadcastWs({ type: 'player_leave', id: senderId }, senderId, oldRoom);
+
+        // Join new room
+        client.room = newRoom;
+        console.log(`[Multiplayer] ${senderId} switched from [${oldRoom}] to [${newRoom}]`);
+
+        const roomPlayers = Array.from(clients.values())
+            .filter(c => c.room === newRoom)
+            .map(c => ({ id: c.id, ...c.info }));
+
+        sendWsMessage(client.socket, {
+            type: 'room_joined',
+            room: newRoom,
+            players: roomPlayers
+        });
+
+        // Notify new room members
+        broadcastWs({
+            type: 'player_join',
+            id: senderId,
+            room: newRoom
+        }, senderId, newRoom);
+
+    } else if (data.type === 'state_update') {
+        client.info = data.payload;
+        broadcastWs({
+            type: 'player_update',
+            id: senderId,
+            payload: data.payload
+        }, senderId, client.room);
+
     } else if (data.type === 'chat') {
         broadcastWs({
             type: 'chat',
             id: senderId,
             name: data.name || senderId,
             message: data.message
-        });
+        }, null, client.room);
+
     } else if (data.type === 'block_place') {
         broadcastWs({
             type: 'remote_block_place',
             id: senderId,
             data: data.data
-        }, senderId);
+        }, senderId, client.room);
+
     } else if (data.type === 'block_delete') {
         broadcastWs({
             type: 'remote_block_delete',
             id: senderId,
             pos: data.pos
-        }, senderId);
+        }, senderId, client.room);
+
+    } else if (data.type === 'combat_hit') {
+        // PvP Combat hit: targetId, damage, attackerName
+        broadcastWs({
+            type: 'combat_hit',
+            targetId: data.targetId,
+            attackerId: senderId,
+            attackerName: data.attackerName || senderId,
+            damage: data.damage,
+            crit: data.crit || false,
+            knockback: data.knockback
+        }, null, client.room);
+
+    } else if (data.type === 'rocket_fire') {
+        // Rocket Launcher projectile fire
+        broadcastWs({
+            type: 'rocket_fire',
+            shooterId: senderId,
+            origin: data.origin,
+            dir: data.dir
+        }, senderId, client.room);
+
+    } else if (data.type === 'webrtc_signal') {
+        // WebRTC peer-to-peer signaling forwarding
+        if (data.to) {
+            const targetClient = clients.get(data.to);
+            if (targetClient) {
+                sendWsMessage(targetClient.socket, {
+                    type: 'webrtc_signal',
+                    from: senderId,
+                    data: data.data
+                });
+            }
+        }
+
+    } else if (data.type === 'ping') {
+        sendWsMessage(client.socket, {
+            type: 'pong',
+            timestamp: data.timestamp
+        });
     }
 }
 
@@ -201,11 +300,13 @@ function sendWsMessage(socket, data) {
     }
 }
 
-// Broadcast message to clients, optionally excluding sender
-function broadcastWs(data, excludeId = null) {
+// Broadcast message to clients within a room, optionally excluding sender
+function broadcastWs(data, excludeId = null, targetRoom = null) {
     clients.forEach((c, id) => {
         if (id !== excludeId) {
-            sendWsMessage(c.socket, data);
+            if (!targetRoom || c.room === targetRoom) {
+                sendWsMessage(c.socket, data);
+            }
         }
     });
 }
@@ -250,8 +351,8 @@ function parseWsFrame(buffer) {
 
 server.listen(PORT, () => {
     console.log(`======================================================`);
-    console.log(`🎮 ROBLOX OBBY SIMULATOR MULTIPLAYER SERVER`);
-    console.log(`📡 Local URL: http://localhost:${PORT}`);
-    console.log(`🌐 Ready for real players and WebSocket multiplayer!`);
+    console.log(`🎮 ROBLOX OBBY SIMULATOR PRO MULTIPLAYER SERVER`);
+    console.log(`📡 Local Port: ${PORT}`);
+    console.log(`🌐 Rooms, PvP Combat, WebRTC Signaling & Building Active!`);
     console.log(`======================================================`);
 });
