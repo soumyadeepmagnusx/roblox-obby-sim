@@ -123,7 +123,8 @@ class RobloxCombatSystem {
     performSwordAttack(bots, remotePlayers) {
         const attackRange = 5.0; // studs
         const playerPos = this.player.position;
-        const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), this.player.rotation.y);
+        const facing = (this.player.facingAngle !== undefined) ? this.player.facingAngle : (this.player.group ? this.player.group.rotation.y : 0);
+        const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), facing);
 
         let hitSomeone = false;
 

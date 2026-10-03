@@ -157,7 +157,7 @@ class RobloxVehicleManager {
         }
     }
 
-    update(dt, keys) {
+    update(dt, inputState = {}) {
         // 1. Hoverboard Update
         if (this.hoverboardActive) {
             // Anchor under player's feet
@@ -168,12 +168,13 @@ class RobloxVehicleManager {
             );
 
             // Follow player's horizontal rotation
-            this.hoverboardMesh.rotation.y = this.player.mesh.rotation.y;
+            const facing = (this.player.facingAngle !== undefined) ? this.player.facingAngle : (this.player.group ? this.player.group.rotation.y : 0);
+            this.hoverboardMesh.rotation.y = facing;
 
             // Bank/Tilt when steering
             let targetTilt = 0;
-            if (keys['KeyA'] || keys['ArrowLeft']) targetTilt = 0.35;
-            if (keys['KeyD'] || keys['ArrowRight']) targetTilt = -0.35;
+            if (inputState && inputState.left) targetTilt = 0.35;
+            if (inputState && inputState.right) targetTilt = -0.35;
             this.boardTilt = THREE.MathUtils.lerp(this.boardTilt, targetTilt, 10 * dt);
             this.hoverboardMesh.rotation.z = this.boardTilt;
 
@@ -195,7 +196,7 @@ class RobloxVehicleManager {
 
         // 2. Jetpack Thrusters Update
         if (this.jetpackActive) {
-            const wantsThrust = keys['Space'] && !this.player.isGrounded;
+            const wantsThrust = inputState && inputState.jump && !this.player.isGrounded;
 
             if (wantsThrust && this.fuel > 0) {
                 this.isThrusting = true;
@@ -205,14 +206,15 @@ class RobloxVehicleManager {
                 this.player.velocity.y = Math.min(22, this.player.velocity.y + 35 * dt);
 
                 // Forward boost if moving
-                if (keys['KeyW'] || keys['ArrowUp']) {
-                    const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), this.player.rotation.y);
+                if (inputState && inputState.forward) {
+                    const facing = (this.player.facingAngle !== undefined) ? this.player.facingAngle : (this.player.group ? this.player.group.rotation.y : 0);
+                    const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), facing);
                     this.player.position.addScaledVector(forward, 15 * dt);
                 }
 
                 // Exhaust particles
-                const leftPos = new THREE.Vector3(-0.45, -1.0, -0.65).applyMatrix4(this.player.torso.matrixWorld);
-                const rightPos = new THREE.Vector3(0.45, -1.0, -0.65).applyMatrix4(this.player.torso.matrixWorld);
+                const leftPos = this.player.position.clone().add(new THREE.Vector3(-0.45, 1.0, 0.6));
+                const rightPos = this.player.position.clone().add(new THREE.Vector3(0.45, 1.0, 0.6));
                 this.particleEngine.spawnJetpackExhaust(leftPos, rightPos);
 
             } else {

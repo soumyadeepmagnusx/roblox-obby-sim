@@ -41,6 +41,8 @@ class RobloxPlayer {
         // Build the Roblox avatar rig
         this.group = new THREE.Group();
         this.scene.add(this.group);
+        this.mesh = this.group;
+        this.rotation = this.group.rotation;
         this.buildCharacterRig();
 
         // Bounding dimensions for collision

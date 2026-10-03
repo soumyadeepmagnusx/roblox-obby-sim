@@ -345,10 +345,12 @@ class RobloxPetManager {
         }
 
         // 2. Active Pet Spring Follow Physics
-        if (this.petMesh && this.player) {
+        if (this.petMesh && this.player && this.player.position) {
+            const facing = (this.player.facingAngle !== undefined) ? this.player.facingAngle : (this.player.group ? this.player.group.rotation.y : 0);
+
             // Target position: Hover over right shoulder
             const shoulderOffset = new THREE.Vector3(1.8, 1.2, 1.2);
-            shoulderOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), this.player.rotation.y);
+            shoulderOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), facing);
             const target = this.player.position.clone().add(shoulderOffset);
 
             // Add cute vertical bobbing
@@ -358,7 +360,7 @@ class RobloxPetManager {
             this.petMesh.position.lerp(target, 8 * dt);
 
             // Look towards player direction
-            this.petMesh.rotation.y = THREE.MathUtils.lerp(this.petMesh.rotation.y, this.player.rotation.y, 6 * dt);
+            this.petMesh.rotation.y = THREE.MathUtils.lerp(this.petMesh.rotation.y, facing, 6 * dt);
 
             // Dragon wings flapping animation
             if (this.petMesh.userData && this.petMesh.userData.leftWing) {

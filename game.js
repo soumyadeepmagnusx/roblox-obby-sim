@@ -200,31 +200,33 @@ class RobloxGame {
             }
         }
 
-        // Update player & camera
-        this.player.update(dt, this.ui.inputState, this.cameraController.yaw, this.world);
-        this.cameraController.update(this.player.position, dt);
+        try {
+            // Update player & camera
+            this.player.update(dt, this.ui.inputState, this.cameraController.yaw, this.world);
+            this.cameraController.update(this.player.position, dt);
 
-        // Update world hazards & stages
-        this.world.update(dt, this.player);
+            // Update world hazards & stages
+            this.world.update(dt, this.player);
 
-        // Update advanced systems
-        this.particles.update(dt);
-        this.vehicles.update(dt, this.ui.inputState.keys);
-        this.pets.update(dt);
-        this.collectibles.update(dt);
-        this.combat.update(dt, this.physics ? this.physics.crates : null);
+            // Update advanced systems safely
+            if (this.particles) this.particles.update(dt);
+            if (this.vehicles) this.vehicles.update(dt, this.ui.inputState);
+            if (this.pets) this.pets.update(dt);
+            if (this.collectibles) this.collectibles.update(dt);
+            if (this.combat) this.combat.update(dt, this.physics ? this.physics.crates : null);
 
-        // Update standard subsystems
-        this.shop.update(dt);
-        this.bots.update(dt);
-        this.gears.update(dt);
-        this.network.update(dt);
-        this.physics.update(dt, this.player, this.camera);
+            // Update standard subsystems safely
+            if (this.shop) this.shop.update(dt);
+            if (this.bots) this.bots.update(dt);
+            if (this.gears) this.gears.update(dt);
+            if (this.network) this.network.update(dt);
+            if (this.physics) this.physics.update(dt, this.player, this.camera);
+            if (this.ui) this.ui.update(dt);
+        } catch (e) {
+            console.error('[RobloxGame] Animation update error caught safely:', e);
+        }
 
-        // Update UI
-        this.ui.update(dt);
-
-        // Render scene
+        // Always render scene to canvas - never pitch black!
         this.renderer.render(this.scene, this.camera);
     }
 
