@@ -17,6 +17,7 @@ class RobloxGame {
         this.initThree();
         this.initLighting();
         this.initClouds();
+        this.initStars();
 
         // Core Components
         this.sound = window.soundEngine;
@@ -61,6 +62,12 @@ class RobloxGame {
             // Reset Speedrun run
             if (e.key === 't' || e.key === 'T') {
                 this.restartSpeedrun();
+                return;
+            }
+
+            // Cycle Atmosphere Key 'L'
+            if (e.key === 'l' || e.key === 'L') {
+                this.cycleAtmosphere();
                 return;
             }
 
@@ -166,6 +173,33 @@ class RobloxGame {
         this.scene.add(cloudGroup);
     }
 
+    initStars() {
+        const starGeom = new THREE.BufferGeometry();
+        const starCount = 450;
+        const positions = new Float32Array(starCount * 3);
+
+        for (let i = 0; i < starCount * 3; i += 3) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            const radius = 260 + Math.random() * 40;
+
+            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i + 1] = Math.abs(radius * Math.cos(phi)) + 15;
+            positions[i + 2] = radius * Math.sin(phi) * Math.sin(theta);
+        }
+
+        starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const starMat = new THREE.PointsMaterial({
+            color: 0xFFFFFF,
+            size: 2.0,
+            transparent: true,
+            opacity: 0.0
+        });
+
+        this.stars = new THREE.Points(starGeom, starMat);
+        this.scene.add(this.stars);
+    }
+
     onResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
@@ -178,12 +212,15 @@ class RobloxGame {
         let dt = this.clock.getDelta();
         if (dt > 0.1) dt = 0.1; // clamp lag spikes
 
-        // Slowly drift clouds
+        // Slowly drift clouds & rotate starfield
         if (this.clouds) {
             this.clouds.children.forEach(c => {
                 c.position.x += dt * 1.5;
                 if (c.position.x > 250) c.position.x = -250;
             });
+        }
+        if (this.stars) {
+            this.stars.rotation.y += dt * 0.015;
         }
 
         // Keep sun shadow following player
@@ -322,6 +359,28 @@ class RobloxGame {
         this.ui.addChatMessage('Speedrun', '⏱️ Run reset to Spawn. Good luck on your run!', '#00F0FF');
     }
 
+    cycleAtmosphere() {
+        const modes = ['day', 'sunset', 'night', 'synthwave'];
+        const currentIdx = modes.indexOf(this.timeOfDay);
+        const nextMode = modes[(currentIdx + 1) % modes.length];
+        this.setAtmosphere(nextMode);
+
+        const labels = {
+            day: '☀️ Day',
+            sunset: '🌅 Sunset',
+            night: '🌙 Night',
+            synthwave: '🟣 Synthwave'
+        };
+
+        const atmoBtn = document.getElementById('btn-atmosphere');
+        if (atmoBtn) atmoBtn.innerHTML = labels[nextMode];
+
+        if (this.ui) {
+            this.ui.showToastBanner(`Atmosphere: ${labels[nextMode]}`);
+            this.ui.addChatMessage('System', `Atmosphere changed to ${nextMode.toUpperCase()}!`, '#00FF88');
+        }
+    }
+
     setAtmosphere(mode) {
         this.timeOfDay = mode;
         if (mode === 'day') {
@@ -329,16 +388,25 @@ class RobloxGame {
             this.scene.fog.color = new THREE.Color(0x7EC0EE);
             this.sun.color = new THREE.Color(0xFFF6D5);
             this.sun.intensity = 0.85;
+            if (this.stars) this.stars.material.opacity = 0.0;
         } else if (mode === 'sunset') {
             this.scene.background = new THREE.Color(0xFF7043);
             this.scene.fog.color = new THREE.Color(0xFF8A65);
             this.sun.color = new THREE.Color(0xFFAB91);
             this.sun.intensity = 0.65;
+            if (this.stars) this.stars.material.opacity = 0.25;
         } else if (mode === 'night') {
-            this.scene.background = new THREE.Color(0x0F111A);
-            this.scene.fog.color = new THREE.Color(0x0F111A);
-            this.sun.color = new THREE.Color(0x5C6BC0);
-            this.sun.intensity = 0.25;
+            this.scene.background = new THREE.Color(0x0A0C16);
+            this.scene.fog.color = new THREE.Color(0x0A0C16);
+            this.sun.color = new THREE.Color(0x7986CB);
+            this.sun.intensity = 0.35;
+            if (this.stars) this.stars.material.opacity = 0.95;
+        } else if (mode === 'synthwave') {
+            this.scene.background = new THREE.Color(0x240046);
+            this.scene.fog.color = new THREE.Color(0x3C096C);
+            this.sun.color = new THREE.Color(0x00F0FF);
+            this.sun.intensity = 0.60;
+            if (this.stars) this.stars.material.opacity = 0.85;
         }
     }
 }

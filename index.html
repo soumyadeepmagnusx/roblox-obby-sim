@@ -1098,18 +1098,10 @@
             }
         }
 
-        let atmoIndex = 0;
-        const atmoModes = [
-            { mode: 'day', label: '☀️ Day' },
-            { mode: 'sunset', label: '🌅 Sunset' },
-            { mode: 'night', label: '🌙 Night' }
-        ];
         function cycleAtmosphere(btn) {
-            atmoIndex = (atmoIndex + 1) % atmoModes.length;
-            const chosen = atmoModes[atmoIndex];
-            window.game.setAtmosphere(chosen.mode);
-            btn.innerHTML = chosen.label;
-            window.game.ui.addChatMessage('System', `Atmosphere changed to ${chosen.mode.toUpperCase()}!`, '#00FF88');
+            if (window.game) {
+                window.game.cycleAtmosphere();
+            }
         }
 
         function toggleShiftLockBtn(btn) {

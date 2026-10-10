@@ -52,7 +52,9 @@ flowchart TD
 | **Hotbar Slots** | `1` to `6` | Equips Speed Coil, Gravity Coil, Sword, Grapple Hook, Grab Gun, Rocket Launcher |
 | **Attack / Fire** | Left Click | Swings sword for PvP melee or fires explosive rocket projectile |
 | **Studio Builder** | `B` | Toggles sandbox building mode to place custom colored blocks |
+| **Atmosphere Theme** | `L` (or click HUD) | Cycles Day, Sunset, Night Starfield, and Synthwave Neon |
 | **Boombox Music** | Click Top-Right UI / `M` | Cycles through 9 procedural Bengali and English tracks |
+| **Daily Streak Rewards** | Click Topbar 🔥 Pill | Opens 7-day login streak rewards modal with coin bonuses |
 
 ---
 
