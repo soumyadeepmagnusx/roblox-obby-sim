@@ -43,14 +43,25 @@ class RobloxGame {
         this.combat = new RobloxCombatSystem(this.player, this.scene, this.particles, this.sound, this.ui, this.network);
         this.voice = new RobloxVoiceChat(this.player, this.scene, this.network, this.ui, this.sound);
 
-        // Speedrun Timer State
+        // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
         this.speedrunActive = false;
         this.speedrunCompleted = false;
+        this.personalBest = parseFloat(localStorage.getItem('roblox_obby_pb')) || null;
+        this.stageSplits = {};
+        this.lastTrackedStage = 0;
+        this._splitTimeout = null;
+        this.initSpeedrunUI();
 
-        // Interaction Key 'E': Physics Grab or Egg Hatching
+        // Interaction Key 'E': Physics Grab or Egg Hatching; Key 'T': Reset Speedrun
         window.addEventListener('keydown', (e) => {
             if (this.ui && this.ui.isChatFocused()) return;
+
+            // Reset Speedrun run
+            if (e.key === 't' || e.key === 'T') {
+                this.restartSpeedrun();
+                return;
+            }
 
             if (e.key === 'e' || e.key === 'E') {
                 // Check if near Mystery Egg Pedestal
@@ -180,16 +191,40 @@ class RobloxGame {
         this.sun.target.position.copy(this.player.position);
         this.sun.target.updateMatrixWorld();
 
-        // Speedrun Timer Logic
+        // Speedrun Timer & Stage Split Logic
         if (this.player.currentStage > 0 && !this.speedrunCompleted) {
             this.speedrunActive = true;
             this.speedrunTime += dt;
-            const m = Math.floor(this.speedrunTime / 60);
-            const s = Math.floor(this.speedrunTime % 60);
-            const ms = Math.floor((this.speedrunTime * 100) % 100);
             const timerEl = document.getElementById('stat-timer');
             if (timerEl) {
-                timerEl.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
+                timerEl.textContent = this.formatTime(this.speedrunTime);
+            }
+
+            // Check if player progressed to a new checkpoint stage
+            if (this.player.currentStage > this.lastTrackedStage) {
+                this.lastTrackedStage = this.player.currentStage;
+                const currentSplit = this.speedrunTime;
+                this.stageSplits[this.player.currentStage] = currentSplit;
+
+                // Split delta comparison against best saved splits
+                const splitEl = document.getElementById('stat-split');
+                if (splitEl) {
+                    try {
+                        const storedSplits = JSON.parse(localStorage.getItem('roblox_obby_splits') || '{}');
+                        const pbSplit = storedSplits[this.player.currentStage];
+                        if (pbSplit !== undefined) {
+                            const diff = currentSplit - pbSplit;
+                            const sign = diff > 0 ? '+' : '';
+                            splitEl.textContent = `${sign}${diff.toFixed(2)}s`;
+                            splitEl.style.color = diff <= 0 ? '#00FF88' : '#FF4444';
+                            splitEl.style.display = 'inline';
+                            clearTimeout(this._splitTimeout);
+                            this._splitTimeout = setTimeout(() => {
+                                if (splitEl) splitEl.style.display = 'none';
+                            }, 3500);
+                        }
+                    } catch (e) {}
+                }
             }
 
             // Check if player completed final stage (Stage 6)
@@ -197,8 +232,24 @@ class RobloxGame {
                 this.speedrunCompleted = true;
                 this.particles.spawnConfetti(this.player.position);
                 this.sound.playWin();
-                this.ui.showToastBanner(`🏆 OBBY COMPLETED IN ${timerEl ? timerEl.textContent : ''}!`);
-                this.ui.addChatMessage('Speedrun', `🏆 Finished the Obby in ${timerEl ? timerEl.textContent : ''}! Congratulations!`, '#FFD700');
+                const finalFormatted = this.formatTime(this.speedrunTime);
+                const isNewPB = !this.personalBest || this.speedrunTime < this.personalBest;
+
+                if (isNewPB) {
+                    this.personalBest = this.speedrunTime;
+                    localStorage.setItem('roblox_obby_pb', this.speedrunTime.toFixed(2));
+                    localStorage.setItem('roblox_obby_splits', JSON.stringify(this.stageSplits));
+                    const pbEl = document.getElementById('stat-pb');
+                    if (pbEl) {
+                        pbEl.textContent = finalFormatted;
+                        pbEl.style.color = '#00FF88';
+                    }
+                    this.ui.showToastBanner(`🏆 NEW PERSONAL BEST! ${finalFormatted}!`);
+                    this.ui.addChatMessage('Speedrun', `🌟 NEW PERSONAL BEST: ${finalFormatted}! Outstanding run!`, '#FFD700');
+                } else {
+                    this.ui.showToastBanner(`🏆 OBBY COMPLETED IN ${finalFormatted}!`);
+                    this.ui.addChatMessage('Speedrun', `🏆 Finished the Obby in ${finalFormatted}! (PB: ${this.formatTime(this.personalBest)})`, '#00F0FF');
+                }
             }
         }
 
@@ -232,6 +283,42 @@ class RobloxGame {
 
         // Always render scene to canvas - never pitch black!
         this.renderer.render(this.scene, this.camera);
+    }
+
+    initSpeedrunUI() {
+        const pbEl = document.getElementById('stat-pb');
+        if (pbEl && this.personalBest) {
+            pbEl.textContent = this.formatTime(this.personalBest);
+        }
+        const timerEl = document.getElementById('stat-timer');
+        if (timerEl) {
+            timerEl.addEventListener('click', () => this.restartSpeedrun());
+        }
+    }
+
+    formatTime(seconds) {
+        if (!seconds || isNaN(seconds)) return '00:00.00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        const ms = Math.floor((seconds * 100) % 100);
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
+    }
+
+    restartSpeedrun() {
+        this.speedrunTime = 0;
+        this.speedrunActive = false;
+        this.speedrunCompleted = false;
+        this.stageSplits = {};
+        this.lastTrackedStage = 0;
+        this.player.currentStage = 0;
+        this.player.checkpointPos.set(0, 5, 0);
+        this.player.respawn();
+        const timerEl = document.getElementById('stat-timer');
+        if (timerEl) timerEl.textContent = '00:00.00';
+        const splitEl = document.getElementById('stat-split');
+        if (splitEl) splitEl.style.display = 'none';
+        this.ui.showToastBanner('⏱️ Speedrun reset! Step onto Stage 1 to start timer.');
+        this.ui.addChatMessage('Speedrun', '⏱️ Run reset to Spawn. Good luck on your run!', '#00F0FF');
     }
 
     setAtmosphere(mode) {
