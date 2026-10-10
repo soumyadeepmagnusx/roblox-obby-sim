@@ -574,6 +574,9 @@
             <button id="btn-voice" class="topbar-action-btn" onclick="window.game.voice.toggleMic()" title="Toggle Voice Chat (Key V)" style="background:rgba(255,255,255,0.12); border:1px solid rgba(0,255,136,0.3); color:#00FF88; padding:5px 9px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">
                 🎙️ <span>Voice [V]</span>
             </button>
+            <button id="topbar-streak-btn" class="topbar-action-btn" onclick="toggleStreakModal()" title="Daily Login Streak & Rewards" style="background:linear-gradient(135deg, #FF6B00, #FF8E53); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(255,107,0,0.4);">
+                🔥 <span>Streak: Day 1</span>
+            </button>
         </div>
 
         <div class="bar-right">
@@ -975,6 +978,30 @@
         </div>
     </div>
 
+    <!-- Roblox Daily Login Streak & Rewards Modal -->
+    <div id="daily-streak-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.88); backdrop-filter:blur(10px); z-index:115; align-items:center; justify-content:center;">
+        <div class="menu-content" style="max-width:560px; width:92%; text-align:center; padding:24px; border:1px solid #FF8C00; box-shadow:0 8px 32px rgba(255,140,0,0.35); border-radius:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div style="font-size:18px; font-weight:800; color:#FFD700; display:flex; align-items:center; gap:6px;">
+                    🔥 <span>DAILY LOGIN STREAK REWARDS</span>
+                </div>
+                <span style="cursor:pointer; font-size:20px; color:#AAA;" onclick="toggleStreakModal()">✕</span>
+            </div>
+            <p style="font-size:12px; color:#BBB; margin-bottom:18px; line-height:1.5;">
+                Log in every consecutive day to keep your streak alive and unlock massive Gold Coin multipliers!
+            </p>
+
+            <div id="streak-rewards-grid" style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:20px;"></div>
+
+            <button id="streak-claim-btn" class="menu-btn primary" onclick="if(window.game && window.game.streak) window.game.streak.claimReward();" style="width:100%; font-size:14px; font-weight:bold; background:linear-gradient(135deg, #FF6B00, #FF8E53); border:none; box-shadow:0 4px 15px rgba(255,107,0,0.5);">
+                🎁 Claim Today's Reward
+            </button>
+            <button class="menu-btn" onclick="toggleStreakModal()" style="width:100%; margin-top:8px; background:rgba(255,255,255,0.08); border:none; color:#CCC;">
+                Close
+            </button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="three.min.js"></script>
     <script src="audio.js"></script>
@@ -998,6 +1025,7 @@
     <script src="speech_bubbles.js"></script>
     <script src="voice.js"></script>
     <script src="network.js"></script>
+    <script src="streak.js"></script>
     <script src="game.js"></script>
 
     <script>
@@ -1057,6 +1085,17 @@
             const modal = document.getElementById('pets-modal');
             const isShown = modal.style.display === 'flex';
             modal.style.display = isShown ? 'none' : 'flex';
+        }
+
+        function toggleStreakModal() {
+            if (window.game && window.game.streak) {
+                const modal = document.getElementById('daily-streak-modal');
+                if (modal.style.display === 'flex') {
+                    window.game.streak.closeModal();
+                } else {
+                    window.game.streak.openModal();
+                }
+            }
         }
 
         let atmoIndex = 0;

@@ -42,6 +42,7 @@ class RobloxGame {
         this.collectibles = new RobloxCollectibles(this.scene, this.player, this.particles, this.sound, this.ui);
         this.combat = new RobloxCombatSystem(this.player, this.scene, this.particles, this.sound, this.ui, this.network);
         this.voice = new RobloxVoiceChat(this.player, this.scene, this.network, this.ui, this.sound);
+        this.streak = new RobloxDailyStreakManager(this.collectibles, this.particles, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
