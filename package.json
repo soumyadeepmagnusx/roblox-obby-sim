@@ -4,7 +4,8 @@
   "description": "Roblox 3D Obby Simulation Platform with Real-Time Multiplayer, Bengali & English Music, Physics Puzzles, and Enterprise Security",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --check server.js && node --check game.js && node --check network.js"
   },
   "engines": {
     "node": ">=18.0.0"

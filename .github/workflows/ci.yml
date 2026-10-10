@@ -1,0 +1,48 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Verify JavaScript Syntax
+      run: |
+        node --check server.js
+        node --check game.js
+        node --check network.js
+        node --check player.js
+        node --check combat.js
+        node --check vehicles.js
+        node --check pets.js
+        node --check collectibles.js
+        node --check music_player.js
+        node --check speech_bubbles.js
+        node --check voice.js
+        node --check world.js
+        node --check ui.js
+
+    - name: Test Server Initialization & Healthcheck
+      run: |
+        node server.js &
+        SERVER_PID=$!
+        sleep 2
+        curl -f http://localhost:8080/ || exit 1
+        kill $SERVER_PID
