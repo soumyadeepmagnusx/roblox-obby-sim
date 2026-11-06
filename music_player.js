@@ -193,6 +193,56 @@ class RobloxMusicPlayer {
                     { f: 329.63, d: 0.22, t: 'sawtooth' }, // E4
                     { f: 293.66, d: 0.35, t: 'sawtooth' }  // D4
                 ]
+            },
+            {
+                title: "Tomake Chai",
+                artist: "Kabir Suman (Bengali Iconic Anthem)",
+                tempo: 190,
+                notes: [
+                    { f: 261.63, d: 0.35, t: 'triangle' }, // C4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 329.63, d: 0.50, t: 'sine' },     // E4
+                    { f: 349.23, d: 0.35, t: 'triangle' }, // F4
+                    { f: 392.00, d: 0.65, t: 'sine' },     // G4
+                    { f: 349.23, d: 0.35, t: 'triangle' }, // F4
+                    { f: 329.63, d: 0.50, t: 'sine' },     // E4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 261.63, d: 0.75, t: 'sine' }      // C4
+                ]
+            },
+            {
+                title: "Aalo",
+                artist: "Tahsan (Romantic Melody)",
+                tempo: 175,
+                notes: [
+                    { f: 329.63, d: 0.30, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.30, t: 'triangle' }, // G4
+                    { f: 440.00, d: 0.55, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.30, t: 'triangle' }, // G4
+                    { f: 329.63, d: 0.40, t: 'sine' },     // E4
+                    { f: 293.66, d: 0.30, t: 'triangle' }, // D4
+                    { f: 261.63, d: 0.65, t: 'sine' }      // C4
+                ]
+            },
+            {
+                title: "Tetris (Korobeiniki)",
+                artist: "Russian Folk / Nintendo Game Boy 8-Bit",
+                tempo: 140,
+                notes: [
+                    { f: 659.25, d: 0.22, t: 'square' }, // E5
+                    { f: 493.88, d: 0.12, t: 'square' }, // B4
+                    { f: 523.25, d: 0.12, t: 'square' }, // C5
+                    { f: 587.33, d: 0.22, t: 'square' }, // D5
+                    { f: 523.25, d: 0.12, t: 'square' }, // C5
+                    { f: 493.88, d: 0.12, t: 'square' }, // B4
+                    { f: 440.00, d: 0.22, t: 'square' }, // A4
+                    { f: 440.00, d: 0.12, t: 'square' }, // A4
+                    { f: 523.25, d: 0.12, t: 'square' }, // C5
+                    { f: 659.25, d: 0.22, t: 'square' }, // E5
+                    { f: 587.33, d: 0.12, t: 'square' }, // D5
+                    { f: 523.25, d: 0.12, t: 'square' }, // C5
+                    { f: 493.88, d: 0.32, t: 'square' }  // B4
+                ]
             }
         ];
     }
