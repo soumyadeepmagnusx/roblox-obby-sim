@@ -731,6 +731,9 @@
         <button class="hud-btn" onclick="toggleBoomboxModal()">
             📻 Boombox
         </button>
+        <button class="hud-btn" onclick="if(window.game && window.game.photoMode) window.game.photoMode.togglePhotoMode()" title="Toggle Cinematic Photo Mode & Freecam (Key P)">
+            📸 Photo (P)
+        </button>
         <button class="hud-btn" onclick="window.game.ui.toggleMenu()">
             ⚙️ Menu
         </button>
@@ -1054,6 +1057,7 @@
     <script src="network.js"></script>
     <script src="streak.js"></script>
     <script src="achievements.js"></script>
+    <script src="photo_mode.js"></script>
     <script src="game.js"></script>
 
     <script>
