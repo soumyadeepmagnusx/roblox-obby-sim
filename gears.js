@@ -269,8 +269,13 @@ class RobloxGears {
             this.grappleTarget.copy(hits[0].point);
             this.sound.playBoost();
 
+            // Spawn grapple impact particles
+            if (window.game && window.game.particles) {
+                window.game.particles.spawnSparkBurst(hits[0].point);
+            }
+
             // Create visible tether line
-            const lineMat = new THREE.LineBasicMaterial({ color: 0x00FF88, linewidth: 3 });
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x00FFCC, linewidth: 3 });
             const lineGeo = new THREE.BufferGeometry().setFromPoints([
                 this.player.position,
                 this.grappleTarget
@@ -309,9 +314,13 @@ class RobloxGears {
             const toTarget = new THREE.Vector3().subVectors(this.grappleTarget, this.player.position);
             const dist = toTarget.length();
 
-            if (dist > 2.0) {
+            // Vault release if player presses Space in mid-air
+            const wantsVault = window.game && window.game.ui && window.game.ui.inputState && window.game.ui.inputState.jump;
+
+            if (dist > 2.5 && !wantsVault) {
+                toTarget.y += 0.35; // Slight upward loft arc
                 toTarget.normalize();
-                this.player.velocity.copy(toTarget.multiplyScalar(35));
+                this.player.velocity.copy(toTarget.multiplyScalar(36));
                 this.player.isGrounded = false;
 
                 // Update line mesh
@@ -322,7 +331,11 @@ class RobloxGears {
                     linePos.needsUpdate = true;
                 }
             } else {
-                // Reached target
+                // Reached target or vaulted
+                if (wantsVault) {
+                    this.player.velocity.y = 16; // Vault pop
+                    this.sound.playJump();
+                }
                 this.isGrappling = false;
                 if (this.grappleLine) {
                     this.scene.remove(this.grappleLine);

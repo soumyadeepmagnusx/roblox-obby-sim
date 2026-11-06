@@ -12,6 +12,7 @@ class RobloxWorld {
         // Interactive / Dynamic elements
         this.hazardBlocks = []; // Lava / Killbricks
         this.bouncePads = [];   // Trampolines
+        this.springPads = [];   // Interactive Mechanical Spring Launchers
         this.boostPads = [];    // Speed boost strips
         this.movingPlatforms = [];
         this.spinningHazards = [];
@@ -124,6 +125,59 @@ class RobloxWorld {
         }
 
         return collider;
+    }
+
+    // Add Interactive Mechanical Spring Launcher Pad
+    addSpringPad(x, y, z, strength = 32) {
+        const springGroup = new THREE.Group();
+        springGroup.position.set(x, y, z);
+
+        // Base plate
+        const baseGeo = new THREE.CylinderGeometry(1.5, 1.6, 0.3, 16);
+        const baseMat = new THREE.MeshLambertMaterial({ color: 0x222222 });
+        const base = new THREE.Mesh(baseGeo, baseMat);
+        base.position.y = 0.15;
+        springGroup.add(base);
+
+        // Coiled Spring Mesh
+        const coilGeo = new THREE.CylinderGeometry(0.8, 0.8, 1.2, 12, 4, true);
+        const coilMat = new THREE.MeshStandardMaterial({
+            color: 0xFF3300,
+            metalness: 0.8,
+            roughness: 0.3,
+            wireframe: true
+        });
+        const coil = new THREE.Mesh(coilGeo, coilMat);
+        coil.position.y = 0.8;
+        springGroup.add(coil);
+
+        // Bouncy Top Disc
+        const topGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.25, 16);
+        const topMat = new THREE.MeshStandardMaterial({
+            color: 0xFFCC00,
+            metalness: 0.5,
+            roughness: 0.2,
+            emissive: 0x442200
+        });
+        const topDisc = new THREE.Mesh(topGeo, topMat);
+        topDisc.position.y = 1.45;
+        springGroup.add(topDisc);
+
+        this.scene.add(springGroup);
+
+        const padData = {
+            group: springGroup,
+            coil,
+            topDisc,
+            pos: new THREE.Vector3(x, y + 1.45, z),
+            strength,
+            compression: 0,
+            cooldown: 0
+        };
+
+        this.springPads.push(padData);
+        this.addBlock(x, y + 0.15, z, 3, 0.3, 3, baseMat, 'solid');
+        return padData;
     }
 
     // Add Checkpoint Pad
@@ -307,6 +361,7 @@ class RobloxWorld {
 
         // STAGE 2 CHECKPOINT
         this.addCheckpoint(2, 0, 6.5, 60, 6);
+        this.addSpringPad(6, 6.0, 56, 30);
 
         // ==========================================
         // STAGE 2: NEON LAVA LEAP (z: 68 to 110)
@@ -628,6 +683,38 @@ class RobloxWorld {
         if (insideZeroG) {
             player.velocity.y *= 0.92; // levitation damping
             player.velocity.y += Math.sin(Date.now() * 0.005) * 0.35; // gentle zero-g bob
+        }
+
+        // Update & Animate Interactive Mechanical Spring Pads
+        if (this.springPads) {
+            this.springPads.forEach(sp => {
+                if (sp.cooldown > 0) sp.cooldown -= dt;
+
+                // Player proximity and landing check
+                const distXZ = Math.hypot(player.position.x - sp.pos.x, player.position.z - sp.pos.z);
+                const distY = player.position.y - sp.pos.y;
+
+                if (distXZ < 1.7 && distY >= -0.5 && distY <= 1.4 && player.velocity.y <= 0 && sp.cooldown <= 0) {
+                    sp.compression = 1.0;
+                    sp.cooldown = 0.45;
+                    player.bounceLaunch(sp.strength);
+                    if (this.sound) this.sound.playBounce();
+                    if (window.game && window.game.particles) {
+                        window.game.particles.spawnCoinSparkles(sp.pos);
+                    }
+                }
+
+                // Smooth mechanical spring recoil
+                if (sp.compression > 0.01) {
+                    sp.compression *= Math.pow(0.04, dt);
+                    const squash = 1.0 - sp.compression * 0.55;
+                    sp.coil.scale.y = squash;
+                    sp.topDisc.position.y = 0.35 + squash * 1.1;
+                } else {
+                    sp.coil.scale.y = 1.0;
+                    sp.topDisc.position.y = 1.45;
+                }
+            });
         }
 
         // Spin coins
