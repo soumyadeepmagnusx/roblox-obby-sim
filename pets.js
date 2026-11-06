@@ -299,6 +299,10 @@ class RobloxPetManager {
             this.player.petCoinMulti = info.coinMulti;
             this.player.jumpMultiplier = info.jumpMulti;
         }
+
+        if (window.game && window.game.achievements) {
+            window.game.achievements.unlock('pet_tamer');
+        }
     }
 
     hatchEgg(collectibles) {

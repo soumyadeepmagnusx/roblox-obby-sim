@@ -123,6 +123,9 @@ class RobloxVehicleManager {
             this.player.speedMultiplier = 2.2;
             this.sound.playCoin();
             this.ui.addChatMessage('Vehicle', '🛹 Cyber Hoverboard EQUIPPED! (Speed: 2.2x, Press H to unequip)', '#00FFFF');
+            if (window.game && window.game.achievements) {
+                window.game.achievements.unlock('hover_rider');
+            }
         } else {
             this.player.speedMultiplier = 1.0;
             this.ui.addChatMessage('Vehicle', '🛹 Hoverboard unequipped.', '#AAAAAA');
@@ -141,6 +144,9 @@ class RobloxVehicleManager {
         if (this.jetpackActive) {
             this.sound.playCoin();
             this.ui.addChatMessage('Vehicle', '🚀 Dual Jetpack EQUIPPED! (Hold SPACE in mid-air to fly, Press J to unequip)', '#FF5500');
+            if (window.game && window.game.achievements) {
+                window.game.achievements.unlock('jetpack_aviator');
+            }
         } else {
             this.ui.addChatMessage('Vehicle', '🚀 Jetpack unequipped.', '#AAAAAA');
         }

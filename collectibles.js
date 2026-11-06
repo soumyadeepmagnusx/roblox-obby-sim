@@ -113,6 +113,10 @@ class RobloxCollectibles {
         this.coins = Math.max(0, this.coins + amount);
         localStorage.setItem('roblox_coins', this.coins.toString());
         this.updateUi();
+
+        if (this.coins >= 150 && window.game && window.game.achievements) {
+            window.game.achievements.unlock('coin_hoarder');
+        }
     }
 
     updateUi() {

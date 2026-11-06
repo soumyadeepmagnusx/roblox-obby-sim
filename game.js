@@ -44,6 +44,7 @@ class RobloxGame {
         this.combat = new RobloxCombatSystem(this.player, this.scene, this.particles, this.sound, this.ui, this.network);
         this.voice = new RobloxVoiceChat(this.player, this.scene, this.network, this.ui, this.sound);
         this.streak = new RobloxDailyStreakManager(this.collectibles, this.particles, this.sound, this.ui);
+        this.achievements = new RobloxAchievements(this.collectibles, this.particles, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -244,6 +245,12 @@ class RobloxGame {
                 const currentSplit = this.speedrunTime;
                 this.stageSplits[this.player.currentStage] = currentSplit;
 
+                // Milestone Badge Unlocks
+                if (this.achievements) {
+                    if (this.player.currentStage >= 1) this.achievements.unlock('first_steps');
+                    if (this.player.currentStage >= 3) this.achievements.unlock('checkpoint_chaser');
+                }
+
                 // Split delta comparison against best saved splits
                 const splitEl = document.getElementById('stat-split');
                 if (splitEl) {
@@ -270,6 +277,14 @@ class RobloxGame {
                 this.speedrunCompleted = true;
                 this.particles.spawnConfetti(this.player.position);
                 this.sound.playWin();
+
+                if (this.achievements) {
+                    this.achievements.unlock('obby_master');
+                    if (this.speedrunTime <= 120) {
+                        this.achievements.unlock('speed_demon');
+                    }
+                }
+
                 const finalFormatted = this.formatTime(this.speedrunTime);
                 const isNewPB = !this.personalBest || this.speedrunTime < this.personalBest;
 
@@ -407,6 +422,10 @@ class RobloxGame {
             this.sun.color = new THREE.Color(0x00F0FF);
             this.sun.intensity = 0.60;
             if (this.stars) this.stars.material.opacity = 0.85;
+        }
+
+        if ((mode === 'night' || mode === 'synthwave') && this.achievements) {
+            this.achievements.unlock('stargazer');
         }
     }
 }
