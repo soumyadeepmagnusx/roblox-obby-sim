@@ -53,8 +53,12 @@ flowchart TD
 | **Attack / Fire** | Left Click | Swings sword for PvP melee or fires explosive rocket projectile |
 | **Studio Builder** | `B` | Toggles sandbox building mode to place custom colored blocks |
 | **Atmosphere Theme** | `L` (or click HUD) | Cycles Day, Sunset, Night Starfield, and Synthwave Neon |
-| **Boombox Music** | Click Top-Right UI / `M` | Cycles through 9 procedural Bengali and English tracks |
+| **Cinematic Photo Mode** | `P` (or click 📸) | Hides UI, enables Freecam drone, color filters, and PNG photo capture |
+| **Achievements & Badges** | Topbar 🎖️ Pill | View 10 unlockable milestone badges with coin bounties |
+| **Boombox Music** | Click Top-Right UI / `M` | Cycles through 12 procedural Bengali and English/Arcade tracks |
 | **Daily Streak Rewards** | Click Topbar 🔥 Pill | Opens 7-day login streak rewards modal with coin bonuses |
+| **Mobile Touch Controls** | Dynamic Joystick | On-screen floating analog stick + Jump/Action touch buttons for phones |
+| **Gamepad Controller** | Xbox / PS / Generic | Analog stick movement, right-stick camera orbit, A jump, triggers action |
 
 ---
 
@@ -109,6 +113,9 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 7. 🌍 **Astronomia** (Coffin Dance Anthem)
 8. 🎮 **Megalovania** (Undertale Arcade Battle)
 9. 🎮 **Bad Apple!!** (Touhou Arcade Hit)
+10. 🇧🇩 **Tomake Chai** (Kabir Suman Iconic Anthem)
+11. 🇧🇩 **Aalo** (Tahsan Romantic Melody)
+12. 🎮 **Tetris Korobeiniki** (Nintendo Game Boy 8-Bit)
 
 ---
 
