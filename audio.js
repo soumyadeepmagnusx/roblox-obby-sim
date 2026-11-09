@@ -224,19 +224,41 @@ class SoundEngine {
         });
     }
 
-    // Footstep thud
-    playStep() {
+    // Footstep thud with surface-specific material acoustics
+    playStep(surface = 'grass') {
         if (!this.enabled) return;
         this.init();
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(90, now);
-        osc.frequency.exponentialRampToValueAtTime(45, now + 0.05);
+        let startFreq = 90;
+        let endFreq = 45;
+        let oscType = 'triangle';
+        let vol = 0.12;
 
-        gain.gain.setValueAtTime(0.12 * this.masterVolume, now);
+        if (surface === 'stone' || surface === 'metal') {
+            startFreq = 180;
+            endFreq = 95;
+            oscType = 'triangle';
+            vol = 0.15;
+        } else if (surface === 'wood') {
+            startFreq = 130;
+            endFreq = 60;
+            oscType = 'sine';
+            vol = 0.14;
+        } else if (surface === 'ice' || surface === 'glass') {
+            startFreq = 480;
+            endFreq = 260;
+            oscType = 'sine';
+            vol = 0.10;
+        }
+
+        osc.type = oscType;
+        osc.frequency.setValueAtTime(startFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.05);
+
+        gain.gain.setValueAtTime(vol * this.masterVolume, now);
         gain.gain.linearRampToValueAtTime(0.001, now + 0.06);
 
         osc.connect(gain);
@@ -244,6 +266,58 @@ class SoundEngine {
 
         osc.start(now);
         osc.stop(now + 0.06);
+    }
+
+    // High velocity aerodynamic wind rush sound for free-falling or boosting
+    playWindRush(intensity = 1.0) {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(60, now + 0.35);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(400 * intensity, now);
+        filter.frequency.exponentialRampToValueAtTime(120, now + 0.35);
+
+        gain.gain.setValueAtTime(0.08 * intensity * this.masterVolume, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.35);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.35);
+    }
+
+    // Magic shimmer sparkle for trails and teleports
+    playSparkle() {
+        if (!this.enabled) return;
+        this.init();
+        const freqs = [880, 1108, 1320, 1760];
+        freqs.forEach((freq, i) => {
+            const now = this.ctx.currentTime + i * 0.04;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.12 * this.masterVolume, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.16);
+        });
     }
 
     // Upbeat 8-bit Background Music loop

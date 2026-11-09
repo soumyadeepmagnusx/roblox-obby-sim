@@ -6,12 +6,17 @@
  *     2. Ami Shudhu Cheyechi Tomay
  *     3. Bojhena Shey Bojhena
  *     4. Barandaye Roddur (Bhoomi Folk Rock)
+ *     5. Tomake Chai (Kabir Suman)
+ *     6. Aalo (Tahsan)
+ *     7. Alo Chaya (Tahsan & Nancy Duet)
  * - Global Gaming Anthems:
- *     5. Alan Walker - Faded
- *     6. Alan Walker - The Spectre
- *     7. Astronomia (Coffin Dance Anthem)
- *     8. Megalovania (Undertale)
- *     9. Bad Apple!! (Touhou Arcade Hit)
+ *     8. Alan Walker - Faded
+ *     9. Alan Walker - The Spectre
+ *     10. Astronomia (Coffin Dance Anthem)
+ *     11. Megalovania (Undertale)
+ *     12. Bad Apple!! (Touhou Arcade Hit)
+ *     13. Tetris (Korobeiniki 8-Bit)
+ *     14. Never Gonna Give You Up (Rick Astley Meme Anthem)
  */
 class RobloxMusicPlayer {
     constructor(soundEngine) {
@@ -242,6 +247,60 @@ class RobloxMusicPlayer {
                     { f: 587.33, d: 0.12, t: 'square' }, // D5
                     { f: 523.25, d: 0.12, t: 'square' }, // C5
                     { f: 493.88, d: 0.32, t: 'square' }  // B4
+                ]
+            },
+            {
+                title: "Alo Chaya",
+                artist: "Tahsan & Nancy (Bengali Duet Classic)",
+                tempo: 180,
+                notes: [
+                    { f: 392.00, d: 0.30, t: 'triangle' }, // G4
+                    { f: 440.00, d: 0.30, t: 'triangle' }, // A4
+                    { f: 523.25, d: 0.50, t: 'sine' },     // C5
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.30, t: 'triangle' }, // G4
+                    { f: 329.63, d: 0.60, t: 'sine' },     // E4
+                    { f: 349.23, d: 0.30, t: 'triangle' }, // F4
+                    { f: 392.00, d: 0.70, t: 'sine' },     // G4
+                    { f: 0,      d: 0.15, t: 'rest' },     // rest
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4
+                    { f: 329.63, d: 0.45, t: 'sine' },     // E4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 261.63, d: 0.80, t: 'sine' }      // C4
+                ]
+            },
+            {
+                title: "Never Gonna Give You Up",
+                artist: "Rick Astley (Roblox Internet Anthem)",
+                tempo: 120,
+                notes: [
+                    { f: 293.66, d: 0.18, t: 'sawtooth' }, // D4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.18, t: 'sawtooth' }, // G4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 493.88, d: 0.38, t: 'square' },   // B4
+                    { f: 493.88, d: 0.20, t: 'square' },   // B4
+                    { f: 440.00, d: 0.45, t: 'sawtooth' }, // A4
+                    { f: 0,      d: 0.12, t: 'rest' },     // rest
+                    { f: 293.66, d: 0.18, t: 'sawtooth' }, // D4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.18, t: 'sawtooth' }, // G4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 440.00, d: 0.38, t: 'square' },   // A4
+                    { f: 440.00, d: 0.20, t: 'square' },   // A4
+                    { f: 392.00, d: 0.45, t: 'sawtooth' }, // G4
+                    { f: 0,      d: 0.12, t: 'rest' },     // rest
+                    { f: 293.66, d: 0.18, t: 'sawtooth' }, // D4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.18, t: 'sawtooth' }, // G4
+                    { f: 329.63, d: 0.18, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.28, t: 'square' },   // G4
+                    { f: 440.00, d: 0.28, t: 'square' },   // A4
+                    { f: 369.99, d: 0.28, t: 'sawtooth' }, // F#4
+                    { f: 293.66, d: 0.28, t: 'sawtooth' }, // D4
+                    { f: 329.63, d: 0.55, t: 'sine' }      // E4
                 ]
             }
         ];
