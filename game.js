@@ -47,6 +47,7 @@ class RobloxGame {
         this.achievements = new RobloxAchievements(this.collectibles, this.particles, this.sound, this.ui);
         this.photoMode = new RobloxPhotoMode(this.camera, this.renderer, this.scene, this.player, this.ui, this.sound);
         this.touchControls = new RobloxTouchAndGamepadControls(this.player, this.cameraController, this.ui, this.sound);
+        this.trails = new RobloxTrails(this.scene, this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -326,6 +327,7 @@ class RobloxGame {
             if (this.voice) this.voice.update(dt);
             if (this.photoMode) this.photoMode.update(dt, this.ui.inputState);
             if (this.touchControls) this.touchControls.update(dt);
+            if (this.trails) this.trails.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
