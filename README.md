@@ -54,8 +54,12 @@ flowchart TD
 | **Studio Builder** | `B` | Toggles sandbox building mode to place custom colored blocks |
 | **Atmosphere Theme** | `L` (or click HUD) | Cycles Day, Sunset, Night Starfield, and Synthwave Neon |
 | **Cinematic Photo Mode** | `P` (or click 📸) | Hides UI, enables Freecam drone, color filters, and PNG photo capture |
+| **2D Radar Mini-Map** | `M` (or click 🗺️) | Toggles real-time 2D tactical radar with stage markers, coins, and peers |
+| **Dynamic Weather Cycle** | `K` (or click 🌦️) | Cycles weather simulation: Clear Sky, Downpour Rain, Snow, Meteor Shower |
+| **Avatar Particle Trails** | Click Trails HUD | Opens Trail Shop to equip ribbon auras (Rainbow, Blaze, Cyber, Stardust, Gold) |
+| **Stage Navigator / Warp** | Click Stages HUD | Instantly teleports between any unlocked Obby checkpoints |
 | **Achievements & Badges** | Topbar 🎖️ Pill | View 10 unlockable milestone badges with coin bounties |
-| **Boombox Music** | Click Top-Right UI / `M` | Cycles through 12 procedural Bengali and English/Arcade tracks |
+| **Boombox Music** | Click Boombox / UI | Plays 14 procedural Bengali and English/Arcade hits |
 | **Daily Streak Rewards** | Click Topbar 🔥 Pill | Opens 7-day login streak rewards modal with coin bonuses |
 | **Mobile Touch Controls** | Dynamic Joystick | On-screen floating analog stick + Jump/Action touch buttons for phones |
 | **Gamepad Controller** | Xbox / PS / Generic | Analog stick movement, right-stick camera orbit, A jump, triggers action |
@@ -116,6 +120,29 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 10. 🇧🇩 **Tomake Chai** (Kabir Suman Iconic Anthem)
 11. 🇧🇩 **Aalo** (Tahsan Romantic Melody)
 12. 🎮 **Tetris Korobeiniki** (Nintendo Game Boy 8-Bit)
+13. 🇧🇩 **Alo Chaya** (Tahsan & Nancy Duet Classic)
+14. 🌍 **Never Gonna Give You Up** (Rick Astley Meme Anthem)
+
+---
+
+## ✨ Cosmetic Trails, Weather & Navigation HUDs
+
+### 🌈 Avatar Particle Ribbon Trails (`trails.js`)
+* **Dynamic Ribbon Geometry**: Tapered 3D ribbon strips with additive blending and opacity fading.
+* **5 Cosmetic Presets**: Rainbow Ribbon, Blaze Inferno, Neon Cyber, Cosmic Stardust, and Midas Gold.
+* **Local Persistence**: Equipping a trail auto-saves to `localStorage` and persists across sessions.
+
+### 🌦️ Atmospheric Weather System (`weather.js`)
+* **650+ Real-Time Particle Simulation**: Dynamic falling rain drops, fluttering winter snow flakes, and cosmic shooting star meteor trails anchored smoothly around the active player.
+* **Quick Cycle**: Press **`K`** or click the Weather HUD button to switch between Clear, Rain, Snow, and Meteor Shower presets with atmospheric lighting transitions.
+
+### 🚀 Checkpoint Stage Navigator (`teleport.js`)
+* **Instant Stage Warp**: Travel instantly between Spawn Island and Stages 1–6 with particle sparkles and audio chimes.
+* **Anti-Cheat Lock**: Players can only teleport to stages they have previously unlocked by reaching their checkpoint.
+
+### 🗺️ 2D Tactical Radar Mini-Map (`minimap.js`)
+* **Live Radar Overlay**: Real-time 140x140px canvas mini-map with rotating player direction arrow, checkpoint markers, hazard killbricks, gold coins, and multiplayer peer tracking.
+* **Interactive Zoom**: Click the radar to cycle between 0.6x (wide), 1.0x (standard), and 1.6x (close-up) zoom scales, or press **`M`** to toggle visibility.
 
 ---
 

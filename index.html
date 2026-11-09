@@ -728,6 +728,9 @@
         <button id="btn-weather" class="hud-btn" onclick="if(window.game && window.game.weather) window.game.weather.cycleWeather()" title="Cycle Weather: Rain, Snow, Meteors (Key K)">
             🌦️ Weather (K)
         </button>
+        <button id="btn-minimap" class="hud-btn" onclick="if(window.game && window.game.minimap) window.game.minimap.toggle()" title="Toggle 2D Radar Mini-Map (Key M)">
+            🗺️ Radar (M)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -817,6 +820,8 @@
         <b>[Right-Click Drag]</b> Orbit Camera<br>
         <b>[Scroll Wheel]</b> Zoom Cam<br>
         <b>[Shift / Lock Button]</b> Shift-Lock Mode<br>
+        <b>[M]</b> Toggle Radar Mini-Map<br>
+        <b>[K]</b> Dynamic Weather Cycle<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1118,6 +1123,7 @@
     <script src="trails.js"></script>
     <script src="weather.js"></script>
     <script src="teleport.js"></script>
+    <script src="minimap.js"></script>
     <script src="game.js"></script>
 
     <script>

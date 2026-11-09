@@ -50,6 +50,7 @@ class RobloxGame {
         this.trails = new RobloxTrails(this.scene, this.player, this.sound, this.ui);
         this.weather = new RobloxWeather(this.scene, this.player, this.sound, this.ui);
         this.teleport = new RobloxStageNavigator(this.player, this.scene, this.sound, this.ui, this.particles);
+        this.minimap = new RobloxMiniMap(this.player, this.world, this.network);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -335,6 +336,7 @@ class RobloxGame {
             if (this.touchControls) this.touchControls.update(dt);
             if (this.trails) this.trails.update(dt);
             if (this.weather) this.weather.update(dt);
+            if (this.minimap) this.minimap.update();
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
