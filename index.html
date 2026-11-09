@@ -580,6 +580,9 @@
             <button id="topbar-badges-btn" class="topbar-action-btn" onclick="toggleBadgesModal()" title="Achievements & Badges" style="background:linear-gradient(135deg, #F39C12, #D35400); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(243,156,18,0.4);">
                 🎖️ <span>Badges</span>
             </button>
+            <button id="topbar-stages-btn" class="topbar-action-btn" onclick="toggleStagesModal()" title="Stage Navigator & Checkpoint Teleport" style="background:linear-gradient(135deg, #00A8FF, #0066CC); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(0,168,255,0.4);">
+                🌀 <span>Stages</span>
+            </button>
         </div>
 
         <div class="bar-right">
@@ -1062,6 +1065,27 @@
         </div>
     </div>
 
+    <!-- Roblox Stage Teleport Navigator Modal -->
+    <div id="stages-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.88); backdrop-filter:blur(10px); z-index:118; align-items:center; justify-content:center;">
+        <div class="menu-content" style="max-width:580px; width:92%; max-height:85vh; overflow-y:auto; padding:24px; border:1px solid #00F0FF; box-shadow:0 8px 32px rgba(0,240,255,0.3); border-radius:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <div style="font-size:18px; font-weight:800; color:#00F0FF; display:flex; align-items:center; gap:8px;">
+                    🌀 <span>STAGE NAVIGATOR & TELEPORT</span>
+                </div>
+                <span style="cursor:pointer; font-size:20px; color:#AAA;" onclick="toggleStagesModal()">✕</span>
+            </div>
+            <p style="font-size:12px; color:#BBB; margin-bottom:16px; line-height:1.4;">
+                Select any unlocked checkpoint or hub to instantly warp your avatar without losing your progress!
+            </p>
+
+            <div id="stages-modal-grid" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;"></div>
+
+            <button class="menu-btn primary" onclick="toggleStagesModal()" style="width:100%; background:linear-gradient(135deg, #00A8FF, #0066CC); border:none;">
+                Close
+            </button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="three.min.js"></script>
     <script src="audio.js"></script>
@@ -1091,6 +1115,7 @@
     <script src="touch_controls.js"></script>
     <script src="trails.js"></script>
     <script src="weather.js"></script>
+    <script src="teleport.js"></script>
     <script src="game.js"></script>
 
     <script>
@@ -1181,6 +1206,17 @@
                     window.game.trails.closeModal();
                 } else {
                     window.game.trails.openModal();
+                }
+            }
+        }
+
+        function toggleStagesModal() {
+            if (window.game && window.game.teleport) {
+                const modal = document.getElementById('stages-modal');
+                if (modal.style.display === 'flex') {
+                    window.game.teleport.closeModal();
+                } else {
+                    window.game.teleport.openModal();
                 }
             }
         }

@@ -49,6 +49,7 @@ class RobloxGame {
         this.touchControls = new RobloxTouchAndGamepadControls(this.player, this.cameraController, this.ui, this.sound);
         this.trails = new RobloxTrails(this.scene, this.player, this.sound, this.ui);
         this.weather = new RobloxWeather(this.scene, this.player, this.sound, this.ui);
+        this.teleport = new RobloxStageNavigator(this.player, this.scene, this.sound, this.ui, this.particles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -253,6 +254,10 @@ class RobloxGame {
                 if (this.achievements) {
                     if (this.player.currentStage >= 1) this.achievements.unlock('first_steps');
                     if (this.player.currentStage >= 3) this.achievements.unlock('checkpoint_chaser');
+                }
+
+                if (this.teleport) {
+                    this.teleport.recordStageUnlock(this.player.currentStage);
                 }
 
                 // Split delta comparison against best saved splits
