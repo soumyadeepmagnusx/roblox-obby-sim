@@ -722,6 +722,9 @@
         <button id="btn-atmosphere" class="hud-btn" onclick="cycleAtmosphere(this)">
             ☀️ Day
         </button>
+        <button id="btn-weather" class="hud-btn" onclick="if(window.game && window.game.weather) window.game.weather.cycleWeather()" title="Cycle Weather: Rain, Snow, Meteors (Key K)">
+            🌦️ Weather (K)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1087,6 +1090,7 @@
     <script src="photo_mode.js"></script>
     <script src="touch_controls.js"></script>
     <script src="trails.js"></script>
+    <script src="weather.js"></script>
     <script src="game.js"></script>
 
     <script>
