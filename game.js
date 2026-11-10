@@ -55,6 +55,7 @@ class RobloxGame {
         this.skyIslands = new RobloxSkyIslands(this.scene, this.world, this.player, this.sound, this.ui, this.particles);
         this.potions = new RobloxPotionShop(this.player, this.world, this.scene, this.sound, this.ui, this.particles);
         this.accessories = new RobloxAccessoryManager(this.scene, this.player, this.sound, this.ui);
+        this.lighting = new RobloxLightingEngine(this.scene, this.sun, this.ambientLight, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -140,6 +141,7 @@ class RobloxGame {
     initLighting() {
         const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.65);
         this.scene.add(ambientLight);
+        this.ambientLight = ambientLight;
 
         this.sun = new THREE.DirectionalLight(0xFFF6D5, 0.85);
         this.sun.position.set(40, 90, 40);
@@ -344,6 +346,7 @@ class RobloxGame {
             if (this.skyIslands) this.skyIslands.update(dt);
             if (this.potions) this.potions.update(dt);
             if (this.accessories) this.accessories.update(dt);
+            if (this.lighting) this.lighting.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
@@ -397,6 +400,10 @@ class RobloxGame {
     }
 
     cycleAtmosphere() {
+        if (this.lighting) {
+            this.lighting.cyclePreset();
+            return;
+        }
         const modes = ['day', 'sunset', 'night', 'synthwave'];
         const currentIdx = modes.indexOf(this.timeOfDay);
         const nextMode = modes[(currentIdx + 1) % modes.length];

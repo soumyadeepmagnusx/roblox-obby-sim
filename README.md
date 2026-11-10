@@ -56,10 +56,14 @@ flowchart TD
 | **Cinematic Photo Mode** | `P` (or click 📸) | Hides UI, enables Freecam drone, color filters, and PNG photo capture |
 | **2D Radar Mini-Map** | `M` (or click 🗺️) | Toggles real-time 2D tactical radar with stage markers, coins, and peers |
 | **Dynamic Weather Cycle** | `K` (or click 🌦️) | Cycles weather simulation: Clear Sky, Downpour Rain, Snow, Meteor Shower |
+| **Atmosphere & Lighting** | `L` (or click ☀️) | Cycles 5 celestial lighting presets: Noon, Sunset, Midnight, Synthwave, Dawn |
+| **Alchemist Potion Shop** | `Y` (or click 🧪) | Opens power-up shop: Moon Gravity, Hyper Speed, Coin Magnet, Lava Shield |
+| **Avatar Wardrobe** | `U` (or click 🎩) | Equips 3D cosmetic accessories: Fedora, Crown, Angel Wings, Katanas, DJ Cans |
+| **Prestige Titles & Ranks**| Click Titles 🎖️ | Displays floating rank nameplates (Noob, Jumper, Champion, Legend) |
 | **Avatar Particle Trails** | Click Trails HUD | Opens Trail Shop to equip ribbon auras (Rainbow, Blaze, Cyber, Stardust, Gold) |
-| **Stage Navigator / Warp** | Click Stages HUD | Instantly teleports between any unlocked Obby checkpoints |
+| **Stage Navigator / Warp** | Click Stages HUD | Instantly teleports between any unlocked Obby checkpoints + Sky Islands |
 | **Achievements & Badges** | Topbar 🎖️ Pill | View 10 unlockable milestone badges with coin bounties |
-| **Boombox Music** | Click Boombox / UI | Plays 14 procedural Bengali and English/Arcade hits |
+| **Boombox Music** | Click Boombox / UI | Plays 16 procedural Bengali and English/Arcade hits + live visualizer |
 | **Daily Streak Rewards** | Click Topbar 🔥 Pill | Opens 7-day login streak rewards modal with coin bonuses |
 | **Mobile Touch Controls** | Dynamic Joystick | On-screen floating analog stick + Jump/Action touch buttons for phones |
 | **Gamepad Controller** | Xbox / PS / Generic | Analog stick movement, right-stick camera orbit, A jump, triggers action |
@@ -122,6 +126,45 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 12. 🎮 **Tetris Korobeiniki** (Nintendo Game Boy 8-Bit)
 13. 🇧🇩 **Alo Chaya** (Tahsan & Nancy Duet Classic)
 14. 🌍 **Never Gonna Give You Up** (Rick Astley Meme Anthem)
+15. 🇧🇩 **Ekla Cholo Re** (Rabindranath Tagore Immortal Anthem)
+16. 🎮 **Can You Feel My Heart** (Bring Me The Horizon / GigaChad Theme)
+
+---
+
+## ✨ Cosmetic Customization, Dimensions & Power-Ups
+
+### 🎖️ Prestige Titles & Ranks (`titles.js`)
+* **Overhead 3D Nameplates**: Unlocks and displays luminous title tags above your character (e.g. `[👑 Obby Champion]`, `[⭐ Roblox Legend]`).
+* **Achievement Based**: Titles unlock as you conquer stages, amass coins, beat speedruns, or maintain daily streaks.
+
+### 🌌 Starlight Sky Islands Secret Bonus Realm (`bonus_stage.js`)
+* **Secret Launchpad**: Hidden super trampolines catapult players 70+ studs into the sky to a floating galaxy island.
+* **Low Gravity Mechanics**: Floaty jump physics, rotating nebula halo rings, and 5 rare collectible amethyst crystals (+5 studs each).
+* **Return Warp Portal**: Safely teleports players back to the main obstacle course.
+
+### 🧪 Alchemist Potion Shop (`potions.js`)
+* **Power-Up Consumables**: Purchase tactical potions using in-game studs:
+  * 🌙 **Moon Gravity Elixir**: Reduces gravity by 55% for effortless gap clearing.
+  * ⚡ **Hyper Sonic Potion**: Boosts sprinting speed by +80%.
+  * 🧲 **Stud Attractor Magnet**: Pulls all nearby coins directly to your character.
+  * 🛡️ **Obsidian Lava Shield**: Grants complete temporary immunity to lava hazards.
+* **Buff Status HUD**: Real-time timer bars display remaining active potion duration.
+
+### 🎩 Avatar Accessory Wardrobe (`accessories.js`)
+* **Procedural 3D Wearables**: Wear classic Roblox accessories:
+  * 🎩 **Classic Noir Fedora**: Wide-brim fedora with white silk ribbon.
+  * 👑 **Golden King Crown**: Encrusted with ruby gemstones.
+  * 🪽 **Celestial Angel Wings**: Animated feathered wings that flap as you jump.
+  * ⚔️ **Dual Ninja Katanas**: Crossed samurai blades mounted on back.
+  * 🎧 **Cyberpunk DJ Headphones**: Neon cyan earcups with bass glow.
+
+### ☀️ Celestial Atmosphere & Lighting Engine (`lighting.js`)
+* **Multi-Preset Lighting**: Cycle between 5 dynamic environmental ambiances with Key **`L`**:
+  * ☀️ **Vibrant Noon**: Bright sky blue with radiant sunlight.
+  * 🌅 **Golden Sunset**: Warm amber horizon and soft purple gradients.
+  * 🌌 **Midnight Starfield**: Deep navy night with luminous lunar glow.
+  * 👾 **Synthwave Neon**: Retro vaporwave violet with hot pink rim lights.
+  * 🌸 **Cherry Blossom Dawn**: Soft pastel morning mist.
 
 ---
 

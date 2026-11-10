@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --check server.js && node --check game.js && node --check network.js && node --check achievements.js && node --check streak.js && node --check photo_mode.js && node --check touch_controls.js && node --check trails.js && node --check weather.js && node --check teleport.js && node --check audio.js && node --check music_player.js && node --check minimap.js && node --check titles.js && node --check bonus_stage.js && node --check potions.js && node --check accessories.js"
+    "test": "node --check server.js && node --check game.js && node --check network.js && node --check achievements.js && node --check streak.js && node --check photo_mode.js && node --check touch_controls.js && node --check trails.js && node --check weather.js && node --check teleport.js && node --check audio.js && node --check music_player.js && node --check minimap.js && node --check titles.js && node --check bonus_stage.js && node --check potions.js && node --check accessories.js && node --check lighting.js"
   },
   "engines": {
     "node": ">=18.0.0"
