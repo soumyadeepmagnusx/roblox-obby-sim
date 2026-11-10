@@ -9,14 +9,16 @@
  *     5. Tomake Chai (Kabir Suman)
  *     6. Aalo (Tahsan)
  *     7. Alo Chaya (Tahsan & Nancy Duet)
+ *     8. Ekla Cholo Re (Rabindranath Tagore Immortal Anthem)
  * - Global Gaming Anthems:
- *     8. Alan Walker - Faded
- *     9. Alan Walker - The Spectre
- *     10. Astronomia (Coffin Dance Anthem)
- *     11. Megalovania (Undertale)
- *     12. Bad Apple!! (Touhou Arcade Hit)
- *     13. Tetris (Korobeiniki 8-Bit)
- *     14. Never Gonna Give You Up (Rick Astley Meme Anthem)
+ *     9. Alan Walker - Faded
+ *     10. Alan Walker - The Spectre
+ *     11. Astronomia (Coffin Dance Anthem)
+ *     12. Megalovania (Undertale)
+ *     13. Bad Apple!! (Touhou Arcade Hit)
+ *     14. Tetris (Korobeiniki 8-Bit)
+ *     15. Never Gonna Give You Up (Rick Astley Meme Anthem)
+ *     16. Can You Feel My Heart (GigaChad Theme)
  */
 class RobloxMusicPlayer {
     constructor(soundEngine) {
@@ -302,6 +304,50 @@ class RobloxMusicPlayer {
                     { f: 293.66, d: 0.28, t: 'sawtooth' }, // D4
                     { f: 329.63, d: 0.55, t: 'sine' }      // E4
                 ]
+            },
+            {
+                title: "Ekla Cholo Re",
+                artist: "Rabindranath Tagore (Immortal Anthem)",
+                tempo: 165,
+                notes: [
+                    { f: 329.63, d: 0.35, t: 'sine' },     // E4: Jo-di
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4: tor
+                    { f: 440.00, d: 0.50, t: 'sine' },     // A4: daak
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4: shu-ne
+                    { f: 523.25, d: 0.65, t: 'sine' },     // C5: ke-u
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4: na
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4: aa-she
+                    { f: 392.00, d: 0.70, t: 'sine' },     // G4: to-be
+                    { f: 0,      d: 0.15, t: 'rest' },     // rest
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4: ek-
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4: la
+                    { f: 293.66, d: 0.50, t: 'sine' },     // D4: cho-lo
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4: re
+                    { f: 392.00, d: 0.85, t: 'sine' }      // G4
+                ]
+            },
+            {
+                title: "Can You Feel My Heart (GigaChad Theme)",
+                artist: "Bring Me The Horizon / Roblox Meme Anthem",
+                tempo: 135,
+                notes: [
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.16, t: 'sawtooth' }, // G4
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 493.88, d: 0.28, t: 'square' },   // B4
+                    { f: 440.00, d: 0.28, t: 'sawtooth' }, // A4
+                    { f: 392.00, d: 0.28, t: 'sawtooth' }, // G4
+                    { f: 369.99, d: 0.32, t: 'sawtooth' }, // F#4
+                    { f: 0,      d: 0.12, t: 'rest' },     // rest
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 329.63, d: 0.16, t: 'sawtooth' }, // E4
+                    { f: 392.00, d: 0.16, t: 'sawtooth' }, // G4
+                    { f: 493.88, d: 0.24, t: 'square' },   // B4
+                    { f: 587.33, d: 0.38, t: 'square' },   // D5
+                    { f: 523.25, d: 0.24, t: 'sawtooth' }, // C5
+                    { f: 493.88, d: 0.45, t: 'sine' }      // B4
+                ]
             }
         ];
     }
@@ -396,6 +442,34 @@ class RobloxMusicPlayer {
 
         osc.start(now);
         osc.stop(now + duration + 0.05);
+
+        this.renderVisualizer();
+    }
+
+    renderVisualizer() {
+        const canvas = document.getElementById('boombox-eq-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+
+        ctx.clearRect(0, 0, w, h);
+        const barCount = 14;
+        const barWidth = (w - (barCount - 1) * 3) / barCount;
+
+        for (let i = 0; i < barCount; i++) {
+            const heightFactor = this.isPlaying ? (0.2 + Math.random() * 0.75) : 0.1;
+            const barH = Math.max(2, h * heightFactor);
+            const x = i * (barWidth + 3);
+            const y = h - barH;
+
+            const grad = ctx.createLinearGradient(x, y, x, h);
+            grad.addColorStop(0, '#00FF88');
+            grad.addColorStop(1, '#0074E4');
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, barWidth, barH);
+        }
     }
 
     updateUI() {
@@ -411,6 +485,7 @@ class RobloxMusicPlayer {
         if (playBtn) {
             playBtn.innerText = this.isPlaying ? '⏸️' : '▶️';
         }
+        this.renderVisualizer();
     }
 }
 
