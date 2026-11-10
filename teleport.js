@@ -18,7 +18,8 @@ class RobloxStageNavigator {
             { num: 3, name: 'Stage 3: Laser Grid', desc: 'Pulsing laser beams and high-altitude walkways.', pos: { x: 0, y: 12.0, z: 114 }, icon: '⚡' },
             { num: 4, name: 'Stage 4: Spinning Beams', desc: 'Rotating obstacle arms and moving platforms.', pos: { x: 0, y: 14.5, z: 175 }, icon: '⚙️' },
             { num: 5, name: 'Stage 5: Vanishing Tiles', desc: 'Disappearing ghost stepping stones and speed boosts.', pos: { x: 0, y: 15.0, z: 232 }, icon: '👻' },
-            { num: 6, name: "Stage 6: Winner's Peak", desc: 'The golden champion trophy and mega sky slide!', pos: { x: 0, y: 34.5, z: 290 }, icon: '🏆' }
+            { num: 6, name: "Stage 6: Winner's Peak", desc: 'The golden champion trophy and mega sky slide!', pos: { x: 0, y: 34.5, z: 290 }, icon: '🏆' },
+            { num: 7, name: 'Bonus: Starlight Sky Realm', desc: 'Secret celestial islands in the clouds with rare gems!', pos: { x: 0, y: 72, z: 100 }, icon: '🌌' }
         ];
 
         this.maxUnlockedStage = parseInt(localStorage.getItem('roblox_max_stage') || '1', 10);
