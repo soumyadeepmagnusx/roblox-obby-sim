@@ -586,6 +586,9 @@
             <button id="topbar-titles-btn" class="topbar-action-btn" onclick="if(window.game && window.game.titles) window.game.titles.toggleModal()" title="Prestige Titles & Ranks" style="background:linear-gradient(135deg, #10AC84, #1DD1A1); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(29,209,161,0.4);">
                 🎖️ <span>Titles</span>
             </button>
+            <button id="topbar-potions-btn" class="topbar-action-btn" onclick="if(window.game && window.game.potions) window.game.potions.toggleModal()" title="Potion Buff Shop (Key Y)" style="background:linear-gradient(135deg, #00D2FF, #0088CC); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(0,210,255,0.4);">
+                🧪 <span>Potions</span>
+            </button>
         </div>
 
         <div class="bar-right">
@@ -828,6 +831,7 @@
         <b>[Shift / Lock Button]</b> Shift-Lock Mode<br>
         <b>[M]</b> Toggle Radar Mini-Map<br>
         <b>[K]</b> Dynamic Weather Cycle<br>
+        <b>[Y]</b> Potion Buff Shop<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1132,6 +1136,7 @@
     <script src="minimap.js"></script>
     <script src="titles.js"></script>
     <script src="bonus_stage.js"></script>
+    <script src="potions.js"></script>
     <script src="game.js"></script>
 
     <script>

@@ -53,6 +53,7 @@ class RobloxGame {
         this.minimap = new RobloxMiniMap(this.player, this.world, this.network);
         this.titles = new RobloxTitleSystem(this.player, this.sound, this.ui);
         this.skyIslands = new RobloxSkyIslands(this.scene, this.world, this.player, this.sound, this.ui, this.particles);
+        this.potions = new RobloxPotionShop(this.player, this.world, this.scene, this.sound, this.ui, this.particles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -340,6 +341,7 @@ class RobloxGame {
             if (this.weather) this.weather.update(dt);
             if (this.minimap) this.minimap.update();
             if (this.skyIslands) this.skyIslands.update(dt);
+            if (this.potions) this.potions.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
