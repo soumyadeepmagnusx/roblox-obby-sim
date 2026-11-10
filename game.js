@@ -51,6 +51,7 @@ class RobloxGame {
         this.weather = new RobloxWeather(this.scene, this.player, this.sound, this.ui);
         this.teleport = new RobloxStageNavigator(this.player, this.scene, this.sound, this.ui, this.particles);
         this.minimap = new RobloxMiniMap(this.player, this.world, this.network);
+        this.titles = new RobloxTitleSystem(this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
