@@ -10,15 +10,17 @@
  *     6. Aalo (Tahsan)
  *     7. Alo Chaya (Tahsan & Nancy Duet)
  *     8. Ekla Cholo Re (Rabindranath Tagore Immortal Anthem)
+ *     9. Gram Chara Oi Ranga Matir Poth (Tagore Baul Classic)
  * - Global Gaming Anthems:
- *     9. Alan Walker - Faded
- *     10. Alan Walker - The Spectre
- *     11. Astronomia (Coffin Dance Anthem)
- *     12. Megalovania (Undertale)
- *     13. Bad Apple!! (Touhou Arcade Hit)
- *     14. Tetris (Korobeiniki 8-Bit)
- *     15. Never Gonna Give You Up (Rick Astley Meme Anthem)
- *     16. Can You Feel My Heart (GigaChad Theme)
+ *     10. Alan Walker - Faded
+ *     11. Alan Walker - The Spectre
+ *     12. Astronomia (Coffin Dance Anthem)
+ *     13. Megalovania (Undertale)
+ *     14. Bad Apple!! (Touhou Arcade Hit)
+ *     15. Tetris (Korobeiniki 8-Bit)
+ *     16. Never Gonna Give You Up (Rick Astley Meme Anthem)
+ *     17. Can You Feel My Heart (GigaChad Theme)
+ *     18. Crab Rave (Noisestorm Celebration Anthem)
  */
 class RobloxMusicPlayer {
     constructor(soundEngine) {
@@ -28,7 +30,7 @@ class RobloxMusicPlayer {
         this.currentTrackIndex = 0;
         this.playbackTimer = null;
         this.currentNoteIndex = 0;
-        this.volume = 0.45;
+        this.volume = parseFloat(localStorage.getItem('roblox_boombox_volume') || '0.45');
 
         // Visualizer equalizer bars
         this.eqBars = [0, 0, 0, 0, 0];
@@ -348,6 +350,48 @@ class RobloxMusicPlayer {
                     { f: 523.25, d: 0.24, t: 'sawtooth' }, // C5
                     { f: 493.88, d: 0.45, t: 'sine' }      // B4
                 ]
+            },
+            {
+                title: "Gram Chara Oi Ranga Matir Poth",
+                artist: "Rabindranath Tagore (Folk Baul Classic)",
+                tempo: 175,
+                notes: [
+                    { f: 261.63, d: 0.35, t: 'triangle' }, // C4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 329.63, d: 0.45, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.45, t: 'sine' },     // G4
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4
+                    { f: 392.00, d: 0.45, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.65, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4
+                    { f: 329.63, d: 0.45, t: 'sine' },     // E4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 261.63, d: 0.80, t: 'sine' }      // C4
+                ]
+            },
+            {
+                title: "Crab Rave",
+                artist: "Noisestorm (Roblox Victory Celebration)",
+                tempo: 125,
+                notes: [
+                    { f: 587.33, d: 0.14, t: 'square' }, // D5
+                    { f: 932.33, d: 0.14, t: 'square' }, // Bb5
+                    { f: 783.99, d: 0.14, t: 'square' }, // G5
+                    { f: 783.99, d: 0.14, t: 'square' }, // G5
+                    { f: 587.33, d: 0.14, t: 'square' }, // D5
+                    { f: 587.33, d: 0.14, t: 'square' }, // D5
+                    { f: 880.00, d: 0.14, t: 'square' }, // A5
+                    { f: 698.46, d: 0.14, t: 'square' }, // F5
+                    { f: 698.46, d: 0.14, t: 'square' }, // F5
+                    { f: 587.33, d: 0.14, t: 'square' }, // D5
+                    { f: 587.33, d: 0.14, t: 'square' }, // D5
+                    { f: 880.00, d: 0.14, t: 'square' }, // A5
+                    { f: 698.46, d: 0.14, t: 'square' }, // F5
+                    { f: 698.46, d: 0.14, t: 'square' }, // F5
+                    { f: 523.25, d: 0.14, t: 'square' }, // C5
+                    { f: 523.25, d: 0.14, t: 'square' }, // C5
+                    { f: 659.25, d: 0.30, t: 'square' }  // E5
+                ]
             }
         ];
     }
@@ -472,10 +516,21 @@ class RobloxMusicPlayer {
         }
     }
 
+    setVolume(val) {
+        this.volume = Math.max(0, Math.min(1, parseFloat(val)));
+        localStorage.setItem('roblox_boombox_volume', this.volume.toString());
+        const label = document.getElementById('boombox-vol-label');
+        if (label) {
+            label.innerText = Math.round(this.volume * 100) + '%';
+        }
+    }
+
     updateUI() {
         const titleEl = document.getElementById('boombox-title');
         const artistEl = document.getElementById('boombox-artist');
         const playBtn = document.getElementById('boombox-play-btn');
+        const volSlider = document.getElementById('boombox-vol-slider');
+        const volLabel = document.getElementById('boombox-vol-label');
 
         if (titleEl && artistEl) {
             const t = this.tracks[this.currentTrackIndex];
@@ -484,6 +539,12 @@ class RobloxMusicPlayer {
         }
         if (playBtn) {
             playBtn.innerText = this.isPlaying ? '⏸️' : '▶️';
+        }
+        if (volSlider) {
+            volSlider.value = this.volume;
+        }
+        if (volLabel) {
+            volLabel.innerText = Math.round(this.volume * 100) + '%';
         }
         this.renderVisualizer();
     }

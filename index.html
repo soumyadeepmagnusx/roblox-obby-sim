@@ -814,7 +814,16 @@
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(13)">🌍 14. Never Gonna Give You Up - Rick Astley</button>
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(14)">🇧🇩 15. Ekla Cholo Re - Rabindranath Tagore</button>
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(15)">🎮 16. Can You Feel My Heart (GigaChad Theme)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(16)">🇧🇩 17. Gram Chara Oi Ranga Matir Poth (Tagore Folk)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(17)">🦀 18. Crab Rave - Noisestorm (Victory Dance)</button>
                 </div>
+            </div>
+
+            <!-- Volume Slider -->
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px;">
+                <span style="font-size:12px; color:#AAA; font-weight:600;">🔊 Volume:</span>
+                <input id="boombox-vol-slider" type="range" min="0" max="1" step="0.05" value="0.45" oninput="if(window.game && window.game.music) window.game.music.setVolume(this.value)" style="flex:1; accent-color:#00FF88; cursor:pointer;">
+                <span id="boombox-vol-label" style="font-size:12px; color:#00FF88; font-weight:bold; min-width:36px; text-align:right;">45%</span>
             </div>
 
             <!-- Controls -->
