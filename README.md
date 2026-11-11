@@ -60,10 +60,12 @@ flowchart TD
 | **Alchemist Potion Shop** | `Y` (or click 🧪) | Opens power-up shop: Moon Gravity, Hyper Speed, Coin Magnet, Lava Shield |
 | **Avatar Wardrobe** | `U` (or click 🎩) | Equips 3D cosmetic accessories: Fedora, Crown, Angel Wings, Katanas, DJ Cans |
 | **Prestige Titles & Ranks**| Click Titles 🎖️ | Displays floating rank nameplates (Noob, Jumper, Champion, Legend) |
+| **Obby Quest Board** | `Q` (or click 📜) | Tracks live milestone quests on HUD and grants coin bounties |
+| **Hall of Fame & Records**| Click 🏆 Records | Displays career distance, session playtime, PB speedruns & lobby standings |
 | **Avatar Particle Trails** | Click Trails HUD | Opens Trail Shop to equip ribbon auras (Rainbow, Blaze, Cyber, Stardust, Gold) |
 | **Stage Navigator / Warp** | Click Stages HUD | Instantly teleports between any unlocked Obby checkpoints + Sky Islands |
 | **Achievements & Badges** | Topbar 🎖️ Pill | View 10 unlockable milestone badges with coin bounties |
-| **Boombox Music** | Click Boombox / UI | Plays 16 procedural Bengali and English/Arcade hits + live visualizer |
+| **Boombox Music** | Click Boombox / UI | Plays 18 procedural Bengali & global hits with volume slider & live visualizer |
 | **Daily Streak Rewards** | Click Topbar 🔥 Pill | Opens 7-day login streak rewards modal with coin bonuses |
 | **Mobile Touch Controls** | Dynamic Joystick | On-screen floating analog stick + Jump/Action touch buttons for phones |
 | **Gamepad Controller** | Xbox / PS / Generic | Analog stick movement, right-stick camera orbit, A jump, triggers action |
@@ -128,10 +130,22 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 14. 🌍 **Never Gonna Give You Up** (Rick Astley Meme Anthem)
 15. 🇧🇩 **Ekla Cholo Re** (Rabindranath Tagore Immortal Anthem)
 16. 🎮 **Can You Feel My Heart** (Bring Me The Horizon / GigaChad Theme)
+17. 🇧🇩 **Gram Chara Oi Ranga Matir Poth** (Rabindranath Tagore Baul Classic)
+18. 🦀 **Crab Rave** (Noisestorm - Iconic Celebration Dance)
+
+*Features an interactive **Master Volume Slider** and real-time neon equalizer bars.*
 
 ---
 
-## ✨ Cosmetic Customization, Dimensions & Power-Ups
+## ✨ Cosmetic Customization, Quests, Records & Power-Ups
+
+### 📜 Interactive Obby Quest Board (`quests.js`)
+* **HUD Mission Tracker**: Compact floating mission tracker shows active progress bars and instant claim notifications.
+* **5 Rewarding Quests**: Stud Hunter, Lava Leap Survivor, Cloud & Sky Explorer, Alchemist Initiate, and Robloxian Stylist—earning up to 85 bonus golden studs!
+
+### 🏆 Hall of Fame & Career Stats (`leaderboard.js`)
+* **Lifetime Telemetry**: Tracks cumulative distance traveled (studs), total playtime, highest unlocked stage, total OOF deaths, and Personal Best speedrun times.
+* **Live Lobby Standings**: Automatically ranks all active players in your multiplayer room by current stage progress and collected studs.
 
 ### 🎖️ Prestige Titles & Ranks (`titles.js`)
 * **Overhead 3D Nameplates**: Unlocks and displays luminous title tags above your character (e.g. `[👑 Obby Champion]`, `[⭐ Roblox Legend]`).
