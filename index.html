@@ -592,6 +592,9 @@
             <button id="topbar-wardrobe-btn" class="topbar-action-btn" onclick="if(window.game && window.game.accessories) window.game.accessories.toggleModal()" title="Cosmetic Wardrobe & Hats (Key U)" style="background:linear-gradient(135deg, #FF007F, #D80064); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(255,0,127,0.4);">
                 🎩 <span>Wardrobe</span>
             </button>
+            <button id="topbar-quests-btn" class="topbar-action-btn" onclick="if(window.game && window.game.quests) window.game.quests.toggleModal()" title="Obby Quest Board (Key Q)" style="background:linear-gradient(135deg, #FFD700, #F39C12); border:none; color:#000; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(255,215,0,0.4);">
+                📜 <span>Quests</span>
+            </button>
         </div>
 
         <div class="bar-right">
@@ -836,6 +839,7 @@
         <b>[K]</b> Dynamic Weather Cycle<br>
         <b>[Y]</b> Potion Buff Shop<br>
         <b>[U]</b> Avatar Wardrobe<br>
+        <b>[Q]</b> Obby Quest Board<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1143,6 +1147,7 @@
     <script src="potions.js"></script>
     <script src="accessories.js"></script>
     <script src="lighting.js"></script>
+    <script src="quests.js"></script>
     <script src="game.js"></script>
 
     <script>

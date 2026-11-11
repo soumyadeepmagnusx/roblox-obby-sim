@@ -56,6 +56,7 @@ class RobloxGame {
         this.potions = new RobloxPotionShop(this.player, this.world, this.scene, this.sound, this.ui, this.particles);
         this.accessories = new RobloxAccessoryManager(this.scene, this.player, this.sound, this.ui);
         this.lighting = new RobloxLightingEngine(this.scene, this.sun, this.ambientLight, this.ui);
+        this.quests = new RobloxQuestManager(this.player, this.sound, this.ui, this.particles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -347,6 +348,7 @@ class RobloxGame {
             if (this.potions) this.potions.update(dt);
             if (this.accessories) this.accessories.update(dt);
             if (this.lighting) this.lighting.update(dt);
+            if (this.quests) this.quests.update();
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
