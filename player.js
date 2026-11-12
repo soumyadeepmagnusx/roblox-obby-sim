@@ -443,10 +443,13 @@ class RobloxPlayer {
 
             this.group.rotation.y = this.facingAngle;
 
-            // Footstep audio
+            // Footstep audio & sprint dust
             this.footstepTimer += dt;
             if (this.footstepTimer > 0.32 && this.isGrounded) {
                 this.sound.playStep();
+                if (window.game && window.game.particles && window.game.particles.spawnSprintDust) {
+                    window.game.particles.spawnSprintDust(this.position);
+                }
                 this.footstepTimer = 0;
             }
         } else {
@@ -462,11 +465,17 @@ class RobloxPlayer {
             this.velocity.y = this.jumpForce;
             this.isGrounded = false;
             this.sound.playJump();
+            if (window.game && window.game.particles && window.game.particles.spawnJumpDust) {
+                window.game.particles.spawnJumpDust(this.position);
+            }
         }
 
         // Apply Gravity
         this.velocity.y -= this.gravity * dt;
         if (this.velocity.y < -45) this.velocity.y = -45; // Terminal velocity
+
+        const wasGrounded = this.isGrounded;
+        const preImpactVelY = this.velocity.y;
 
         // Continuous Collision Detection (CCD) via Security Engine to prevent clipping & glitching
         let collisionResult;
@@ -486,6 +495,14 @@ class RobloxPlayer {
 
         this.position.copy(collisionResult.newPosition);
         this.isGrounded = collisionResult.grounded;
+
+        // Trigger landing shockwave on hard drop impacts
+        if (!wasGrounded && this.isGrounded && preImpactVelY < -14) {
+            if (window.game && window.game.particles && window.game.particles.spawnLandingShockwave) {
+                window.game.particles.spawnLandingShockwave(this.position, Math.abs(preImpactVelY));
+            }
+            if (this.sound && this.sound.playStep) this.sound.playStep('stone');
+        }
 
         if (this.isGrounded && this.velocity.y < 0) {
             this.velocity.y = 0;

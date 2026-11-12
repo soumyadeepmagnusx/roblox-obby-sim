@@ -285,6 +285,98 @@ class RobloxParticleEngine {
     }
 
     /**
+     * Spawn expanding radial landing impact shockwave & dust clouds
+     */
+    spawnLandingShockwave(pos, impactSpeed = 15) {
+        const intensity = Math.min(2.0, Math.max(0.7, impactSpeed / 20));
+
+        // Glowing flat impact shockwave ring
+        const ringGeo = new THREE.RingGeometry(0.4, 0.75, 24);
+        ringGeo.rotateX(-Math.PI / 2);
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: 0x00FFCC,
+            transparent: true,
+            opacity: 0.75,
+            side: THREE.DoubleSide
+        });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.position.set(pos.x, pos.y + 0.08, pos.z);
+        this.scene.add(ringMesh);
+
+        this.particles.push({
+            mesh: ringMesh,
+            vx: 0,
+            vy: 0,
+            vz: 0,
+            noGravity: true,
+            life: 1.0,
+            maxLife: 0.35,
+            scaleSpeed: 8.5 * intensity,
+            fadeSpeed: 2.8
+        });
+
+        // Ground impact radial dust debris
+        const count = Math.floor(8 * intensity);
+        for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2;
+            const dGeom = new THREE.BoxGeometry(0.28, 0.28, 0.28);
+            const dMat = new THREE.MeshBasicMaterial({
+                color: 0xCCCCCC,
+                transparent: true,
+                opacity: 0.85
+            });
+            const dMesh = new THREE.Mesh(dGeom, dMat);
+            dMesh.position.set(pos.x, pos.y + 0.15, pos.z);
+            this.scene.add(dMesh);
+
+            const spd = (2.2 + Math.random() * 2.5) * intensity;
+            this.particles.push({
+                mesh: dMesh,
+                vx: Math.cos(angle) * spd,
+                vy: 1.2 + Math.random() * 1.4,
+                vz: Math.sin(angle) * spd,
+                life: 1.0,
+                maxLife: 0.45,
+                scaleSpeed: -0.6,
+                fadeSpeed: 2.2
+            });
+        }
+    }
+
+    /**
+     * Spawn subtle footstep dust tufts while sprinting
+     */
+    spawnSprintDust(pos) {
+        const count = 3;
+        for (let i = 0; i < count; i++) {
+            const geom = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+            const mat = new THREE.MeshBasicMaterial({
+                color: 0xEEEEEE,
+                transparent: true,
+                opacity: 0.55
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.set(
+                pos.x + (Math.random() - 0.5) * 0.6,
+                pos.y + 0.1,
+                pos.z + (Math.random() - 0.5) * 0.6
+            );
+            this.scene.add(mesh);
+
+            this.particles.push({
+                mesh,
+                vx: (Math.random() - 0.5) * 1.2,
+                vy: 0.6 + Math.random() * 0.8,
+                vz: (Math.random() - 0.5) * 1.2,
+                life: 1.0,
+                maxLife: 0.3,
+                scaleSpeed: -0.5,
+                fadeSpeed: 3.0
+            });
+        }
+    }
+
+    /**
      * Update all active particles and floating combat texts
      */
     update(dt) {
@@ -305,8 +397,10 @@ class RobloxParticleEngine {
             p.mesh.position.y += p.vy * dt;
             p.mesh.position.z += p.vz * dt;
 
-            // Gravity on particles
-            p.vy -= 9.8 * dt * 0.6;
+            // Gravity on particles unless disabled
+            if (!p.noGravity) {
+                p.vy -= 9.8 * dt * 0.6;
+            }
 
             if (p.rotVx) p.mesh.rotation.x += p.rotVx * dt;
             if (p.rotVy) p.mesh.rotation.y += p.rotVy * dt;
