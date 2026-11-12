@@ -329,7 +329,7 @@ class RobloxGame {
         try {
             // Update player & camera
             this.player.update(dt, this.ui.inputState, this.cameraController.yaw, this.world);
-            this.cameraController.update(this.player.position, dt);
+            this.cameraController.update(this.player.position, dt, this.player);
 
             // Update world hazards & stages
             this.world.update(dt, this.player);

@@ -54,6 +54,46 @@
         #shift-lock-crosshair::after {
             top: 0; left: 7px; width: 2px; height: 16px;
         }
+        #shift-lock-crosshair.style-dot {
+            width: 8px; height: 8px;
+        }
+        #shift-lock-crosshair.style-dot::before {
+            top: 0; left: 0; width: 8px; height: 8px;
+            border-radius: 50%;
+            background-color: #00F0FF;
+            box-shadow: 0 0 6px #00F0FF, 0 0 2px #000;
+        }
+        #shift-lock-crosshair.style-dot::after {
+            display: none;
+        }
+        #shift-lock-crosshair.style-brackets {
+            width: 22px; height: 22px;
+            border-left: 2px solid #00FF88;
+            border-right: 2px solid #00FF88;
+            border-radius: 5px;
+            filter: drop-shadow(0 0 3px rgba(0, 255, 136, 0.8));
+        }
+        #shift-lock-crosshair.style-brackets::before {
+            top: 9px; left: 9px; width: 4px; height: 4px; border-radius: 50%;
+            background-color: #00FF88;
+        }
+        #shift-lock-crosshair.style-brackets::after {
+            display: none;
+        }
+        #shift-lock-crosshair.style-tactical {
+            width: 20px; height: 20px;
+            border: 2px solid #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+        }
+        #shift-lock-crosshair.style-tactical::before {
+            top: 9px; left: 3px; width: 14px; height: 2px;
+            background-color: #FFD700;
+        }
+        #shift-lock-crosshair.style-tactical::after {
+            top: 3px; left: 9px; width: 2px; height: 14px;
+            background-color: #FFD700;
+        }
 
         /* Roblox Top Bar */
         #top-bar {
@@ -755,6 +795,9 @@
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
+        <button id="btn-crosshair" class="hud-btn" onclick="if(window.game && window.game.cameraController) window.game.cameraController.cycleCrosshairStyle()" title="Cycle Shift-Lock Crosshair Style (Key C)">
+            🎯 Crosshair (C)
+        </button>
         <button class="hud-btn danger" onclick="window.game.player.die()" title="Break Joints and Respawn">
             💀 Reset (R)
         </button>
@@ -864,6 +907,7 @@
         <b>[Q]</b> Obby Quest Board<br>
         <b>[G]</b> Lucky Spin Wheel<br>
         <b>[O]</b> Companion Hover Drone<br>
+        <b>[C]</b> Cycle Shift-Lock Crosshair<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
