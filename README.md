@@ -15,7 +15,7 @@ A high-performance 3D gaming platform built in the true spirit of **Roblox**, fe
 flowchart TD
     Client[Browser Client: Three.js r128] -->|WebSocket Sync & Room Routing| Server[Node.js Multiplayer Server: port 8080]
     Client -->|WebRTC P2P Mesh| Voice[Proximity 3D Audio: key V]
-    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 9 Tracks]
+    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 20 Tracks]
     Client -->|Local Storage| Storage[(Local Storage: Coins, PB Splits, Outfits)]
     Server -->|Tunnel Proxy| Cloudflare[Cloudflare Edge Tunnel: trycloudflare.com]
     Server -->|Containerized CI/CD| Docker[Docker & Render Cloud Blueprint]
@@ -132,8 +132,10 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 16. 🎮 **Can You Feel My Heart** (Bring Me The Horizon / GigaChad Theme)
 17. 🇧🇩 **Gram Chara Oi Ranga Matir Poth** (Rabindranath Tagore Baul Classic)
 18. 🦀 **Crab Rave** (Noisestorm - Iconic Celebration Dance)
+19. 🇧🇩 **Chokher Aloy** (Rabindranath Tagore Classic)
+20. ⚡ **Sandstorm** (Darude High-Energy Arcade Synth)
 
-*Features an interactive **Master Volume Slider** and real-time neon equalizer bars.*
+*Features an interactive **Master Volume Slider**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
 ---
 
@@ -200,6 +202,15 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 ### 🗺️ 2D Tactical Radar Mini-Map (`minimap.js`)
 * **Live Radar Overlay**: Real-time 140x140px canvas mini-map with rotating player direction arrow, checkpoint markers, hazard killbricks, gold coins, and multiplayer peer tracking.
 * **Interactive Zoom**: Click the radar to cycle between 0.6x (wide), 1.0x (standard), and 1.6x (close-up) zoom scales, or press **`M`** to toggle visibility.
+
+### 🎡 Lucky Spin Wheel, VFX & Companion Systems (`spin_wheel.js`, `particles.js`, `drone.js`)
+* **Lucky Spin Wheel (`spin_wheel.js`, Key `G`)**: Daily/timed prize wheel awarding bonus studs, temporary speed/jump buffs, and confetti celebrations.
+* **Impact & Sprint Particles (`particles.js` + `player.js`)**: Dynamic radial landing shockwave rings, jump bursts, and sprint dust clouds.
+* **3D Companion Hover Drone (`drone.js`, Key `O`)**: Autonomous hovering AI drone that orbits smoothly and scans nearby coins and lava hazards.
+
+### 🎯 Dynamic Camera & Speedrun Pacer Ghost (`camera.js`, `ghost.js`)
+* **Dynamic Speed FOV & Crosshairs (`camera.js`, Key `C`)**: Smooth velocity-reactive FOV warp (65°–81°) when sprinting, boosting, or riding hoverboards, plus 4 Shift-Lock crosshair styles (`classic`, `dot`, `brackets`, `tactical`).
+* **3D Speedrun Pacer Ghost (`ghost.js`, Key `X`)**: Records your Personal Best run to `localStorage` and projects a translucent cyan holographic R6 pacer ghost alongside you on subsequent runs.
 
 ---
 

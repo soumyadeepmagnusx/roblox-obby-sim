@@ -792,6 +792,9 @@
         <button id="btn-drone" class="hud-btn active" onclick="if(window.game && window.game.drone) window.game.drone.toggle()" title="Toggle 3D Helper Hover Drone (Key O)">
             🤖 Drone (O)
         </button>
+        <button id="btn-ghost" class="hud-btn active" onclick="if(window.game && window.game.ghost) window.game.ghost.toggle()" title="Toggle PB Speedrun Pacer Ghost (Key X)">
+            👻 Ghost (X)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -908,6 +911,7 @@
         <b>[G]</b> Lucky Spin Wheel<br>
         <b>[O]</b> Companion Hover Drone<br>
         <b>[C]</b> Cycle Shift-Lock Crosshair<br>
+        <b>[X]</b> Speedrun Pacer Ghost<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1219,6 +1223,7 @@
     <script src="leaderboard.js"></script>
     <script src="spin_wheel.js"></script>
     <script src="drone.js"></script>
+    <script src="ghost.js"></script>
     <script src="game.js"></script>
 
     <script>

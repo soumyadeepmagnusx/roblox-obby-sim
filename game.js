@@ -60,6 +60,7 @@ class RobloxGame {
         this.leaderboard = new RobloxLeaderboardStats(this.player, this.network, this.sound, this.ui);
         this.spinWheel = new RobloxSpinWheel(this.player, this.sound, this.ui, this.particles);
         this.drone = new RobloxHelperDrone(this.scene, this.player, this.world, this.sound, this.ui);
+        this.ghost = new RobloxGhostRunner(this.scene, this.player, this.ui, this.sound);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -307,6 +308,7 @@ class RobloxGame {
 
                 const finalFormatted = this.formatTime(this.speedrunTime);
                 const isNewPB = !this.personalBest || this.speedrunTime < this.personalBest;
+                if (this.ghost) this.ghost.saveRunIfBest(isNewPB);
 
                 if (isNewPB) {
                     this.personalBest = this.speedrunTime;
@@ -354,6 +356,7 @@ class RobloxGame {
             if (this.quests) this.quests.update();
             if (this.leaderboard) this.leaderboard.update(dt);
             if (this.drone) this.drone.update(dt);
+            if (this.ghost) this.ghost.update(dt, this.speedrunActive, this.speedrunTime, this.speedrunCompleted);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
@@ -395,6 +398,7 @@ class RobloxGame {
         this.speedrunCompleted = false;
         this.stageSplits = {};
         this.lastTrackedStage = 0;
+        if (this.ghost) this.ghost.onRunReset();
         this.player.currentStage = 0;
         this.player.checkpointPos.set(0, 5, 0);
         this.player.respawn();
