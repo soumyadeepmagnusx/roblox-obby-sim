@@ -11,16 +11,18 @@
  *     7. Alo Chaya (Tahsan & Nancy Duet)
  *     8. Ekla Cholo Re (Rabindranath Tagore Immortal Anthem)
  *     9. Gram Chara Oi Ranga Matir Poth (Tagore Baul Classic)
+ *     10. Chokher Aloy (Rabindranath Tagore Romantic Classic)
  * - Global Gaming Anthems:
- *     10. Alan Walker - Faded
- *     11. Alan Walker - The Spectre
- *     12. Astronomia (Coffin Dance Anthem)
- *     13. Megalovania (Undertale)
- *     14. Bad Apple!! (Touhou Arcade Hit)
- *     15. Tetris (Korobeiniki 8-Bit)
- *     16. Never Gonna Give You Up (Rick Astley Meme Anthem)
- *     17. Can You Feel My Heart (GigaChad Theme)
- *     18. Crab Rave (Noisestorm Celebration Anthem)
+ *     11. Alan Walker - Faded
+ *     12. Alan Walker - The Spectre
+ *     13. Astronomia (Coffin Dance Anthem)
+ *     14. Megalovania (Undertale)
+ *     15. Bad Apple!! (Touhou Arcade Hit)
+ *     16. Tetris (Korobeiniki 8-Bit)
+ *     17. Never Gonna Give You Up (Rick Astley Meme Anthem)
+ *     18. Can You Feel My Heart (GigaChad Theme)
+ *     19. Crab Rave (Noisestorm Celebration Anthem)
+ *     20. Darude - Sandstorm (Classic Gaming Rave Drop)
  */
 class RobloxMusicPlayer {
     constructor(soundEngine) {
@@ -31,6 +33,9 @@ class RobloxMusicPlayer {
         this.playbackTimer = null;
         this.currentNoteIndex = 0;
         this.volume = parseFloat(localStorage.getItem('roblox_boombox_volume') || '0.45');
+        this.shuffleMode = false;
+        this.loopMode = 'track'; // 'track' (repeat 1) or 'playlist' (auto-advance)
+        this.loopCycles = 0;
 
         // Visualizer equalizer bars
         this.eqBars = [0, 0, 0, 0, 0];
@@ -392,6 +397,48 @@ class RobloxMusicPlayer {
                     { f: 523.25, d: 0.14, t: 'square' }, // C5
                     { f: 659.25, d: 0.30, t: 'square' }  // E5
                 ]
+            },
+            {
+                title: "Chokher Aloy",
+                artist: "Rabindranath Tagore (Romantic Classic)",
+                tempo: 185,
+                notes: [
+                    { f: 329.63, d: 0.35, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4
+                    { f: 329.63, d: 0.50, t: 'sine' },     // E4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 261.63, d: 0.70, t: 'sine' },     // C4
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 329.63, d: 0.45, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.70, t: 'sine' }      // G4
+                ]
+            },
+            {
+                title: "Sandstorm",
+                artist: "Darude (Classic Gaming Rave Drop)",
+                tempo: 136,
+                notes: [
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.22, t: 'sawtooth' }, // B4
+                    { f: 0,      d: 0.08, t: 'rest' },
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.10, t: 'sawtooth' }, // B4
+                    { f: 493.88, d: 0.20, t: 'sawtooth' }, // B4
+                    { f: 659.25, d: 0.10, t: 'square' },   // E5
+                    { f: 659.25, d: 0.10, t: 'square' },   // E5
+                    { f: 659.25, d: 0.10, t: 'square' },   // E5
+                    { f: 587.33, d: 0.10, t: 'square' },   // D5
+                    { f: 587.33, d: 0.10, t: 'square' },   // D5
+                    { f: 587.33, d: 0.10, t: 'square' },   // D5
+                    { f: 440.00, d: 0.25, t: 'sawtooth' }  // A4
+                ]
             }
         ];
     }
@@ -411,6 +458,7 @@ class RobloxMusicPlayer {
         this.stop();
         this.currentTrackIndex = (index + this.tracks.length) % this.tracks.length;
         this.currentNoteIndex = 0;
+        this.loopCycles = 0;
         this.isPlaying = true;
 
         this.scheduleNextNote();
@@ -432,11 +480,36 @@ class RobloxMusicPlayer {
     }
 
     nextTrack() {
-        this.playTrack(this.currentTrackIndex + 1);
+        if (this.shuffleMode && this.tracks.length > 1) {
+            let nextIdx = this.currentTrackIndex;
+            while (nextIdx === this.currentTrackIndex) {
+                nextIdx = Math.floor(Math.random() * this.tracks.length);
+            }
+            this.playTrack(nextIdx);
+        } else {
+            this.playTrack(this.currentTrackIndex + 1);
+        }
     }
 
     prevTrack() {
         this.playTrack(this.currentTrackIndex - 1);
+    }
+
+    toggleShuffle() {
+        this.shuffleMode = !this.shuffleMode;
+        const btn = document.getElementById('boombox-shuffle-btn');
+        if (btn) {
+            btn.style.background = this.shuffleMode ? '#00FF88' : '';
+            btn.style.color = this.shuffleMode ? '#000' : '';
+        }
+    }
+
+    toggleLoop() {
+        this.loopMode = (this.loopMode === 'track') ? 'playlist' : 'track';
+        const btn = document.getElementById('boombox-loop-btn');
+        if (btn) {
+            btn.innerHTML = this.loopMode === 'track' ? '🔂 Repeat: 1' : '🔁 Playlist';
+        }
     }
 
     togglePlay() {
@@ -461,7 +534,17 @@ class RobloxMusicPlayer {
         }
 
         const durationMs = (note ? note.d : 0.3) * 1000;
-        this.currentNoteIndex = (this.currentNoteIndex + 1) % track.notes.length;
+        this.currentNoteIndex++;
+        if (this.currentNoteIndex >= track.notes.length) {
+            this.currentNoteIndex = 0;
+            this.loopCycles++;
+            if (this.loopMode === 'playlist' && this.loopCycles >= 2) {
+                this.playbackTimer = setTimeout(() => {
+                    this.nextTrack();
+                }, durationMs);
+                return;
+            }
+        }
 
         this.playbackTimer = setTimeout(() => {
             this.scheduleNextNote();

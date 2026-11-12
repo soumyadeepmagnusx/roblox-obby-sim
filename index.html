@@ -822,6 +822,8 @@
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(15)">🎮 16. Can You Feel My Heart (GigaChad Theme)</button>
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(16)">🇧🇩 17. Gram Chara Oi Ranga Matir Poth (Tagore Folk)</button>
                     <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(17)">🦀 18. Crab Rave - Noisestorm (Victory Dance)</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(18)">🇧🇩 19. Chokher Aloy - Rabindranath Tagore</button>
+                    <button class="tool-chip" style="text-align:left; padding:8px 12px;" onclick="window.game.music.playTrack(19)">🎮 20. Sandstorm - Darude (Gaming Rave Drop)</button>
                 </div>
             </div>
 
@@ -833,10 +835,12 @@
             </div>
 
             <!-- Controls -->
-            <div style="display:flex; justify-content:center; gap:12px;">
+            <div style="display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:8px;">
+                <button id="boombox-shuffle-btn" class="hud-btn" onclick="window.game.music.toggleShuffle()" title="Toggle Shuffle">🔀 Shuffle</button>
                 <button class="hud-btn" onclick="window.game.music.prevTrack()">⏮️ Prev</button>
                 <button id="boombox-play-btn" class="hud-btn active" style="font-size:15px; padding:6px 22px;" onclick="window.game.music.togglePlay()">▶️ Play</button>
                 <button class="hud-btn" onclick="window.game.music.nextTrack()">Next ⏭️</button>
+                <button id="boombox-loop-btn" class="hud-btn" onclick="window.game.music.toggleLoop()" title="Toggle Loop / Playlist Auto-Advance">🔂 Repeat: 1</button>
             </div>
 
             <button class="menu-btn primary" onclick="toggleBoomboxModal()">Close Boombox</button>
