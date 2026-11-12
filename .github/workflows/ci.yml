@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x]
 
@@ -25,24 +26,31 @@ jobs:
 
     - name: Verify JavaScript Syntax
       run: |
-        node --check server.js
-        node --check game.js
-        node --check network.js
-        node --check player.js
-        node --check combat.js
-        node --check vehicles.js
-        node --check pets.js
-        node --check collectibles.js
-        node --check music_player.js
-        node --check speech_bubbles.js
-        node --check voice.js
-        node --check world.js
-        node --check ui.js
+        for file in *.js; do
+          echo "Checking $file..."
+          node --check "$file"
+        done
+        npm test
 
     - name: Test Server Initialization & Healthcheck
       run: |
-        node server.js &
+        node server.js > /tmp/server.log 2>&1 &
         SERVER_PID=$!
-        sleep 2
-        curl -f http://localhost:8080/ || exit 1
-        kill $SERVER_PID
+        trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+
+        READY=0
+        for i in $(seq 1 15); do
+          if curl -fsS http://127.0.0.1:8080/ >/dev/null; then
+            READY=1
+            break
+          fi
+          sleep 1
+        done
+
+        if [ "$READY" -ne 1 ]; then
+          echo "Server failed healthcheck. Logs:"
+          cat /tmp/server.log || true
+          exit 1
+        fi
+
+        echo "Server healthcheck passed (HTTP 200 on port 8080)."
