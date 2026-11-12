@@ -598,6 +598,9 @@
             <button id="topbar-records-btn" class="topbar-action-btn" onclick="if(window.game && window.game.leaderboard) window.game.leaderboard.toggleModal()" title="Hall of Fame, Leaderboard & Career Stats" style="background:linear-gradient(135deg, #F1C40F, #D4AC0D); border:none; color:#000; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(241,196,15,0.4);">
                 🏆 <span>Records</span>
             </button>
+            <button id="topbar-spin-btn" class="topbar-action-btn" onclick="if(window.game && window.game.spinWheel) window.game.spinWheel.toggleModal()" title="Daily Lucky Prize Wheel (Key G)" style="background:linear-gradient(135deg, #E040FB, #9B51E0); border:none; color:#FFF; padding:5px 10px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(224,64,251,0.4);">
+                🎡 <span>Spin</span>
+            </button>
         </div>
 
         <div class="bar-right">
@@ -852,6 +855,7 @@
         <b>[Y]</b> Potion Buff Shop<br>
         <b>[U]</b> Avatar Wardrobe<br>
         <b>[Q]</b> Obby Quest Board<br>
+        <b>[G]</b> Lucky Spin Wheel<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1161,6 +1165,7 @@
     <script src="lighting.js"></script>
     <script src="quests.js"></script>
     <script src="leaderboard.js"></script>
+    <script src="spin_wheel.js"></script>
     <script src="game.js"></script>
 
     <script>

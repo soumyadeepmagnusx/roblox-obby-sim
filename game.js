@@ -58,6 +58,7 @@ class RobloxGame {
         this.lighting = new RobloxLightingEngine(this.scene, this.sun, this.ambientLight, this.ui);
         this.quests = new RobloxQuestManager(this.player, this.sound, this.ui, this.particles);
         this.leaderboard = new RobloxLeaderboardStats(this.player, this.network, this.sound, this.ui);
+        this.spinWheel = new RobloxSpinWheel(this.player, this.sound, this.ui, this.particles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
