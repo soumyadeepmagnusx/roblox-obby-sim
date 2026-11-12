@@ -59,6 +59,7 @@ class RobloxGame {
         this.quests = new RobloxQuestManager(this.player, this.sound, this.ui, this.particles);
         this.leaderboard = new RobloxLeaderboardStats(this.player, this.network, this.sound, this.ui);
         this.spinWheel = new RobloxSpinWheel(this.player, this.sound, this.ui, this.particles);
+        this.drone = new RobloxHelperDrone(this.scene, this.player, this.world, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -352,6 +353,7 @@ class RobloxGame {
             if (this.lighting) this.lighting.update(dt);
             if (this.quests) this.quests.update();
             if (this.leaderboard) this.leaderboard.update(dt);
+            if (this.drone) this.drone.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);

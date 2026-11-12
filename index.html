@@ -749,6 +749,9 @@
         <button id="btn-minimap" class="hud-btn" onclick="if(window.game && window.game.minimap) window.game.minimap.toggle()" title="Toggle 2D Radar Mini-Map (Key M)">
             🗺️ Radar (M)
         </button>
+        <button id="btn-drone" class="hud-btn active" onclick="if(window.game && window.game.drone) window.game.drone.toggle()" title="Toggle 3D Helper Hover Drone (Key O)">
+            🤖 Drone (O)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -860,6 +863,7 @@
         <b>[U]</b> Avatar Wardrobe<br>
         <b>[Q]</b> Obby Quest Board<br>
         <b>[G]</b> Lucky Spin Wheel<br>
+        <b>[O]</b> Companion Hover Drone<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1170,6 +1174,7 @@
     <script src="quests.js"></script>
     <script src="leaderboard.js"></script>
     <script src="spin_wheel.js"></script>
+    <script src="drone.js"></script>
     <script src="game.js"></script>
 
     <script>
