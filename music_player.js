@@ -439,6 +439,84 @@ class RobloxMusicPlayer {
                     { f: 587.33, d: 0.10, t: 'square' },   // D5
                     { f: 440.00, d: 0.25, t: 'sawtooth' }  // A4
                 ]
+            },
+            {
+                title: "Bhalobashibo Bashibo Re",
+                artist: "Habib Wahid (Bengali Folk Pop)",
+                tempo: 165,
+                notes: [
+                    { f: 493.88, d: 0.28, t: 'triangle' }, // B4
+                    { f: 554.37, d: 0.28, t: 'triangle' }, // C#5
+                    { f: 587.33, d: 0.45, t: 'sine' },     // D5
+                    { f: 659.25, d: 0.40, t: 'triangle' }, // E5
+                    { f: 587.33, d: 0.35, t: 'sine' },     // D5
+                    { f: 554.37, d: 0.35, t: 'triangle' }, // C#5
+                    { f: 493.88, d: 0.50, t: 'sine' },     // B4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 493.88, d: 0.75, t: 'sine' }      // B4
+                ]
+            },
+            {
+                title: "Super Mario Bros. Theme",
+                artist: "Koji Kondo (Retro Gaming Classic)",
+                tempo: 200,
+                notes: [
+                    { f: 659.25, d: 0.14, t: 'square' }, // E5
+                    { f: 659.25, d: 0.14, t: 'square' }, // E5
+                    { f: 0,      d: 0.14, t: 'rest' },
+                    { f: 659.25, d: 0.14, t: 'square' }, // E5
+                    { f: 0,      d: 0.14, t: 'rest' },
+                    { f: 523.25, d: 0.14, t: 'square' }, // C5
+                    { f: 659.25, d: 0.25, t: 'square' }, // E5
+                    { f: 783.99, d: 0.40, t: 'square' }, // G5
+                    { f: 0,      d: 0.30, t: 'rest' },
+                    { f: 392.00, d: 0.45, t: 'square' }  // G4
+                ]
+            },
+            {
+                title: "Ami Banglay Gaan Gai",
+                artist: "Pratul Mukhopadhyay (Bengali Anthem)",
+                tempo: 155,
+                notes: [
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 369.99, d: 0.35, t: 'triangle' }, // F#4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 493.88, d: 0.40, t: 'sine' },     // B4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 369.99, d: 0.55, t: 'sine' },     // F#4
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4
+                    { f: 293.66, d: 0.85, t: 'sine' }      // D4
+                ]
+            },
+            {
+                title: "Wet Hands (Minecraft Theme)",
+                artist: "C418 (Atmospheric Gaming Piano)",
+                tempo: 120,
+                notes: [
+                    { f: 440.00, d: 0.50, t: 'sine' }, // A4
+                    { f: 659.25, d: 0.65, t: 'sine' }, // E5
+                    { f: 739.99, d: 0.55, t: 'sine' }, // F#5
+                    { f: 659.25, d: 0.70, t: 'sine' }, // E5
+                    { f: 554.37, d: 0.60, t: 'sine' }, // C#5
+                    { f: 493.88, d: 0.55, t: 'sine' }, // B4
+                    { f: 440.00, d: 1.10, t: 'sine' }  // A4
+                ]
+            },
+            {
+                title: "Dhitang Dhitang Bole",
+                artist: "Salil Chowdhury (Bengali Folk Classic)",
+                tempo: 190,
+                notes: [
+                    { f: 392.00, d: 0.22, t: 'triangle' }, // G4
+                    { f: 392.00, d: 0.22, t: 'triangle' }, // G4
+                    { f: 440.00, d: 0.28, t: 'triangle' }, // A4
+                    { f: 493.88, d: 0.35, t: 'sine' },     // B4
+                    { f: 587.33, d: 0.40, t: 'sine' },     // D5
+                    { f: 523.25, d: 0.30, t: 'triangle' }, // C5
+                    { f: 493.88, d: 0.30, t: 'sine' },     // B4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 392.00, d: 0.75, t: 'sine' }      // G4
+                ]
             }
         ];
     }
