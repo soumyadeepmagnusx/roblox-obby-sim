@@ -777,8 +777,8 @@
         <button class="hud-btn" onclick="toggleTrailsModal()" title="Equip Avatar Trails & Particle Ribbons">
             ✨ Trails
         </button>
-        <button class="hud-btn" onclick="toggleEmotesModal()">
-            💃 Emotes
+        <button class="hud-btn" onclick="toggleEmotesModal()" title="Roblox Emotes & Dance Wheel (Key J)">
+            💃 Emotes (J)
         </button>
         <button id="btn-atmosphere" class="hud-btn" onclick="cycleAtmosphere(this)">
             ☀️ Day
@@ -829,6 +829,11 @@
                 <span style="cursor:pointer;" onclick="toggleEmotesModal()">✕</span>
             </div>
             <button class="menu-btn primary" onclick="window.game.emotes.playEmote('dance'); toggleEmotesModal();">🕺 Breakdance (/e dance)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('floss'); toggleEmotesModal();">⚡ The Floss (/e floss)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('zombie'); toggleEmotesModal();">🧟 Zombie Walk (/e zombie)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('backflip'); toggleEmotesModal();">🤸 Acrobatic Backflip (/e flip)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('headspin'); toggleEmotesModal();">🔄 Breakdance Headspin (/e spin)</button>
+            <button class="menu-btn" onclick="window.game.emotes.playEmote('dab'); toggleEmotesModal();">🔥 Classic Dab (/e dab)</button>
             <button class="menu-btn" onclick="window.game.emotes.playEmote('wave'); toggleEmotesModal();">👋 Friendly Wave (/e wave)</button>
             <button class="menu-btn" onclick="window.game.emotes.playEmote('cheer'); toggleEmotesModal();">🎉 Victory Cheer (/e cheer)</button>
             <button class="menu-btn" onclick="window.game.emotes.playEmote('point'); toggleEmotesModal();">👉 Point Forward (/e point)</button>
@@ -921,6 +926,7 @@
         <b>[C]</b> Cycle Shift-Lock Crosshair<br>
         <b>[X]</b> Speedrun Pacer Ghost<br>
         <b>[H]</b> Grappling Hook Cable<br>
+        <b>[J]</b> Emotes & Dance Wheel<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
