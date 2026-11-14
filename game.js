@@ -62,6 +62,7 @@ class RobloxGame {
         this.drone = new RobloxHelperDrone(this.scene, this.player, this.world, this.sound, this.ui);
         this.ghost = new RobloxGhostRunner(this.scene, this.player, this.ui, this.sound);
         this.grapple = new RobloxGrappleHook(this.scene, this.player, this.world, this.sound, this.particles, this.ui);
+        this.checkpointFX = new RobloxCheckpointFX(this.scene, this.world, this.player, this.sound, this.particles, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -359,6 +360,7 @@ class RobloxGame {
             if (this.drone) this.drone.update(dt);
             if (this.ghost) this.ghost.update(dt, this.speedrunActive, this.speedrunTime, this.speedrunCompleted);
             if (this.grapple) this.grapple.update(dt);
+            if (this.checkpointFX) this.checkpointFX.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
