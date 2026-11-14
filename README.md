@@ -15,7 +15,7 @@ A high-performance 3D gaming platform built in the true spirit of **Roblox**, fe
 flowchart TD
     Client[Browser Client: Three.js r128] -->|WebSocket Sync & Room Routing| Server[Node.js Multiplayer Server: port 8080]
     Client -->|WebRTC P2P Mesh| Voice[Proximity 3D Audio: key V]
-    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 20 Tracks]
+    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 25 Tracks]
     Client -->|Local Storage| Storage[(Local Storage: Coins, PB Splits, Outfits)]
     Server -->|Tunnel Proxy| Cloudflare[Cloudflare Edge Tunnel: trycloudflare.com]
     Server -->|Containerized CI/CD| Docker[Docker & Render Cloud Blueprint]
@@ -46,7 +46,13 @@ flowchart TD
 | **Restart Speedrun** | `T` (or click Timer HUD) | Resets timer to 0:00 and teleports back to Stage 1 Spawn |
 | **Voice Chat (Mic)** | `V` | Toggles microphone on/off with 3D proximity volume and overhead indicator |
 | **Chat & Speech Bubbles**| `/` or `Enter` | Opens chat box; messages float as 3D cartoon speech bubbles above head |
-| **Hoverboard** | `H` | Mounts glowing cyber hoverboard with +120% speed and banking physics |
+| **Grappling Hook** | `H` (or click 🪝) | Fires a high-tension neon cable to pull avatar across wide gaps |
+| **Roblox Emotes Wheel** | `J` (or click 💃) | Opens Emotes Wheel: Breakdance, Floss, Zombie, Backflip, Headspin, Dab, Wave |
+| **Shift-Lock Crosshairs** | `C` (or click 🎯) | Cycles 4 custom crosshairs: Classic Cross, Precision Dot, Brackets, Tactical |
+| **Speedrun Pacer Ghost** | `X` (or click 👻) | Toggles holographic 3D PB ghost runner with real-time delta badge |
+| **Companion Hover Drone** | `O` (or click 🤖) | Toggles 3D companion AI drone scanning for nearby coins and lava hazards |
+| **Lucky Spin Wheel** | `G` (or click 🎡) | Opens daily prize wheel awarding bonus studs and potion buffs |
+| **Hoverboard** | Mount via Vehicles | Mounts glowing cyber hoverboard with +120% speed and banking physics |
 | **Jetpack Thrust** | Hold `J` / Hold `Space` | Activates dual rocket thrusters with smoke and flame exhaust particles |
 | **Interact / Grab** | `E` | Hatches mystery eggs at spawn or grabs physics crates to throw |
 | **Hotbar Slots** | `1` to `6` | Equips Speed Coil, Gravity Coil, Sword, Grapple Hook, Grab Gun, Rocket Launcher |
@@ -134,6 +140,11 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 18. 🦀 **Crab Rave** (Noisestorm - Iconic Celebration Dance)
 19. 🇧🇩 **Chokher Aloy** (Rabindranath Tagore Classic)
 20. ⚡ **Sandstorm** (Darude High-Energy Arcade Synth)
+21. 🇧🇩 **Bhalobashibo Bashibo Re** (Habib Wahid Bengali Folk Pop)
+22. 🕹️ **Super Mario Bros. Theme** (Koji Kondo Retro Gaming Classic)
+23. 🇧🇩 **Ami Banglay Gaan Gai** (Pratul Mukhopadhyay Bengali Anthem)
+24. 🎮 **Wet Hands** (C418 Minecraft Piano Theme)
+25. 🇧🇩 **Dhitang Dhitang Bole** (Salil Chowdhury Bengali Folk Classic)
 
 *Features an interactive **Master Volume Slider**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
@@ -211,6 +222,24 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 ### 🎯 Dynamic Camera & Speedrun Pacer Ghost (`camera.js`, `ghost.js`)
 * **Dynamic Speed FOV & Crosshairs (`camera.js`, Key `C`)**: Smooth velocity-reactive FOV warp (65°–81°) when sprinting, boosting, or riding hoverboards, plus 4 Shift-Lock crosshair styles (`classic`, `dot`, `brackets`, `tactical`).
 * **3D Speedrun Pacer Ghost (`ghost.js`, Key `X`)**: Records your Personal Best run to `localStorage` and projects a translucent cyan holographic R6 pacer ghost alongside you on subsequent runs.
+* **Real-Time Ghost Delta Tracker**: Live HUD split badge displays whether you are ahead (`⚡ -0.42s` in green) or behind (`👻 +0.65s` in red) your personal best ghost in real time.
+
+### 🪝 Grappling Hook & Zip-Line Gear (`grapple.js`, Key `H`)
+* **Neon Tension Cable**: Fires high-velocity grappling cable targeting distant ledges, platforms, or elevated checkpoints up to 65 studs away.
+* **Vault Momentum**: Automatically releases when within range and grants an upward vault boost for seamless platforming.
+
+### 💃 Viral Roblox Emote Engine & Dance Wheel (`emotes.js`, Key `J`)
+* **9 Iconic Dances & Gestures**: Breakdance, The Floss, Zombie Walk, Acrobatic Backflip, Breakdance Headspin, Classic Dab, Friendly Wave, Victory Cheer, and Point Forward.
+* **Chat Command Support**: Type `/e dance`, `/e floss`, `/e zombie`, `/e flip`, `/e spin`, or `/e dab` directly in game chat.
+
+### 🏛️ Checkpoint Ascending Light Pillars & Stage Billboards (`checkpoint_fx.js`)
+* **Ascending Neon Beacons**: Translucent vertical light pillars and rotating halo rings at every checkpoint pad that pulse brightly upon activation.
+* **Floating 3D Billboards**: Crisp overhead badges showing stage titles and icons (`SPAWN ISLAND` through `STAGE 6: SUMMIT OF VICTORY`) with sinusoidal floating animations.
+
+### 💥 Immersive Screen VFX Overlay Engine (`vfx_overlay.js`)
+* **Low-Health Heartbeat Vignette**: Chromatic red pulsing screen edges when avatar health drops below 35 HP.
+* **Hazard & Reward Bursts**: Instant red impact flash on lava damage and warm golden radial vignette upon collecting studs and secret crystals.
+* **High-Speed Motion Streaks**: Radial wind and speed lines during sprinting, potion speed buffs, and grappling hook traversal.
 
 ---
 

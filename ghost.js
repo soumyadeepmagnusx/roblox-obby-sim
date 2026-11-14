@@ -132,6 +132,10 @@ class RobloxGhostRunner {
         if (this.ghostMesh) {
             this.ghostMesh.visible = false;
         }
+        if (typeof document !== 'undefined') {
+            const deltaEl = document.getElementById('ghost-delta-badge');
+            if (deltaEl) deltaEl.style.display = 'none';
+        }
     }
 
     toggle() {
@@ -139,6 +143,8 @@ class RobloxGhostRunner {
         if (typeof document !== 'undefined') {
             const btn = document.getElementById('btn-ghost');
             if (btn) btn.classList.toggle('active', this.enabled);
+            const deltaEl = document.getElementById('ghost-delta-badge');
+            if (deltaEl && !this.enabled) deltaEl.style.display = 'none';
         }
         if (!this.enabled && this.ghostMesh) {
             this.ghostMesh.visible = false;
@@ -214,6 +220,37 @@ class RobloxGhostRunner {
         }
         if (this.limbs.halo) {
             this.limbs.halo.rotation.z += dt * 2.5;
+        }
+
+        // Real-time Ghost Delta computation against PB run
+        const deltaEl = (typeof document !== 'undefined') ? document.getElementById('ghost-delta-badge') : null;
+        if (deltaEl) {
+            if (!this.enabled || !speedrunActive || speedrunCompleted || !frames || frames.length < 5) {
+                deltaEl.style.display = 'none';
+            } else {
+                const searchStart = Math.max(0, this.playbackIdx - 25);
+                const searchEnd = Math.min(frames.length - 1, this.playbackIdx + 25);
+                let closestDist = Infinity;
+                let closestFrame = frames[this.playbackIdx];
+                for (let i = searchStart; i <= searchEnd; i++) {
+                    const f = frames[i];
+                    const d = Math.hypot(this.player.position.x - f.x, this.player.position.z - f.z);
+                    if (d < closestDist) {
+                        closestDist = d;
+                        closestFrame = f;
+                    }
+                }
+
+                if (closestDist < 14) {
+                    const diff = speedrunTime - closestFrame.t;
+                    const sign = diff > 0 ? '+' : '';
+                    deltaEl.textContent = `${diff <= 0 ? '⚡' : '👻'} ${sign}${diff.toFixed(2)}s`;
+                    deltaEl.style.color = diff <= 0 ? '#00FF88' : '#FF4444';
+                    deltaEl.style.display = 'inline';
+                } else {
+                    deltaEl.style.display = 'none';
+                }
+            }
         }
     }
 }
