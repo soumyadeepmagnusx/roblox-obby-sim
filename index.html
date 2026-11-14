@@ -795,6 +795,9 @@
         <button id="btn-ghost" class="hud-btn active" onclick="if(window.game && window.game.ghost) window.game.ghost.toggle()" title="Toggle PB Speedrun Pacer Ghost (Key X)">
             👻 Ghost (X)
         </button>
+        <button id="btn-grapple" class="hud-btn active" onclick="if(window.game && window.game.grapple) window.game.grapple.activate()" title="Grappling Hook / Zip-Line Cable (Key H)">
+            🪝 Grapple (H)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -912,6 +915,7 @@
         <b>[O]</b> Companion Hover Drone<br>
         <b>[C]</b> Cycle Shift-Lock Crosshair<br>
         <b>[X]</b> Speedrun Pacer Ghost<br>
+        <b>[H]</b> Grappling Hook Cable<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1224,6 +1228,7 @@
     <script src="spin_wheel.js"></script>
     <script src="drone.js"></script>
     <script src="ghost.js"></script>
+    <script src="grapple.js"></script>
     <script src="game.js"></script>
 
     <script>
