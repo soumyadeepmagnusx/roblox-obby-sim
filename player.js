@@ -232,6 +232,9 @@ class RobloxPlayer {
         this.deaths++;
         this.health = 0;
         this.sound.playOof();
+        if (typeof window !== 'undefined' && window.game && window.game.vfxOverlay) {
+            window.game.vfxOverlay.triggerDamage();
+        }
 
         // Hide main character rig
         this.group.visible = false;

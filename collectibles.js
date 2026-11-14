@@ -114,6 +114,10 @@ class RobloxCollectibles {
         localStorage.setItem('roblox_coins', this.coins.toString());
         this.updateUi();
 
+        if (typeof window !== 'undefined' && window.game && window.game.vfxOverlay) {
+            window.game.vfxOverlay.triggerReward();
+        }
+
         if (this.coins >= 150 && window.game && window.game.achievements) {
             window.game.achievements.unlock('coin_hoarder');
         }
