@@ -65,6 +65,7 @@ class RobloxGame {
         this.checkpointFX = new RobloxCheckpointFX(this.scene, this.world, this.player, this.sound, this.particles, this.ui);
         this.vfxOverlay = new RobloxVFXOverlay(this.player);
         this.jumpCombos = new RobloxJumpComboSystem(this.player, this.sound, this.particles, this.ui, this.collectibles);
+        this.launchers = new RobloxLaunchers(this.scene, this.world, this.player, this.sound, this.particles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -365,6 +366,7 @@ class RobloxGame {
             if (this.checkpointFX) this.checkpointFX.update(dt);
             if (this.vfxOverlay) this.vfxOverlay.update(dt);
             if (this.jumpCombos) this.jumpCombos.update(dt);
+            if (this.launchers) this.launchers.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
