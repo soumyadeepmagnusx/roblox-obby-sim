@@ -663,9 +663,9 @@
                     <span id="stat-split" style="font-size:10px; margin-left:4px; font-weight:bold; display:none;"></span>
                     <span id="ghost-delta-badge" style="font-size:10px; margin-left:6px; font-weight:bold; display:none;" title="Real-time delta vs PB Ghost"></span>
                 </div>
-                <div class="stat-item" title="Personal best obby completion time">
+                <div class="stat-item" title="Personal best obby completion time (Click to view splits)">
                     <span class="stat-label">Best (PB):</span>
-                    <span id="stat-pb" class="stat-val" style="color:#FFD700;">--:--.--</span>
+                    <span id="stat-pb" class="stat-val" style="color:#FFD700; cursor:pointer;" onclick="if(window.game) window.game.openSplitsModal()">--:--.--</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Room:</span>
@@ -842,6 +842,18 @@
             <button class="menu-btn" onclick="window.game.emotes.playEmote('cheer'); toggleEmotesModal();">🎉 Victory Cheer (/e cheer)</button>
             <button class="menu-btn" onclick="window.game.emotes.playEmote('point'); toggleEmotesModal();">👉 Point Forward (/e point)</button>
             <button class="menu-btn danger" onclick="window.game.emotes.stopEmote(); toggleEmotesModal();">Stop Emoting</button>
+        </div>
+    </div>
+
+    <!-- Speedrun Splits Breakdown Modal -->
+    <div id="splits-modal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(15,17,21,0.85); backdrop-filter:blur(10px); z-index:108; align-items:center; justify-content:center;">
+        <div class="menu-card" style="width:380px; max-width:92%;">
+            <div class="menu-title">
+                <span>⏱️ SPEEDRUN SPLIT TIMES</span>
+                <span style="cursor:pointer;" onclick="if(window.game) window.game.closeSplitsModal()">✕</span>
+            </div>
+            <div id="splits-modal-list" style="max-height:280px; overflow-y:auto; margin:10px 0;"></div>
+            <button class="menu-btn primary" onclick="if(window.game) window.game.closeSplitsModal()">Close</button>
         </div>
     </div>
 

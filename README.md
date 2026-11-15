@@ -15,7 +15,7 @@ A high-performance 3D gaming platform built in the true spirit of **Roblox**, fe
 flowchart TD
     Client[Browser Client: Three.js r128] -->|WebSocket Sync & Room Routing| Server[Node.js Multiplayer Server: port 8080]
     Client -->|WebRTC P2P Mesh| Voice[Proximity 3D Audio: key V]
-    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 25 Tracks]
+    Client -->|Procedural Synthesis| Music[Web Audio Synthesizer: 30 Tracks]
     Client -->|Local Storage| Storage[(Local Storage: Coins, PB Splits, Outfits)]
     Server -->|Tunnel Proxy| Cloudflare[Cloudflare Edge Tunnel: trycloudflare.com]
     Server -->|Containerized CI/CD| Docker[Docker & Render Cloud Blueprint]
@@ -48,6 +48,7 @@ flowchart TD
 | **Chat & Speech Bubbles**| `/` or `Enter` | Opens chat box; messages float as 3D cartoon speech bubbles above head |
 | **Grappling Hook** | `H` (or click 🪝) | Fires a high-tension neon cable to pull avatar across wide gaps |
 | **Roblox Emotes Wheel** | `J` (or click 💃) | Opens Emotes Wheel: Breakdance, Floss, Zombie, Backflip, Headspin, Dab, Wave |
+| **Cosmetic 3D Auras** | `Z` (or click 🌀) | Cycles 5 3D Auras: Golden Halo, Lightning Orbiters, Void Vortex, Frost, Fire |
 | **Shift-Lock Crosshairs** | `C` (or click 🎯) | Cycles 4 custom crosshairs: Classic Cross, Precision Dot, Brackets, Tactical |
 | **Speedrun Pacer Ghost** | `X` (or click 👻) | Toggles holographic 3D PB ghost runner with real-time delta badge |
 | **Companion Hover Drone** | `O` (or click 🤖) | Toggles 3D companion AI drone scanning for nearby coins and lava hazards |
@@ -145,6 +146,11 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 23. 🇧🇩 **Ami Banglay Gaan Gai** (Pratul Mukhopadhyay Bengali Anthem)
 24. 🎮 **Wet Hands** (C418 Minecraft Piano Theme)
 25. 🇧🇩 **Dhitang Dhitang Bole** (Salil Chowdhury Bengali Folk Classic)
+26. 🇧🇩 **Dhono Dhanyo Pushpo Bhora** (D. L. Roy Patriotic Anthem)
+27. 🎮 **Pokemon Theme** (Gotta Catch 'Em All Classic Gaming)
+28. 🇧🇩 **Mayabonobiharini Horini** (Rabindranath Tagore Melody)
+29. 🕹️ **Mortal Kombat Techno Anthem** (The Immortals Arcade Hit)
+30. 🇧🇩 **Aguner Poroshmoni** (Rabindranath Tagore Sacred Classic)
 
 *Features an interactive **Master Volume Slider**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
@@ -240,6 +246,25 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **Low-Health Heartbeat Vignette**: Chromatic red pulsing screen edges when avatar health drops below 35 HP.
 * **Hazard & Reward Bursts**: Instant red impact flash on lava damage and warm golden radial vignette upon collecting studs and secret crystals.
 * **High-Speed Motion Streaks**: Radial wind and speed lines during sprinting, potion speed buffs, and grappling hook traversal.
+
+### 🏃 Parkour Jump Combo & Momentum Multipliers (`jump_combos.js`)
+* **Consecutive Jump Chains**: Chaining clean parkour jumps within 2.4 seconds builds a dynamic combo counter up to 10x+.
+* **Stud Bounties**: Reaching 3x, 6x, and 10x milestones triggers particle celebrations and awards bonus golden studs.
+
+### 🚀 Spring Physics Trampolines & Directional Launchers (`launchers.js`)
+* **Super Trampolines**: Spring-loaded bounce pads with mechanical compression and rebound animations that launch avatars 30 studs into the air.
+* **Booster Launch Cannons**: Angled launch pads providing directional velocity impulses across long chasms with exhaust smoke trails.
+
+### 🌀 Holographic Cosmetic Auras & Halo Rings (`auras.js`, Key `Z`)
+* **5 Equippable 3D Auras**: Golden Angelic Halo, Hyper Lightning Orbiters, Cosmic Void Vortex, Glacial Frost Shards, and Inferno Flame Rings.
+* **Orbital Physics**: Auras dynamically orbit, bob, and spin around the avatar with persistent local storage.
+
+### 🌌 Stage 7: Cyber Neon Nebula & Master's Apex (`world.js`)
+* **High-Altitude Extension**: 8 floating neon hexagonal steps ascending past Winner's Peak with spinning hazard bars.
+* **Master's Diamond Crystal**: Glowing floating apex sanctuary guarded by obsidian monoliths with bonus coin clusters.
+
+### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`)
+* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 7.
 
 ---
 

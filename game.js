@@ -387,13 +387,65 @@ class RobloxGame {
 
     initSpeedrunUI() {
         const pbEl = document.getElementById('stat-pb');
-        if (pbEl && this.personalBest) {
-            pbEl.textContent = this.formatTime(this.personalBest);
+        if (pbEl) {
+            if (this.personalBest) pbEl.textContent = this.formatTime(this.personalBest);
+            pbEl.style.cursor = 'pointer';
+            pbEl.title = 'Click to view Stage Split Times Breakdown';
+            pbEl.addEventListener('click', () => this.openSplitsModal());
         }
         const timerEl = document.getElementById('stat-timer');
         if (timerEl) {
             timerEl.addEventListener('click', () => this.restartSpeedrun());
         }
+    }
+
+    openSplitsModal() {
+        const modal = document.getElementById('splits-modal');
+        const list = document.getElementById('splits-modal-list');
+        if (!modal || !list) return;
+
+        let storedSplits = {};
+        try {
+            storedSplits = JSON.parse(localStorage.getItem('roblox_obby_splits') || '{}');
+        } catch (e) {}
+
+        const stageTitles = {
+            1: 'Stage 1: Rainbow Steps',
+            2: 'Stage 2: Neon Lava Leap',
+            3: 'Stage 3: Laser Grid',
+            4: 'Stage 4: Spinning Beams',
+            5: 'Stage 5: Vanishing Tiles',
+            6: "Stage 6: Winner's Peak",
+            7: 'Stage 7: Cyber Nebula'
+        };
+
+        list.innerHTML = '';
+        let lastSplit = 0;
+        for (let i = 1; i <= 7; i++) {
+            const splitTime = storedSplits[i];
+            const segment = (splitTime !== undefined) ? (splitTime - lastSplit) : null;
+            if (splitTime !== undefined) lastSplit = splitTime;
+
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:6px; margin-bottom:6px;';
+            row.innerHTML = `
+                <div>
+                    <div style="font-weight:600; color:#FFF; font-size:13px;">${stageTitles[i] || `Stage ${i}`}</div>
+                    <div style="font-size:11px; color:#888;">Segment: ${segment !== null ? segment.toFixed(2) + 's' : '--'}</div>
+                </div>
+                <div style="font-weight:bold; color:${splitTime !== undefined ? '#00FF88' : '#666'}; font-size:14px;">
+                    ${splitTime !== undefined ? this.formatTime(splitTime) : '--:--.--'}
+                </div>
+            `;
+            list.appendChild(row);
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    closeSplitsModal() {
+        const modal = document.getElementById('splits-modal');
+        if (modal) modal.style.display = 'none';
     }
 
     formatTime(seconds) {
