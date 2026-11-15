@@ -66,6 +66,7 @@ class RobloxGame {
         this.vfxOverlay = new RobloxVFXOverlay(this.player);
         this.jumpCombos = new RobloxJumpComboSystem(this.player, this.sound, this.particles, this.ui, this.collectibles);
         this.launchers = new RobloxLaunchers(this.scene, this.world, this.player, this.sound, this.particles);
+        this.auras = new RobloxAvatarAuras(this.scene, this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -367,6 +368,7 @@ class RobloxGame {
             if (this.vfxOverlay) this.vfxOverlay.update(dt);
             if (this.jumpCombos) this.jumpCombos.update(dt);
             if (this.launchers) this.launchers.update(dt);
+            if (this.auras) this.auras.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);

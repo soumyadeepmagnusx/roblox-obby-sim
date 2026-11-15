@@ -799,6 +799,9 @@
         <button id="btn-grapple" class="hud-btn active" onclick="if(window.game && window.game.grapple) window.game.grapple.activate()" title="Grappling Hook / Zip-Line Cable (Key H)">
             🪝 Grapple (H)
         </button>
+        <button id="btn-aura" class="hud-btn" onclick="if(window.game && window.game.auras) window.game.auras.cycleAura()" title="Cycle Cosmetic 3D Auras & Halo (Key Z)">
+            🌀 Aura (Z)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -933,6 +936,7 @@
         <b>[X]</b> Speedrun Pacer Ghost<br>
         <b>[H]</b> Grappling Hook Cable<br>
         <b>[J]</b> Emotes & Dance Wheel<br>
+        <b>[Z]</b> Cosmetic 3D Auras & Halo<br>
         <b>[R]</b> Reset Character ("Oof!")<br>
         <b>[B]</b> Toggle Roblox Studio Builder
     </div>
@@ -1250,6 +1254,7 @@
     <script src="vfx_overlay.js"></script>
     <script src="jump_combos.js"></script>
     <script src="launchers.js"></script>
+    <script src="auras.js"></script>
     <script src="game.js"></script>
 
     <script>
