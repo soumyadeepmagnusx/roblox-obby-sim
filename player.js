@@ -235,6 +235,9 @@ class RobloxPlayer {
         if (typeof window !== 'undefined' && window.game && window.game.vfxOverlay) {
             window.game.vfxOverlay.triggerDamage();
         }
+        if (typeof window !== 'undefined' && window.game && window.game.jumpCombos) {
+            window.game.jumpCombos.resetCombo();
+        }
 
         // Hide main character rig
         this.group.visible = false;
@@ -470,6 +473,9 @@ class RobloxPlayer {
             this.sound.playJump();
             if (window.game && window.game.particles && window.game.particles.spawnJumpDust) {
                 window.game.particles.spawnJumpDust(this.position);
+            }
+            if (window.game && window.game.jumpCombos) {
+                window.game.jumpCombos.onJump();
             }
         }
 
