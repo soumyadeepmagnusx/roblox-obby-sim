@@ -19,7 +19,8 @@ class RobloxCheckpointFX {
             3: "🪩 STAGE 3: DISCO DISKS",
             4: "🧩 STAGE 4: TRICKY TILES",
             5: "🌧️ STAGE 5: ACID RAIN",
-            6: "👑 STAGE 6: SUMMIT OF VICTORY"
+            6: "👑 STAGE 6: SUMMIT OF VICTORY",
+            7: "🌌 STAGE 7: CYBER NEBULA"
         };
 
         this.pillars = [];

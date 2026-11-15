@@ -489,6 +489,7 @@ class RobloxWorld {
         // ==========================================
         this.createZeroGravityZone();
         this.createFloatingIslands();
+        this.createCyberNebulaStage();
     }
 
     createZeroGravityZone() {
@@ -558,6 +559,84 @@ class RobloxWorld {
             this.addCoin(isle.x + 3, isle.y + 2, isle.z + 3);
             this.addCoin(isle.x, isle.y + 11, isle.z);
         });
+    }
+
+    createCyberNebulaStage() {
+        // ==========================================
+        // STAGE 7: CYBER NEON NEBULA & MASTER'S APEX
+        // ==========================================
+        this.addCheckpoint(7, 0, 33.2, 355, 6);
+
+        // Bridge from Winner's Podium to Stage 7 Checkpoint
+        this.addBlock(0, 32, 345, 6, 2, 12, this.mats.darkStone);
+
+        // 8 Floating Neon Hexagon / Step Platforms ascending into the sky
+        const neonCyanMat = new THREE.MeshStandardMaterial({
+            color: 0x00F0FF,
+            emissive: 0x0088CC,
+            emissiveIntensity: 0.6,
+            roughness: 0.3
+        });
+        const neonPinkMat = new THREE.MeshStandardMaterial({
+            color: 0xFF007F,
+            emissive: 0xAA0055,
+            emissiveIntensity: 0.6,
+            roughness: 0.3
+        });
+
+        const steps = [
+            { x: -5, y: 34.5, z: 372, mat: neonCyanMat },
+            { x:  4, y: 36.0, z: 384, mat: neonPinkMat },
+            { x: -6, y: 37.5, z: 396, mat: neonCyanMat },
+            { x:  5, y: 39.0, z: 408, mat: neonPinkMat },
+            { x: -4, y: 41.0, z: 420, mat: neonCyanMat },
+            { x:  3, y: 43.0, z: 432, mat: neonPinkMat },
+            { x: -2, y: 45.0, z: 444, mat: neonCyanMat },
+            { x:  0, y: 47.0, z: 456, mat: neonPinkMat }
+        ];
+
+        steps.forEach(s => {
+            this.addBlock(s.x, s.y, s.z, 4.5, 1.2, 4.5, s.mat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // Spinning hazard beam in the middle of Stage 7
+        this.addSpinningHazard(0, 42, 420, 10, 2.0, 'y');
+
+        // Master's Apex Floating Island
+        this.addBlock(0, 48, 474, 20, 2, 20, this.mats.gold);
+
+        // 4 Glowing Obsidian Monolith Pillars
+        const monolithGeo = new THREE.BoxGeometry(1.5, 14, 1.5);
+        const monolithMat = new THREE.MeshStandardMaterial({
+            color: 0x1A0033,
+            emissive: 0x660099,
+            emissiveIntensity: 0.8,
+            roughness: 0.2
+        });
+        const m1 = new THREE.Mesh(monolithGeo, monolithMat);
+        m1.position.set(-7, 56, 467);
+        const m2 = new THREE.Mesh(monolithGeo, monolithMat);
+        m2.position.set(7, 56, 467);
+        const m3 = new THREE.Mesh(monolithGeo, monolithMat);
+        m3.position.set(-7, 56, 481);
+        const m4 = new THREE.Mesh(monolithGeo, monolithMat);
+        m4.position.set(7, 56, 481);
+        this.scene.add(m1, m2, m3, m4);
+
+        // Master's Diamond Crystal hovering in center
+        const crystalGeo = new THREE.OctahedronGeometry(2.5, 0);
+        const crystalMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x0088CC,
+            emissiveIntensity: 0.9,
+            roughness: 0.1,
+            metalness: 0.9
+        });
+        const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+        crystal.position.set(0, 53, 474);
+        this.scene.add(crystal);
+        this.masterCrystal = crystal;
     }
 
     createSkySlide() {
@@ -830,6 +909,13 @@ class RobloxWorld {
                 }
             }
             posAttr.needsUpdate = true;
+        }
+
+        // Master Crystal rotation in Stage 7
+        if (this.masterCrystal) {
+            this.masterCrystal.rotation.y += dt * 1.5;
+            this.masterCrystal.rotation.z += dt * 0.8;
+            this.masterCrystal.position.y = 53 + Math.sin(Date.now() * 0.003) * 0.4;
         }
 
         // Checkpoint proximity checks
