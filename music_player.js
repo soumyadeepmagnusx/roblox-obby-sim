@@ -517,6 +517,83 @@ class RobloxMusicPlayer {
                     { f: 440.00, d: 0.35, t: 'triangle' }, // A4
                     { f: 392.00, d: 0.75, t: 'sine' }      // G4
                 ]
+            },
+            {
+                title: "Dhono Dhanyo Pushpo Bhora",
+                artist: "D. L. Roy (Bengali Patriotic Anthem)",
+                tempo: 160,
+                notes: [
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4
+                    { f: 369.99, d: 0.35, t: 'triangle' }, // F#4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4
+                    { f: 587.33, d: 0.55, t: 'sine' },     // D5
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4
+                    { f: 440.00, d: 0.65, t: 'sine' },     // A4
+                    { f: 369.99, d: 0.40, t: 'triangle' }, // F#4
+                    { f: 293.66, d: 0.85, t: 'sine' }      // D4
+                ]
+            },
+            {
+                title: "Pokemon Theme (Gotta Catch 'Em All)",
+                artist: "John Siegler (Classic Anime / Game)",
+                tempo: 175,
+                notes: [
+                    { f: 261.63, d: 0.25, t: 'square' },   // C4
+                    { f: 293.66, d: 0.25, t: 'square' },   // D4
+                    { f: 329.63, d: 0.30, t: 'square' },   // E4
+                    { f: 392.00, d: 0.45, t: 'square' },   // G4
+                    { f: 440.00, d: 0.45, t: 'sawtooth' }, // A4
+                    { f: 392.00, d: 0.30, t: 'square' },   // G4
+                    { f: 329.63, d: 0.50, t: 'square' },   // E4
+                    { f: 293.66, d: 0.75, t: 'sawtooth' }  // D4
+                ]
+            },
+            {
+                title: "Mayabonobiharini Horini",
+                artist: "Rabindranath Tagore (Poetic Melody)",
+                tempo: 150,
+                notes: [
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4
+                    { f: 440.00, d: 0.40, t: 'sine' },     // A4
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4
+                    { f: 523.25, d: 0.55, t: 'sine' },     // C5
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.85, t: 'sine' }      // G4
+                ]
+            },
+            {
+                title: "Mortal Kombat Techno Anthem",
+                artist: "The Immortals (Arcade Classic)",
+                tempo: 140,
+                notes: [
+                    { f: 440.00, d: 0.12, t: 'sawtooth' }, // A4
+                    { f: 440.00, d: 0.12, t: 'sawtooth' }, // A4
+                    { f: 523.25, d: 0.14, t: 'square' },   // C5
+                    { f: 440.00, d: 0.12, t: 'sawtooth' }, // A4
+                    { f: 587.33, d: 0.14, t: 'square' },   // D5
+                    { f: 440.00, d: 0.12, t: 'sawtooth' }, // A4
+                    { f: 659.25, d: 0.18, t: 'sawtooth' }, // E5
+                    { f: 587.33, d: 0.22, t: 'square' }    // D5
+                ]
+            },
+            {
+                title: "Aguner Poroshmoni",
+                artist: "Rabindranath Tagore (Sacred Melody)",
+                tempo: 130,
+                notes: [
+                    { f: 392.00, d: 0.35, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4
+                    { f: 523.25, d: 0.45, t: 'sine' },     // C5
+                    { f: 587.33, d: 0.65, t: 'sine' },     // D5
+                    { f: 523.25, d: 0.35, t: 'triangle' }, // C5
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4
+                    { f: 440.00, d: 0.40, t: 'triangle' }, // A4
+                    { f: 392.00, d: 0.95, t: 'sine' }      // G4
+                ]
             }
         ];
     }
