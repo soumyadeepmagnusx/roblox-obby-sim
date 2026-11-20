@@ -817,6 +817,9 @@
         <button class="hud-btn" onclick="toggleBoomboxModal()">
             📻 Boombox
         </button>
+        <button id="btn-mixer" class="hud-btn" onclick="if(window.game && window.game.soundMixer) window.game.soundMixer.openModal()" title="Audio Settings & Volume Mixer">
+            🎚️ Audio
+        </button>
         <button class="hud-btn" onclick="if(window.game && window.game.photoMode) window.game.photoMode.togglePhotoMode()" title="Toggle Cinematic Photo Mode & Freecam (Key P)">
             📸 Photo (P)
         </button>
@@ -1267,6 +1270,7 @@
     <script src="jump_combos.js"></script>
     <script src="launchers.js"></script>
     <script src="auras.js"></script>
+    <script src="sound_mixer.js"></script>
     <script src="game.js"></script>
 
     <script>

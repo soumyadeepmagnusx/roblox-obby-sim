@@ -67,6 +67,7 @@ class RobloxGame {
         this.jumpCombos = new RobloxJumpComboSystem(this.player, this.sound, this.particles, this.ui, this.collectibles);
         this.launchers = new RobloxLaunchers(this.scene, this.world, this.player, this.sound, this.particles);
         this.auras = new RobloxAvatarAuras(this.scene, this.player, this.sound, this.ui);
+        this.soundMixer = new RobloxSoundMixer(this.sound, this.music);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
