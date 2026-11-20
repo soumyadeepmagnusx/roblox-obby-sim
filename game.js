@@ -68,6 +68,7 @@ class RobloxGame {
         this.launchers = new RobloxLaunchers(this.scene, this.world, this.player, this.sound, this.particles);
         this.auras = new RobloxAvatarAuras(this.scene, this.player, this.sound, this.ui);
         this.soundMixer = new RobloxSoundMixer(this.sound, this.music);
+        this.hats = new RobloxHeadwearManager(this.scene, this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -370,6 +371,7 @@ class RobloxGame {
             if (this.jumpCombos) this.jumpCombos.update(dt);
             if (this.launchers) this.launchers.update(dt);
             if (this.auras) this.auras.update(dt);
+            if (this.hats) this.hats.update(dt);
 
             // Update standard subsystems safely
             if (this.shop) this.shop.update(dt);
