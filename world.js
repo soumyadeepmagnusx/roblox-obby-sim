@@ -490,6 +490,7 @@ class RobloxWorld {
         this.createZeroGravityZone();
         this.createFloatingIslands();
         this.createCyberNebulaStage();
+        this.createInfernoVolcanoStage();
     }
 
     createZeroGravityZone() {
@@ -637,6 +638,85 @@ class RobloxWorld {
         crystal.position.set(0, 53, 474);
         this.scene.add(crystal);
         this.masterCrystal = crystal;
+    }
+
+    createInfernoVolcanoStage() {
+        // ==========================================
+        // STAGE 8: INFERNO VOLCANIC CORE & MOLTEN GEYSERS
+        // ==========================================
+        this.addCheckpoint(8, 0, 48.2, 492, 6);
+
+        // Volcanic bridge from Stage 7 Apex to Stage 8 Checkpoint
+        this.addBlock(0, 47, 483, 6, 2, 10, this.mats.darkStone);
+
+        // Sea of boiling magma underneath Stage 8
+        this.addBlock(0, 43, 530, 40, 1.5, 75, this.mats.lava, 'lava');
+
+        // Sinking/floating basalt volcanic stepping pillars
+        const volcanicStone = new THREE.MeshStandardMaterial({
+            color: 0x1C1F24,
+            roughness: 0.8,
+            metalness: 0.2
+        });
+        const glowingMagmaRim = new THREE.MeshStandardMaterial({
+            color: 0xFF2200,
+            emissive: 0xFF4400,
+            emissiveIntensity: 0.8,
+            roughness: 0.3
+        });
+
+        const pillars = [
+            { x: -5, y: 48.5, z: 506 },
+            { x:  4, y: 50.0, z: 518 },
+            { x: -6, y: 51.5, z: 530 },
+            { x:  5, y: 53.0, z: 542 },
+            { x: -3, y: 55.0, z: 554 },
+            { x:  0, y: 57.0, z: 566 }
+        ];
+
+        pillars.forEach((p, idx) => {
+            this.addBlock(p.x, p.y - 2, p.z, 5, 4, 5, volcanicStone);
+            this.addBlock(p.x, p.y + 0.1, p.z, 4.6, 0.3, 4.6, glowingMagmaRim);
+            this.addCoin(p.x, p.y + 1.8, p.z);
+        });
+
+        // 2 High-speed spinning magma hazard beams
+        this.addSpinningHazard(0, 52, 518, 12, 2.4, 'y');
+        this.addSpinningHazard(0, 56, 548, 11, -2.2, 'y');
+
+        // Volcanic Caldera Peak Sanctuary
+        this.addBlock(0, 58, 582, 22, 2.5, 22, volcanicStone);
+
+        // 4 Magma Crystal spires surrounding caldera
+        const spireGeo = new THREE.ConeGeometry(1.6, 12, 6);
+        const spireMat = new THREE.MeshStandardMaterial({
+            color: 0xFF3300,
+            emissive: 0xFF5500,
+            emissiveIntensity: 0.85,
+            roughness: 0.2
+        });
+        const sp1 = new THREE.Mesh(spireGeo, spireMat);
+        sp1.position.set(-8, 64, 574);
+        const sp2 = new THREE.Mesh(spireGeo, spireMat);
+        sp2.position.set(8, 64, 574);
+        const sp3 = new THREE.Mesh(spireGeo, spireMat);
+        sp3.position.set(-8, 64, 590);
+        const sp4 = new THREE.Mesh(spireGeo, spireMat);
+        sp4.position.set(8, 64, 590);
+        this.scene.add(sp1, sp2, sp3, sp4);
+
+        // Giant Molten Core floating in center of Caldera
+        const coreGeo = new THREE.DodecahedronGeometry(3.0, 0);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0xFFAA00,
+            emissive: 0xFF4400,
+            emissiveIntensity: 1.0,
+            roughness: 0.1
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        core.position.set(0, 63, 582);
+        this.scene.add(core);
+        this.volcanicCore = core;
     }
 
     createSkySlide() {
@@ -916,6 +996,13 @@ class RobloxWorld {
             this.masterCrystal.rotation.y += dt * 1.5;
             this.masterCrystal.rotation.z += dt * 0.8;
             this.masterCrystal.position.y = 53 + Math.sin(Date.now() * 0.003) * 0.4;
+        }
+
+        // Volcanic Core rotation in Stage 8
+        if (this.volcanicCore) {
+            this.volcanicCore.rotation.x += dt * 1.2;
+            this.volcanicCore.rotation.y += dt * 1.8;
+            this.volcanicCore.position.y = 63 + Math.sin(Date.now() * 0.004) * 0.5;
         }
 
         // Checkpoint proximity checks

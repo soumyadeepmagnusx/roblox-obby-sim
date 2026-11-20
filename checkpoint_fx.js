@@ -20,7 +20,8 @@ class RobloxCheckpointFX {
             4: "🧩 STAGE 4: TRICKY TILES",
             5: "🌧️ STAGE 5: ACID RAIN",
             6: "👑 STAGE 6: SUMMIT OF VICTORY",
-            7: "🌌 STAGE 7: CYBER NEBULA"
+            7: "🌌 STAGE 7: CYBER NEBULA",
+            8: "🌋 STAGE 8: INFERNO VOLCANIC CORE"
         };
 
         this.pillars = [];
