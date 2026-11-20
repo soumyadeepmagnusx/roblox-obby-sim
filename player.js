@@ -449,12 +449,26 @@ class RobloxPlayer {
 
             this.group.rotation.y = this.facingAngle;
 
-            // Footstep audio & sprint dust
+            // Footstep audio & dynamic surface particles
             this.footstepTimer += dt;
             if (this.footstepTimer > 0.32 && this.isGrounded) {
-                this.sound.playStep();
-                if (window.game && window.game.particles && window.game.particles.spawnSprintDust) {
-                    window.game.particles.spawnSprintDust(this.position);
+                let surface = 'stone';
+                if (this.currentStage === 0) surface = 'grass';
+                else if (this.currentStage === 1) surface = 'wood';
+                else if (this.currentStage === 3) surface = 'ice';
+                else if (this.currentStage === 5) surface = 'glass';
+                else if (this.currentStage === 6 || this.currentStage === 7) surface = 'gold';
+                else if (this.currentStage === 8) surface = 'lava';
+                else if (this.currentStage >= 9) surface = 'crystal';
+
+                this.sound.playStep(surface);
+                if (window.game && window.game.particles) {
+                    if (window.game.particles.spawnSurfaceStep) {
+                        window.game.particles.spawnSurfaceStep(this.position, surface);
+                    }
+                    if (window.game.particles.spawnSprintDust) {
+                        window.game.particles.spawnSprintDust(this.position);
+                    }
                 }
                 this.footstepTimer = 0;
             }

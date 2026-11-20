@@ -252,6 +252,26 @@ class SoundEngine {
             endFreq = 260;
             oscType = 'sine';
             vol = 0.10;
+        } else if (surface === 'gold') {
+            startFreq = 620;
+            endFreq = 340;
+            oscType = 'triangle';
+            vol = 0.13;
+        } else if (surface === 'lava') {
+            startFreq = 75;
+            endFreq = 38;
+            oscType = 'sawtooth';
+            vol = 0.13;
+        } else if (surface === 'crystal') {
+            startFreq = 880;
+            endFreq = 440;
+            oscType = 'sine';
+            vol = 0.11;
+        } else if (surface === 'bounce') {
+            startFreq = 320;
+            endFreq = 160;
+            oscType = 'sine';
+            vol = 0.14;
         }
 
         osc.type = oscType;

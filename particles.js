@@ -377,6 +377,64 @@ class RobloxParticleEngine {
     }
 
     /**
+     * Spawn material-specific surface particles for running on different ground types
+     */
+    spawnSurfaceStep(pos, surface = 'grass') {
+        let colors = [0x55CC33, 0x88EE44];
+        let size = 0.16;
+        let vyBase = 0.8;
+
+        if (surface === 'stone' || surface === 'metal') {
+            colors = [0x999999, 0xCCCCCC];
+        } else if (surface === 'wood') {
+            colors = [0x8B5A2B, 0xCD853F];
+        } else if (surface === 'ice' || surface === 'glass') {
+            colors = [0x88EEFF, 0xE0FFFF];
+            size = 0.14;
+        } else if (surface === 'gold') {
+            colors = [0xFFD700, 0xFFE066];
+            size = 0.18;
+            vyBase = 1.0;
+        } else if (surface === 'lava') {
+            colors = [0xFF4500, 0xFFAA00];
+            vyBase = 1.3;
+        } else if (surface === 'crystal') {
+            colors = [0xDD66FF, 0x00FFFF];
+            size = 0.15;
+            vyBase = 1.1;
+        }
+
+        const count = 3;
+        for (let i = 0; i < count; i++) {
+            const col = colors[Math.floor(Math.random() * colors.length)];
+            const geom = new THREE.BoxGeometry(size, size, size);
+            const mat = new THREE.MeshBasicMaterial({
+                color: col,
+                transparent: true,
+                opacity: 0.85
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.set(
+                pos.x + (Math.random() - 0.5) * 0.45,
+                pos.y + 0.1,
+                pos.z + (Math.random() - 0.5) * 0.45
+            );
+            this.scene.add(mesh);
+
+            this.particles.push({
+                mesh,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: vyBase + Math.random() * 0.8,
+                vz: (Math.random() - 0.5) * 1.5,
+                life: 1.0,
+                maxLife: 0.35,
+                scaleSpeed: -0.4,
+                fadeSpeed: 2.5
+            });
+        }
+    }
+
+    /**
      * Update all active particles and floating combat texts
      */
     update(dt) {
