@@ -424,12 +424,14 @@ class RobloxGame {
             4: 'Stage 4: Spinning Beams',
             5: 'Stage 5: Vanishing Tiles',
             6: "Stage 6: Winner's Peak",
-            7: 'Stage 7: Cyber Nebula'
+            7: 'Stage 7: Cyber Nebula',
+            8: 'Stage 8: Inferno Volcanic Core',
+            9: 'Stage 9: Summit of the Titans'
         };
 
         list.innerHTML = '';
         let lastSplit = 0;
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 9; i++) {
             const splitTime = storedSplits[i];
             const segment = (splitTime !== undefined) ? (splitTime - lastSplit) : null;
             if (splitTime !== undefined) lastSplit = splitTime;

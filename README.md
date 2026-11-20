@@ -66,6 +66,9 @@ flowchart TD
 | **Atmosphere & Lighting** | `L` (or click ☀️) | Cycles 5 celestial lighting presets: Noon, Sunset, Midnight, Synthwave, Dawn |
 | **Alchemist Potion Shop** | `Y` (or click 🧪) | Opens power-up shop: Moon Gravity, Hyper Speed, Coin Magnet, Lava Shield |
 | **Avatar Wardrobe** | `U` (or click 🎩) | Equips 3D cosmetic accessories: Fedora, Crown, Angel Wings, Katanas, DJ Cans |
+| **3D Headwear & Pets** | `N` (or click 🧢) | Cycles 5 wearable accessories: Stetson, Wizard Hat, Snapback, Cyber Visor, Kitty |
+| **Spectator Camera** | `F` (or click 👁️) | Toggles 3D Obby Spectator Camera mode to orbit peers or view scenic stage spots |
+| **Audio Mixer** | Click 🎚️ Audio | Multi-channel volume mixer for Master, Music, SFX, and Ambience channels |
 | **Prestige Titles & Ranks**| Click Titles 🎖️ | Displays floating rank nameplates (Noob, Jumper, Champion, Legend) |
 | **Obby Quest Board** | `Q` (or click 📜) | Tracks live milestone quests on HUD and grants coin bounties |
 | **Hall of Fame & Records**| Click 🏆 Records | Displays career distance, session playtime, PB speedruns & lobby standings |
@@ -151,8 +154,13 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 28. 🇧🇩 **Mayabonobiharini Horini** (Rabindranath Tagore Melody)
 29. 🕹️ **Mortal Kombat Techno Anthem** (The Immortals Arcade Hit)
 30. 🇧🇩 **Aguner Poroshmoni** (Rabindranath Tagore Sacred Classic)
+31. 🇧🇩 **Coffee Houser Shei Adyata** (Manna Dey Bengali Nostalgia Classic)
+32. 🎮 **Mega Man 2 - Dr. Wily Stage 1** (Capcom NES Chiptune Anthem)
+33. 🇧🇩 **Majhe Majhe Tobo Dekha Pai** (Rabindranath Tagore Devotional Masterpiece)
+34. 🕹️ **Mii Channel Theme** (Kazumi Totaka Nintendo Wii Classic)
+35. 🇧🇩 **Bhenge Mor Ghorer Chabi** (Rabindranath Tagore Classic)
 
-*Features an interactive **Master Volume Slider**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
+*Features 35 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
 ---
 
@@ -263,8 +271,34 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **High-Altitude Extension**: 8 floating neon hexagonal steps ascending past Winner's Peak with spinning hazard bars.
 * **Master's Diamond Crystal**: Glowing floating apex sanctuary guarded by obsidian monoliths with bonus coin clusters.
 
+### 🌋 Stage 8: Inferno Volcanic Core & Molten Geysers (`world.js`)
+* **Molten Hazard Traversal**: Sinking basalt stepping pillars over boiling magma with high-velocity spinning hazard bars.
+* **Volcanic Caldera Apex**: Floating dodecahedron molten core surrounded by glowing magma spires and bonus studs.
+
+### 👑 Stage 9: Summit of the Titans & Celestial Crown Shrine (`world.js`)
+* **High-Altitude Crystal Bridges**: Translucent purple and cyan crystal stepping blocks ascending into the upper atmosphere.
+* **The Grand Champion Throne**: Golden royal throne with ruby backrest and rotating animated Celestial Crown with gems.
+
 ### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`)
-* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 7.
+* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 9.
+
+### 🎚️ Multi-Channel Audio Mixer (`sound_mixer.js`)
+* **Dedicated Channel Faders**: Real-time volume sliders for Master, Music, Sound Effects (SFX), and Ambience with quick EQ presets (Default, Night, Arcade, Bass Boost).
+
+### 🧢 3D Headwear & Shoulder Companions (`hats.js`, Key `N`)
+* **5 Custom Accessories**: Cowboy Stetson, Wizard Hat, Classic Snapback, Cyber Visor, and an animated Shoulder Kitty companion with idle bobbing.
+
+### 👁️ 3D Obby Spectator Camera Mode (`spectator.js`, Key `F`)
+* **Cinema Panning**: Cycle between active multiplayer peers and 8 scenic stage viewpoints with smooth camera lerping and overhead HUD navigation banner.
+
+### 👣 Dynamic Surface Footstep Acoustics & Particle Flecks (`audio.js`, `particles.js`)
+* **Contextual Material Sound & VFX**: Tailored acoustic pitches and color-matched particle flecks when running across grass, wood, stone, ice, gold, lava, and crystal.
+
+### ⏳ Real-Time Daily Quest & Streak Reset Countdowns (`quests.js`, `streak.js`)
+* **Synchronized UTC Timers**: Real-time ticking countdown badges in the HUD, quest board, and streak reward modals.
+
+### 📸 Authentic Photo Mode Canvas Watermark & Preview Toast (`photo_mode.js`)
+* **Cinema Capture**: High-res PNG export with authentic Roblox Obby glass watermark badge, aperture vignette shading, and floating preview toast thumbnail.
 
 ---
 
