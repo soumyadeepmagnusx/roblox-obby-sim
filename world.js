@@ -491,6 +491,7 @@ class RobloxWorld {
         this.createFloatingIslands();
         this.createCyberNebulaStage();
         this.createInfernoVolcanoStage();
+        this.createTitansSummitStage();
     }
 
     createZeroGravityZone() {
@@ -717,6 +718,118 @@ class RobloxWorld {
         core.position.set(0, 63, 582);
         this.scene.add(core);
         this.volcanicCore = core;
+    }
+
+    createTitansSummitStage() {
+        // ==========================================
+        // STAGE 9: SUMMIT OF THE TITANS & CELESTIAL CROWN SHRINE
+        // ==========================================
+        // Bridge from Stage 8 Caldera (z: 582 to 598)
+        this.addBlock(0, 59, 595, 6, 1.5, 8, this.mats.gold);
+
+        // Checkpoint 9
+        this.addCheckpoint(9, 0, 60.2, 604, 6);
+
+        // High-altitude crystalline stepping stones
+        const crystalMat = new THREE.MeshStandardMaterial({
+            color: 0x9933FF,
+            emissive: 0x6600CC,
+            emissiveIntensity: 0.6,
+            roughness: 0.15,
+            metalness: 0.8
+        });
+
+        const cyanCrystal = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x0088CC,
+            emissiveIntensity: 0.7,
+            roughness: 0.1,
+            metalness: 0.9
+        });
+
+        const stones = [
+            { x: -4, y: 62.0, z: 616 },
+            { x:  3, y: 64.5, z: 626 },
+            { x: -5, y: 67.0, z: 636 },
+            { x:  4, y: 70.0, z: 646 },
+            { x: -3, y: 73.5, z: 656 },
+            { x:  0, y: 77.0, z: 666 }
+        ];
+
+        stones.forEach((s, idx) => {
+            const mat = (idx % 2 === 0) ? crystalMat : cyanCrystal;
+            this.addBlock(s.x, s.y - 1, s.z, 5, 2, 5, mat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity spinning crystal hazard rings
+        this.addSpinningHazard(0, 68, 636, 12, 2.6, 'y');
+        this.addSpinningHazard(0, 74, 656, 11, -2.8, 'y');
+
+        // Grand Champion Throne Apex Platform
+        this.addBlock(0, 79, 684, 22, 2.5, 22, this.mats.gold);
+
+        // Golden Throne Chair
+        const throneGold = new THREE.MeshStandardMaterial({
+            color: 0xFFD700,
+            metalness: 0.85,
+            roughness: 0.2
+        });
+        const throneRuby = new THREE.MeshStandardMaterial({
+            color: 0xCC0022,
+            roughness: 0.4
+        });
+
+        // Throne Seat & Backrest
+        this.addBlock(0, 81.5, 689, 6, 2.5, 4, throneGold);
+        this.addBlock(0, 84.5, 691.5, 6, 4.5, 1.5, throneRuby);
+        this.addBlock(-2.8, 83, 689, 1, 2, 4, throneGold);
+        this.addBlock(2.8, 83, 689, 1, 2, 4, throneGold);
+
+        // 4 Celestial Beacon Pillars
+        const beaconMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFCC,
+            emissive: 0x00FFAA,
+            emissiveIntensity: 0.8
+        });
+        this.addBlock(-8, 85, 676, 2, 10, 2, beaconMat);
+        this.addBlock(8, 85, 676, 2, 10, 2, beaconMat);
+        this.addBlock(-8, 85, 692, 2, 10, 2, beaconMat);
+        this.addBlock(8, 85, 692, 2, 10, 2, beaconMat);
+
+        // Animated Grand Celestial Crown
+        const crownGroup = new THREE.Group();
+        const baseRing = new THREE.Mesh(
+            new THREE.CylinderGeometry(2.2, 2.2, 0.8, 16, 1, true),
+            throneGold
+        );
+        crownGroup.add(baseRing);
+
+        // 5 Crown Jewels Spikes
+        for (let i = 0; i < 5; i++) {
+            const angle = (i / 5) * Math.PI * 2;
+            const spike = new THREE.Mesh(
+                new THREE.ConeGeometry(0.5, 1.4, 6),
+                throneGold
+            );
+            spike.position.set(Math.cos(angle) * 2.2, 0.8, Math.sin(angle) * 2.2);
+            crownGroup.add(spike);
+
+            const gem = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(0.35, 0),
+                new THREE.MeshStandardMaterial({
+                    color: i % 2 === 0 ? 0xFF0055 : 0x00FFFF,
+                    emissive: i % 2 === 0 ? 0xFF0033 : 0x00AAFF,
+                    emissiveIntensity: 0.9
+                })
+            );
+            gem.position.set(Math.cos(angle) * 2.2, 1.5, Math.sin(angle) * 2.2);
+            crownGroup.add(gem);
+        }
+
+        crownGroup.position.set(0, 86, 684);
+        this.scene.add(crownGroup);
+        this.celestialCrown = crownGroup;
     }
 
     createSkySlide() {
@@ -1003,6 +1116,12 @@ class RobloxWorld {
             this.volcanicCore.rotation.x += dt * 1.2;
             this.volcanicCore.rotation.y += dt * 1.8;
             this.volcanicCore.position.y = 63 + Math.sin(Date.now() * 0.004) * 0.5;
+        }
+
+        // Celestial Crown rotation in Stage 9
+        if (this.celestialCrown) {
+            this.celestialCrown.rotation.y += dt * 1.5;
+            this.celestialCrown.position.y = 86 + Math.sin(Date.now() * 0.003) * 0.45;
         }
 
         // Checkpoint proximity checks
