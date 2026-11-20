@@ -283,16 +283,40 @@ class RobloxPhotoMode {
         ctx.filter = canvas.style.filter || 'none';
         ctx.drawImage(canvas, 0, 0);
 
-        // Watermark overlay
-        ctx.filter = 'none';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.roundRect(canvas.width - 240, canvas.height - 50, 220, 36, 8);
-        ctx.fill();
+        // Vignette radial shading
+        const vigGrad = ctx.createRadialGradient(
+            canvas.width / 2, canvas.height / 2, Math.min(canvas.width, canvas.height) * 0.45,
+            canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.75
+        );
+        vigGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        vigGrad.addColorStop(1, 'rgba(0, 0, 0, 0.35)');
+        ctx.fillStyle = vigGrad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.font = 'bold 16px "Segoe UI", sans-serif';
+        // Watermark badge with stage info & date
+        const stageNum = (this.player && this.player.currentStage !== undefined) ? this.player.currentStage : 1;
+        const padX = canvas.width - 280;
+        const padY = canvas.height - 62;
+        ctx.fillStyle = 'rgba(15, 20, 30, 0.78)';
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
+        ctx.lineWidth = 1.5;
+        if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(padX, padY, 260, 48, 10);
+            ctx.fill();
+            ctx.stroke();
+        } else {
+            ctx.fillRect(padX, padY, 260, 48);
+        }
+
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 15px "Segoe UI", sans-serif';
         ctx.fillStyle = '#FFD700';
-        ctx.textAlign = 'right';
-        ctx.fillText('ROBLOX OBBY SIM 🎮', canvas.width - 32, canvas.height - 26);
+        ctx.fillText('ROBLOX 3D OBBY SIM', padX + 16, padY + 22);
+
+        ctx.font = '11px "Segoe UI", sans-serif';
+        ctx.fillStyle = '#CCCCCC';
+        ctx.fillText(`Stage ${stageNum} • ${new Date().toISOString().split('T')[0]}`, padX + 16, padY + 38);
 
         // Trigger download
         const dataUrl = exportCanvas.toDataURL('image/png');
@@ -301,6 +325,49 @@ class RobloxPhotoMode {
         link.href = dataUrl;
         link.click();
 
+        this.showThumbnailToast(dataUrl);
         if (this.ui) this.ui.showToastBanner('📸 Screenshot Captured & Saved to Downloads!');
+    }
+
+    showThumbnailToast(dataUrl) {
+        const oldToast = document.getElementById('pm-thumb-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'pm-thumb-toast';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(18, 22, 32, 0.95);
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            z-index: 10001;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            animation: slideInUp 0.3s ease;
+        `;
+
+        toast.innerHTML = `
+            <img src="${dataUrl}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+            <div>
+                <div style="font-size: 13px; font-weight: bold; color: #FFD700;">📸 Photo Saved!</div>
+                <div style="font-size: 10px; color: #AAA; margin-top: 2px;">Downloaded to your PC</div>
+            </div>
+            <button style="background: none; border: none; color: #AAA; font-size: 18px; cursor: pointer; padding: 0 6px;" onclick="this.parentElement.remove()">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            if (toast.parentElement) {
+                toast.style.transition = 'opacity 0.4s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }
+        }, 4000);
     }
 }
