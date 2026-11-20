@@ -141,6 +141,10 @@ class RobloxQuestManager {
             <div style="font-size:13px; color:#CCC;">
                 Complete missions to earn bonus golden studs and accelerate your progression!
             </div>
+            <div id="quest-reset-timer" style="font-size:11px; color:#FFB74D; background:rgba(255,183,77,0.12); padding:6px 12px; border-radius:6px; display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(255,183,77,0.25);">
+                <span>⏳ Daily Quests & Streak Reset in:</span>
+                <strong id="quest-timer-clock" style="font-family:monospace; font-size:12px; color:#FFF;">--:--:--</strong>
+            </div>
             <div id="quests-list" style="display:flex; flex-direction:column; gap:10px;"></div>
             <button class="menu-btn primary" onclick="window.game.quests.toggleModal()" style="width:100%; padding:12px; font-weight:bold; background:#FFD700; color:#000; border:none; border-radius:8px; cursor:pointer;">
                 Close Quests
@@ -214,6 +218,16 @@ class RobloxQuestManager {
         this.updateTrackerHUD();
     }
 
+    getResetCountdownFormatted() {
+        const now = new Date();
+        const tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+        const diffMs = Math.max(0, tomorrow.getTime() - now.getTime());
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+        return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
     updateTrackerHUD() {
         if (!this.tracker) return;
 
@@ -223,6 +237,7 @@ class RobloxQuestManager {
             this.tracker.innerHTML = `
                 <div style="font-size:12px; font-weight:bold; color:#00FF88;">🏆 ALL QUESTS COMPLETED!</div>
                 <div style="font-size:10px; color:#AAA; margin-top:2px;">You conquered the entire Obby Quest Board!</div>
+                <div style="font-size:9px; color:#FFB74D; margin-top:4px; text-align:right;">⏳ Reset: ${this.getResetCountdownFormatted()}</div>
             `;
             return;
         }
@@ -240,10 +255,16 @@ class RobloxQuestManager {
             <div style="background:rgba(255,255,255,0.12); height:5px; border-radius:4px; overflow:hidden;">
                 <div style="background:${isDone ? '#00FF88' : '#FFD700'}; width:${pct}%; height:100%; transition:width 0.3s ease;"></div>
             </div>
+            <div style="font-size:9px; color:#FFB74D; margin-top:4px; text-align:right;">⏳ Reset: ${this.getResetCountdownFormatted()}</div>
         `;
     }
 
     renderModal() {
+        const clockEl = document.getElementById('quest-timer-clock');
+        if (clockEl) {
+            clockEl.textContent = this.getResetCountdownFormatted();
+        }
+
         const list = document.getElementById('quests-list');
         if (!list) return;
 
@@ -299,7 +320,19 @@ class RobloxQuestManager {
         if (!this.modal) return;
         const isOpen = this.modal.style.display === 'flex';
         this.modal.style.display = isOpen ? 'none' : 'flex';
-        if (!isOpen) this.renderModal();
+        if (!isOpen) {
+            this.renderModal();
+            if (this._timerInterval) clearInterval(this._timerInterval);
+            this._timerInterval = setInterval(() => {
+                const clockEl = document.getElementById('quest-timer-clock');
+                if (clockEl) clockEl.textContent = this.getResetCountdownFormatted();
+            }, 1000);
+        } else {
+            if (this._timerInterval) {
+                clearInterval(this._timerInterval);
+                this._timerInterval = null;
+            }
+        }
     }
 }
 

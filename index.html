@@ -1151,9 +1151,13 @@
                 </div>
                 <span style="cursor:pointer; font-size:20px; color:#AAA;" onclick="toggleStreakModal()">✕</span>
             </div>
-            <p style="font-size:12px; color:#BBB; margin-bottom:18px; line-height:1.5;">
+            <p style="font-size:12px; color:#BBB; margin-bottom:12px; line-height:1.5;">
                 Log in every consecutive day to keep your streak alive and unlock massive Gold Coin multipliers!
             </p>
+            <div id="streak-reset-timer" style="font-size:11px; color:#FFB74D; background:rgba(255,183,77,0.12); padding:6px 12px; border-radius:6px; display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,183,77,0.25); margin-bottom:16px;">
+                <span>⏳ Next Streak Reward & Reset in:</span>
+                <strong id="streak-timer-clock" style="font-family:monospace; font-size:12px; color:#FFF;">--:--:--</strong>
+            </div>
 
             <div id="streak-rewards-grid" style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:20px;"></div>
 

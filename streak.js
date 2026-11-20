@@ -76,6 +76,11 @@ class RobloxDailyStreakManager {
     }
 
     renderModal() {
+        const clockEl = document.getElementById('streak-timer-clock');
+        if (clockEl) {
+            clockEl.textContent = this.getResetCountdownFormatted();
+        }
+
         const grid = document.getElementById('streak-rewards-grid');
         if (!grid) return;
 
@@ -168,16 +173,35 @@ class RobloxDailyStreakManager {
         this.renderModal();
     }
 
+    getResetCountdownFormatted() {
+        const now = new Date();
+        const tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+        const diffMs = Math.max(0, tomorrow.getTime() - now.getTime());
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+        return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
     openModal() {
         const modal = document.getElementById('daily-streak-modal');
         if (modal) {
             modal.style.display = 'flex';
             this.renderModal();
+            if (this._timerInterval) clearInterval(this._timerInterval);
+            this._timerInterval = setInterval(() => {
+                const clockEl = document.getElementById('streak-timer-clock');
+                if (clockEl) clockEl.textContent = this.getResetCountdownFormatted();
+            }, 1000);
         }
     }
 
     closeModal() {
         const modal = document.getElementById('daily-streak-modal');
         if (modal) modal.style.display = 'none';
+        if (this._timerInterval) {
+            clearInterval(this._timerInterval);
+            this._timerInterval = null;
+        }
     }
 }
