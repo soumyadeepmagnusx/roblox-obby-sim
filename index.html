@@ -805,6 +805,9 @@
         <button id="btn-hats" class="hud-btn" onclick="if(window.game && window.game.hats) window.game.hats.cycleHat()" title="Cycle 3D Headwear & Shoulder Pets (Key N)">
             🧢 Hats (N)
         </button>
+        <button id="btn-spectate" class="hud-btn" onclick="if(window.game && window.game.spectator) window.game.spectator.toggleSpectator()" title="Toggle Spectator Cinema Mode (Key F)">
+            👁️ Spectate (F)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1285,6 +1288,7 @@
     <script src="auras.js"></script>
     <script src="sound_mixer.js"></script>
     <script src="hats.js"></script>
+    <script src="spectator.js"></script>
     <script src="game.js"></script>
 
     <script>

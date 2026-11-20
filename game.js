@@ -69,6 +69,7 @@ class RobloxGame {
         this.auras = new RobloxAvatarAuras(this.scene, this.player, this.sound, this.ui);
         this.soundMixer = new RobloxSoundMixer(this.sound, this.music);
         this.hats = new RobloxHeadwearManager(this.scene, this.player, this.sound, this.ui);
+        this.spectator = new RobloxSpectatorCam(this.camera, this.scene, this.player, this.network, this.ui, this.sound);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -339,7 +340,11 @@ class RobloxGame {
         try {
             // Update player & camera
             this.player.update(dt, this.ui.inputState, this.cameraController.yaw, this.world);
-            this.cameraController.update(this.player.position, dt, this.player);
+            if (this.spectator && this.spectator.isActive) {
+                this.spectator.update(dt);
+            } else {
+                this.cameraController.update(this.player.position, dt, this.player);
+            }
 
             // Update world hazards & stages
             this.world.update(dt, this.player);
