@@ -594,6 +594,80 @@ class RobloxMusicPlayer {
                     { f: 440.00, d: 0.40, t: 'triangle' }, // A4
                     { f: 392.00, d: 0.95, t: 'sine' }      // G4
                 ]
+            },
+            {
+                title: "Coffee Houser Shei Adyata",
+                artist: "Manna Dey (Bengali Nostalgia Classic)",
+                tempo: 155,
+                notes: [
+                    { f: 261.63, d: 0.35, t: 'triangle' }, // C4: Cof-
+                    { f: 329.63, d: 0.35, t: 'triangle' }, // E4: fee
+                    { f: 392.00, d: 0.45, t: 'sine' },     // G4: hou-
+                    { f: 440.00, d: 0.50, t: 'sine' },     // A4: ser
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4: shei
+                    { f: 329.63, d: 0.55, t: 'sine' },     // E4: ad-
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4: da-
+                    { f: 261.63, d: 0.85, t: 'sine' }      // C4: ta
+                ]
+            },
+            {
+                title: "Mega Man 2 - Dr. Wily Stage 1",
+                artist: "Takashi Tateishi (NES Chiptune Legend)",
+                tempo: 180,
+                notes: [
+                    { f: 293.66, d: 0.16, t: 'square' },   // D4
+                    { f: 293.66, d: 0.16, t: 'square' },   // D4
+                    { f: 349.23, d: 0.20, t: 'square' },   // F4
+                    { f: 392.00, d: 0.25, t: 'sawtooth' }, // G4
+                    { f: 415.30, d: 0.25, t: 'sawtooth' }, // G#4
+                    { f: 392.00, d: 0.20, t: 'square' },   // G4
+                    { f: 349.23, d: 0.25, t: 'square' },   // F4
+                    { f: 293.66, d: 0.45, t: 'sawtooth' }  // D4
+                ]
+            },
+            {
+                title: "Majhe Majhe Tobo Dekha Pai",
+                artist: "Rabindranath Tagore (Devotional Classic)",
+                tempo: 145,
+                notes: [
+                    { f: 392.00, d: 0.35, t: 'sine' },     // G4: Ma-
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4: jhe
+                    { f: 587.33, d: 0.50, t: 'sine' },     // D5: ma-
+                    { f: 523.25, d: 0.35, t: 'triangle' }, // C5: jhe
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4: to-
+                    { f: 440.00, d: 0.40, t: 'triangle' }, // A4: bo
+                    { f: 392.00, d: 0.85, t: 'sine' }      // G4: de-kha pai
+                ]
+            },
+            {
+                title: "Mii Channel Theme",
+                artist: "Kazumi Totaka (Nintendo Lounge Hit)",
+                tempo: 140,
+                notes: [
+                    { f: 369.99, d: 0.25, t: 'triangle' }, // F#4
+                    { f: 440.00, d: 0.25, t: 'sine' },     // A4
+                    { f: 554.37, d: 0.40, t: 'sine' },     // C#5
+                    { f: 440.00, d: 0.25, t: 'triangle' }, // A4
+                    { f: 369.99, d: 0.30, t: 'sine' },     // F#4
+                    { f: 293.66, d: 0.20, t: 'triangle' }, // D4
+                    { f: 293.66, d: 0.20, t: 'triangle' }, // D4
+                    { f: 293.66, d: 0.40, t: 'sine' }      // D4
+                ]
+            },
+            {
+                title: "Bhenge Mor Ghorer Chabi",
+                artist: "Rabindranath Tagore (Soulful Baul Melody)",
+                tempo: 150,
+                notes: [
+                    { f: 293.66, d: 0.35, t: 'triangle' }, // D4: Bhe-
+                    { f: 392.00, d: 0.35, t: 'triangle' }, // G4: nge
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4: mor
+                    { f: 493.88, d: 0.45, t: 'sine' },     // B4: gho-
+                    { f: 587.33, d: 0.55, t: 'sine' },     // D5: rer
+                    { f: 493.88, d: 0.35, t: 'triangle' }, // B4: cha-
+                    { f: 440.00, d: 0.40, t: 'triangle' }, // A4: bi
+                    { f: 392.00, d: 0.85, t: 'sine' }      // G4: ni-ye
+                ]
             }
         ];
     }
