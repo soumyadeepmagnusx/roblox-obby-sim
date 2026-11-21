@@ -72,6 +72,7 @@ class RobloxGame {
         this.spectator = new RobloxSpectatorCam(this.camera, this.scene, this.player, this.network, this.ui, this.sound);
         this.skinCustomizer = new RobloxSkinCustomizer(this.player, this.sound, this.ui);
         this.levelSystem = new RobloxLevelSystem(this.player, this.particles, this.sound, this.ui, this.collectibles);
+        this.wind = new RobloxWindSystem(this.scene, this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -369,6 +370,7 @@ class RobloxGame {
             if (this.touchControls) this.touchControls.update(dt);
             if (this.trails) this.trails.update(dt);
             if (this.weather) this.weather.update(dt);
+            if (this.wind) this.wind.update(dt);
             if (this.minimap) this.minimap.update();
             if (this.skyIslands) this.skyIslands.update(dt);
             if (this.potions) this.potions.update(dt);
