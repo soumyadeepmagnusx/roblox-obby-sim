@@ -492,6 +492,7 @@ class RobloxWorld {
         this.createCyberNebulaStage();
         this.createInfernoVolcanoStage();
         this.createTitansSummitStage();
+        this.createVoidDimensionStage();
     }
 
     createZeroGravityZone() {
@@ -832,6 +833,89 @@ class RobloxWorld {
         this.celestialCrown = crownGroup;
     }
 
+    createVoidDimensionStage() {
+        // ==========================================
+        // STAGE 10: THE VOID DIMENSION & ANTI-MATTER PLATFORMS
+        // ==========================================
+        // Bridge from Stage 9 Throne Platform (z: 695 to 708)
+        this.addBlock(0, 80, 702, 6, 1.5, 12, this.mats.darkStone);
+
+        // Checkpoint 10
+        this.addCheckpoint(10, 0, 81.2, 715, 6);
+
+        // Anti-matter dark materials
+        const voidMat = new THREE.MeshStandardMaterial({
+            color: 0x050508,
+            roughness: 0.9,
+            metalness: 0.1
+        });
+        const voidNeonMat = new THREE.MeshStandardMaterial({
+            color: 0x8A2BE2,
+            emissive: 0x4B0082,
+            emissiveIntensity: 0.8,
+            roughness: 0.2
+        });
+
+        const voidSteps = [
+            { x: -5, y: 83.0, z: 728 },
+            { x:  4, y: 85.5, z: 740 },
+            { x: -5, y: 88.0, z: 752 },
+            { x:  4, y: 91.0, z: 764 },
+            { x: -2, y: 94.0, z: 776 },
+            { x:  0, y: 96.5, z: 788 }
+        ];
+
+        voidSteps.forEach((s, idx) => {
+            this.addBlock(s.x, s.y - 1.5, s.z, 5, 3, 5, voidMat);
+            this.addBlock(s.x, s.y + 0.1, s.z, 4.6, 0.25, 4.6, voidNeonMat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity spinning void hazard beams
+        this.addSpinningHazard(0, 86, 740, 12, 2.5, 'y');
+        this.addSpinningHazard(0, 92, 764, 11, -2.7, 'y');
+
+        // Central Void Rift Vortex
+        const vortexGeo = new THREE.TorusGeometry(3.5, 0.8, 16, 32);
+        const vortexMat = new THREE.MeshStandardMaterial({
+            color: 0x9400D3,
+            emissive: 0x4B0082,
+            emissiveIntensity: 1.0,
+            wireframe: true
+        });
+        const vortex = new THREE.Mesh(vortexGeo, vortexMat);
+        vortex.position.set(0, 89, 752);
+        this.scene.add(vortex);
+        this.voidVortex = vortex;
+
+        // Void Dimension Apex Sanctuary
+        this.addBlock(0, 98, 804, 22, 2.5, 22, voidMat);
+
+        // 4 Dark Monolith Pillars
+        const monolithMat = new THREE.MeshStandardMaterial({
+            color: 0x1A0033,
+            emissive: 0x330066,
+            emissiveIntensity: 0.6
+        });
+        this.addBlock(-8, 104, 796, 2, 10, 2, monolithMat);
+        this.addBlock(8, 104, 796, 2, 10, 2, monolithMat);
+        this.addBlock(-8, 104, 812, 2, 10, 2, monolithMat);
+        this.addBlock(8, 104, 812, 2, 10, 2, monolithMat);
+
+        // Floating Dark Matter Core
+        const coreGeo = new THREE.OctahedronGeometry(2.8, 0);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x110022,
+            emissive: 0x8A2BE2,
+            emissiveIntensity: 0.9,
+            roughness: 0.1
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        core.position.set(0, 103, 804);
+        this.scene.add(core);
+        this.voidCore = core;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1122,6 +1206,16 @@ class RobloxWorld {
         if (this.celestialCrown) {
             this.celestialCrown.rotation.y += dt * 1.5;
             this.celestialCrown.position.y = 86 + Math.sin(Date.now() * 0.003) * 0.45;
+        }
+
+        // Void Dimension animations in Stage 10
+        if (this.voidVortex) {
+            this.voidVortex.rotation.x += dt * 1.5;
+            this.voidVortex.rotation.y += dt * 2.0;
+        }
+        if (this.voidCore) {
+            this.voidCore.rotation.y += dt * 1.8;
+            this.voidCore.position.y = 103 + Math.sin(Date.now() * 0.0035) * 0.5;
         }
 
         // Checkpoint proximity checks
