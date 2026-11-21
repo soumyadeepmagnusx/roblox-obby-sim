@@ -288,6 +288,21 @@ class RobloxGame {
                     this.levelSystem.addXP(50, `Stage ${this.player.currentStage}`);
                 }
 
+                // Calculate Segment duration
+                const prevSplit = this.stageSplits[this.player.currentStage - 1] || 0;
+                const segmentTime = Math.max(0.1, currentSplit - prevSplit);
+
+                let isGoldSplit = false;
+                try {
+                    const bestSegments = JSON.parse(localStorage.getItem('roblox_best_segments') || '{}');
+                    const recordSegment = bestSegments[this.player.currentStage];
+                    if (!recordSegment || segmentTime < recordSegment) {
+                        bestSegments[this.player.currentStage] = parseFloat(segmentTime.toFixed(2));
+                        localStorage.setItem('roblox_best_segments', JSON.stringify(bestSegments));
+                        isGoldSplit = true;
+                    }
+                } catch (e) {}
+
                 // Split delta comparison against best saved splits
                 const splitEl = document.getElementById('stat-split');
                 if (splitEl) {
@@ -297,8 +312,13 @@ class RobloxGame {
                         if (pbSplit !== undefined) {
                             const diff = currentSplit - pbSplit;
                             const sign = diff > 0 ? '+' : '';
-                            splitEl.textContent = `${sign}${diff.toFixed(2)}s`;
-                            splitEl.style.color = diff <= 0 ? '#00FF88' : '#FF4444';
+                            if (isGoldSplit) {
+                                splitEl.textContent = `${sign}${diff.toFixed(2)}s ⚡ GOLD`;
+                                splitEl.style.color = '#FFD700';
+                            } else {
+                                splitEl.textContent = `${sign}${diff.toFixed(2)}s`;
+                                splitEl.style.color = diff <= 0 ? '#00FF88' : '#FF4444';
+                            }
                             splitEl.style.display = 'inline';
                             clearTimeout(this._splitTimeout);
                             this._splitTimeout = setTimeout(() => {
@@ -306,6 +326,10 @@ class RobloxGame {
                             }, 3500);
                         }
                     } catch (e) {}
+                }
+
+                if (isGoldSplit && this.ui) {
+                    this.ui.showToastBanner(`⚡ GOLD SPLIT! Stage ${this.player.currentStage} Segment PB: ${segmentTime.toFixed(2)}s!`);
                 }
             }
 
@@ -425,8 +449,10 @@ class RobloxGame {
         if (!modal || !list) return;
 
         let storedSplits = {};
+        let bestSegments = {};
         try {
             storedSplits = JSON.parse(localStorage.getItem('roblox_obby_splits') || '{}');
+            bestSegments = JSON.parse(localStorage.getItem('roblox_best_segments') || '{}');
         } catch (e) {}
 
         const stageTitles = {
@@ -453,7 +479,10 @@ class RobloxGame {
             row.innerHTML = `
                 <div>
                     <div style="font-weight:600; color:#FFF; font-size:13px;">${stageTitles[i] || `Stage ${i}`}</div>
-                    <div style="font-size:11px; color:#888;">Segment: ${segment !== null ? segment.toFixed(2) + 's' : '--'}</div>
+                    <div style="font-size:11px; color:#888;">
+                        Segment: ${segment !== null ? segment.toFixed(2) + 's' : '--'}
+                        ${bestSegments[i] ? `<span style="color:#FFD700; margin-left:8px;">⚡ PB: ${bestSegments[i]}s</span>` : ''}
+                    </div>
                 </div>
                 <div style="font-weight:bold; color:${splitTime !== undefined ? '#00FF88' : '#666'}; font-size:14px;">
                     ${splitTime !== undefined ? this.formatTime(splitTime) : '--:--.--'}
