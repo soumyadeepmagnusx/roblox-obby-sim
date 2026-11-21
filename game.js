@@ -71,6 +71,7 @@ class RobloxGame {
         this.hats = new RobloxHeadwearManager(this.scene, this.player, this.sound, this.ui);
         this.spectator = new RobloxSpectatorCam(this.camera, this.scene, this.player, this.network, this.ui, this.sound);
         this.skinCustomizer = new RobloxSkinCustomizer(this.player, this.sound, this.ui);
+        this.levelSystem = new RobloxLevelSystem(this.player, this.particles, this.sound, this.ui, this.collectibles);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
@@ -281,6 +282,9 @@ class RobloxGame {
                 if (this.teleport) {
                     this.teleport.recordStageUnlock(this.player.currentStage);
                 }
+                if (this.levelSystem) {
+                    this.levelSystem.addXP(50, `Stage ${this.player.currentStage}`);
+                }
 
                 // Split delta comparison against best saved splits
                 const splitEl = document.getElementById('stat-split');
@@ -314,6 +318,9 @@ class RobloxGame {
                     if (this.speedrunTime <= 120) {
                         this.achievements.unlock('speed_demon');
                     }
+                }
+                if (this.levelSystem) {
+                    this.levelSystem.addXP(200, 'Obby Completed');
                 }
 
                 const finalFormatted = this.formatTime(this.speedrunTime);
