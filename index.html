@@ -811,6 +811,9 @@
         <button id="btn-skin" class="hud-btn" onclick="if(window.game && window.game.skinCustomizer) window.game.skinCustomizer.toggleModal()" title="Customize Avatar Body Colors & Skin">
             🎨 Skin
         </button>
+        <button id="btn-stats" class="hud-btn" onclick="if(window.game && window.game.telemetry) window.game.telemetry.toggle()" title="Toggle Performance & Ping Telemetry (Key F3)">
+            📊 Stats (F3)
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1300,6 +1303,7 @@
     <script src="skin_customizer.js"></script>
     <script src="level_system.js"></script>
     <script src="wind_system.js"></script>
+    <script src="telemetry.js"></script>
     <script src="game.js"></script>
 
     <script>
