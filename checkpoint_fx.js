@@ -23,7 +23,8 @@ class RobloxCheckpointFX {
             7: "🌌 STAGE 7: CYBER NEBULA",
             8: "🌋 STAGE 8: INFERNO VOLCANIC CORE",
             9: "👑 STAGE 9: SUMMIT OF THE TITANS",
-            10: "🌌 STAGE 10: THE VOID DIMENSION"
+            10: "🌌 STAGE 10: THE VOID DIMENSION",
+            11: "🌈 STAGE 11: CELESTIAL AURORA"
         };
 
         this.pillars = [];

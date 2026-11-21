@@ -493,6 +493,7 @@ class RobloxWorld {
         this.createInfernoVolcanoStage();
         this.createTitansSummitStage();
         this.createVoidDimensionStage();
+        this.createCelestialAuroraStage();
     }
 
     createZeroGravityZone() {
@@ -916,6 +917,86 @@ class RobloxWorld {
         this.voidCore = core;
     }
 
+    createCelestialAuroraStage() {
+        // ==========================================
+        // STAGE 11: CELESTIAL AURORA HIGHWAY
+        // ==========================================
+        // Bridge from Stage 10 Apex (z: 815 to 828)
+        this.addBlock(0, 99, 821, 6, 1.5, 12, this.mats.gold);
+
+        // Checkpoint 11
+        this.addCheckpoint(11, 0, 100.2, 835, 6);
+
+        // Iridescent rainbow prism steps
+        const rainbowColors = [0xFF0055, 0xFF7700, 0xFFDD00, 0x00FF66, 0x00DDFF, 0x9933FF];
+        const steps = [
+            { x: -5, y: 102.0, z: 848 },
+            { x:  4, y: 104.5, z: 860 },
+            { x: -4, y: 107.0, z: 872 },
+            { x:  5, y: 110.0, z: 884 },
+            { x: -3, y: 113.5, z: 896 },
+            { x:  0, y: 117.0, z: 908 }
+        ];
+
+        steps.forEach((s, idx) => {
+            const col = rainbowColors[idx % rainbowColors.length];
+            const mat = new THREE.MeshStandardMaterial({
+                color: col,
+                emissive: col,
+                emissiveIntensity: 0.65,
+                roughness: 0.2,
+                metalness: 0.6
+            });
+            this.addBlock(s.x, s.y - 1, s.z, 5, 2, 5, mat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity spinning aurora hazard rings
+        this.addSpinningHazard(0, 108, 872, 12, 2.6, 'y');
+        this.addSpinningHazard(0, 114, 896, 11, -2.8, 'y');
+
+        // Celestial Aurora Halo Ring floating above Stage 11
+        const haloGeo = new THREE.TorusGeometry(8.0, 0.45, 16, 48);
+        const haloMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x00FFAA,
+            emissiveIntensity: 1.0,
+            wireframe: true
+        });
+        const halo = new THREE.Mesh(haloGeo, haloMat);
+        halo.position.set(0, 118, 880);
+        halo.rotation.x = Math.PI / 4;
+        this.scene.add(halo);
+        this.auroraHalo = halo;
+
+        // Final Celestial Zenith Shrine Platform
+        this.addBlock(0, 119, 924, 24, 2.5, 24, this.mats.gold);
+
+        // 4 Celestial Crystal Monoliths
+        const crystalMat = new THREE.MeshStandardMaterial({
+            color: 0xFF00FF,
+            emissive: 0xCC00CC,
+            emissiveIntensity: 0.8
+        });
+        this.addBlock(-9, 126, 915, 2, 12, 2, crystalMat);
+        this.addBlock(9, 126, 915, 2, 12, 2, crystalMat);
+        this.addBlock(-9, 126, 933, 2, 12, 2, crystalMat);
+        this.addBlock(9, 126, 933, 2, 12, 2, crystalMat);
+
+        // Floating Victory Star
+        const starGeo = new THREE.IcosahedronGeometry(3.0, 0);
+        const starMat = new THREE.MeshStandardMaterial({
+            color: 0xFFFF00,
+            emissive: 0xFFAA00,
+            emissiveIntensity: 1.0,
+            roughness: 0.1
+        });
+        const star = new THREE.Mesh(starGeo, starMat);
+        star.position.set(0, 126, 924);
+        this.scene.add(star);
+        this.auroraStar = star;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1216,6 +1297,16 @@ class RobloxWorld {
         if (this.voidCore) {
             this.voidCore.rotation.y += dt * 1.8;
             this.voidCore.position.y = 103 + Math.sin(Date.now() * 0.0035) * 0.5;
+        }
+
+        // Celestial Aurora animations in Stage 11
+        if (this.auroraHalo) {
+            this.auroraHalo.rotation.z += dt * 1.2;
+            this.auroraHalo.rotation.y += dt * 0.8;
+        }
+        if (this.auroraStar) {
+            this.auroraStar.rotation.y += dt * 2.2;
+            this.auroraStar.position.y = 126 + Math.sin(Date.now() * 0.003) * 0.5;
         }
 
         // Checkpoint proximity checks
