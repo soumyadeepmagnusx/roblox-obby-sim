@@ -68,6 +68,10 @@ flowchart TD
 | **Avatar Wardrobe** | `U` (or click 🎩) | Equips 3D cosmetic accessories: Fedora, Crown, Angel Wings, Katanas, DJ Cans |
 | **3D Headwear & Pets** | `N` (or click 🧢) | Cycles 5 wearable accessories: Stetson, Wizard Hat, Snapback, Cyber Visor, Kitty |
 | **Spectator Camera** | `F` (or click 👁️) | Toggles 3D Obby Spectator Camera mode to orbit peers or view scenic stage spots |
+| **Double Jump** | Double `Space` | Mid-air second jump boost with crystal burst particles and ascending chime |
+| **Avatar Skin Tint** | Click 🎨 Skin | Customizes Head, Torso, Arms, and Legs with classic Roblox color themes |
+| **System Telemetry** | `F3` (or click 📊) | Toggles live FPS, frame render latency ms, renderer draw calls, and network ping |
+| **Squad & Clan Tags** | Click 🛡️ Clan | Equips clan tag prefix (e.g. `[PRO]`, `[TITN]`, `[VOID]`) in overhead nametag & chat |
 | **Audio Mixer** | Click 🎚️ Audio | Multi-channel volume mixer for Master, Music, SFX, and Ambience channels |
 | **Prestige Titles & Ranks**| Click Titles 🎖️ | Displays floating rank nameplates (Noob, Jumper, Champion, Legend) |
 | **Obby Quest Board** | `Q` (or click 📜) | Tracks live milestone quests on HUD and grants coin bounties |
@@ -159,8 +163,13 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 33. 🇧🇩 **Majhe Majhe Tobo Dekha Pai** (Rabindranath Tagore Devotional Masterpiece)
 34. 🕹️ **Mii Channel Theme** (Kazumi Totaka Nintendo Wii Classic)
 35. 🇧🇩 **Bhenge Mor Ghorer Chabi** (Rabindranath Tagore Classic)
+36. 🇧🇩 **Ami Chini Go Chini Tomare** (Rabindranath Tagore Timeless Lyric)
+37. 🕹️ **The Legend of Zelda - Overworld Theme** (Koji Kondo Classic Chiptune)
+38. 🇧🇩 **O Je Mane Na Mana** (Rabindranath Tagore Expressive Raga)
+39. 🎮 **Doom E1M1 - At Doom's Gate** (Bobby Prince Adrenaline Metal Chiptune)
+40. 🇧🇩 **Shei Tumi Keno Eto Ochena Hole** (Ayub Bachu Iconic Rock Ballad)
 
-*Features 35 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
+*Features 40 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
 ---
 
@@ -279,8 +288,44 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **High-Altitude Crystal Bridges**: Translucent purple and cyan crystal stepping blocks ascending into the upper atmosphere.
 * **The Grand Champion Throne**: Golden royal throne with ruby backrest and rotating animated Celestial Crown with gems.
 
+### 🌌 Stage 10: The Void Dimension & Anti-Matter Rift Vortex (`world.js`, `checkpoint_fx.js`)
+* **Anti-Matter Void Traversal**: Deep purple anti-matter stepping platforms floating over an event horizon chasm.
+* **Spinning Hazard Lasers & Rift Vortex**: Rotating quad-arm laser hurdles and swirling particle singularity with checkpoint beacon fx.
+
+### ✨ Stage 11: Celestial Aurora Highway & Prismatic Apex (`world.js`, `checkpoint_fx.js`)
+* **Iridescent Prism Ramps**: Translucent aurora highway with rainbow-tinted crystal paths leading to the sky summit.
+* **Celestial Halo Beacon**: Floating star crown monolith emitting ascending aurora particle beams and golden victory studs.
+
+### 🆙 Player Level & XP Progression System (`level_system.js`)
+* **Dynamic XP Tracking**: Earn experience points by clearing checkpoints, collecting studs, finding relics, and completing daily quests.
+* **Level-Up Celebrations**: Floating gold XP banner, ascending sound fanfare, and persistent level badges on the HUD.
+
+### 🦘 Double Jump & Aerial Mobility (`player.js`, `audio.js`)
+* **Acrobatic Air Jump**: Press `Space` mid-air to trigger an additional vertical impulse with cyan ring shockwaves and acoustic chimes.
+* **Refined Parkour**: Enables fluid gap recoveries and challenging aerial shortcuts across advanced stages.
+
+### 🎨 Customizable Avatar Skin Tone & Color Palette (`skin_customizer.js`)
+* **Classic Robloxian Customization**: Independent color selectors for Head, Torso, Left/Right Arms, and Left/Right Legs.
+* **Pre-Engineered Themes**: Quick-pick palettes (Classic Noob, Neon Cyber, Golden God, Midnight Shadow, Pastel Dream).
+
+### 💨 High-Altitude Wind Gusts & Turbulence Simulation (`wind_system.js`)
+* **Atmospheric Force Simulation**: Directional wind gusts at upper obby altitudes that gently push players in mid-air.
+* **Breeze VFX & Audio**: Procedural wind streak particles and dynamic whistling wind sound effects that scale with elevation.
+
+### 💎 Ancient Relic Gems & Secret Hunter Tracker (`collectibles.js`)
+* **Hidden Amethyst Relics**: 5 rare high-value relics tucked away in covert alcoves and secret sky perches.
+* **HUD Relic Counter**: Tracks discovered relics with unique chime fanfare and massive +15 stud bounties per crystal.
+
+### 📊 Real-Time Performance Telemetry Monitor (`telemetry.js`, Key `F3`)
+* **Live System Metrics**: Diagnostic overlay displaying real-time FPS, frame render latency (ms), draw call counts, and network latency ping.
+* **Sparkline Graphs**: 60-frame rolling performance visualizer to diagnose frame pacing and client smoothness.
+
+### 🛡️ Clan Tags & Overhead Squad Nametags (`clans.js`)
+* **Squad Customizer**: Equip clan tag prefixes like `[PRO]`, `[TITN]`, `[VOID]`, `[NOOB]`, `[GOD]`, and `[VIP]`.
+* **Overhead Nametags & Chat**: Clan badges dynamically render beside player names in multiplayer 3D nametags and global chat.
+
 ### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`)
-* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 9.
+* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 11 with Zenith podium finishes.
 
 ### 🎚️ Multi-Channel Audio Mixer (`sound_mixer.js`)
 * **Dedicated Channel Faders**: Real-time volume sliders for Master, Music, Sound Effects (SFX), and Ambience with quick EQ presets (Default, Night, Arcade, Bass Boost).
@@ -297,8 +342,8 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 ### ⏳ Real-Time Daily Quest & Streak Reset Countdowns (`quests.js`, `streak.js`)
 * **Synchronized UTC Timers**: Real-time ticking countdown badges in the HUD, quest board, and streak reward modals.
 
-### 📸 Authentic Photo Mode Canvas Watermark & Preview Toast (`photo_mode.js`)
-* **Cinema Capture**: High-res PNG export with authentic Roblox Obby glass watermark badge, aperture vignette shading, and floating preview toast thumbnail.
+### 📸 Authentic Photo Mode Canvas Watermark, Depth-of-Field & Framing Guides (`photo_mode.js`)
+* **Cinema Capture**: High-res PNG export with authentic Roblox Obby glass watermark badge, aperture vignette shading, rule-of-thirds grid, and fly camera speed toggle.
 
 ---
 
