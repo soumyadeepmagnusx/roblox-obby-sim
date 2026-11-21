@@ -13,6 +13,8 @@ class RobloxPlayer {
         this.jumpForce = 15.5;
         this.gravity = 36.0;
         this.isGrounded = false;
+        this.canDoubleJump = true;
+        this.jumpKeyPressed = false;
         this.isDead = false;
         this.health = 100;
         this.facingAngle = 0;
@@ -480,17 +482,37 @@ class RobloxPlayer {
             if (Math.abs(this.velocity.z) < 0.05) this.velocity.z = 0;
         }
 
-        // Jump
-        if (inputState.jump && this.isGrounded) {
-            this.velocity.y = this.jumpForce;
-            this.isGrounded = false;
-            this.sound.playJump();
-            if (window.game && window.game.particles && window.game.particles.spawnJumpDust) {
-                window.game.particles.spawnJumpDust(this.position);
+        // Jump & Mid-Air Double Jump
+        if (inputState.jump && !this.jumpKeyPressed) {
+            if (this.isGrounded) {
+                this.velocity.y = this.jumpForce;
+                this.isGrounded = false;
+                this.canDoubleJump = true;
+                this.sound.playJump();
+                if (window.game && window.game.particles && window.game.particles.spawnJumpDust) {
+                    window.game.particles.spawnJumpDust(this.position);
+                }
+                if (window.game && window.game.jumpCombos) {
+                    window.game.jumpCombos.onJump();
+                }
+            } else if (this.canDoubleJump) {
+                this.velocity.y = this.jumpForce * 0.94;
+                this.canDoubleJump = false;
+                if (this.sound && this.sound.playDoubleJump) {
+                    this.sound.playDoubleJump();
+                } else {
+                    this.sound.playJump();
+                }
+                if (window.game && window.game.particles && window.game.particles.spawnSurfaceStep) {
+                    window.game.particles.spawnSurfaceStep(this.position, 'crystal');
+                }
+                if (window.game && window.game.jumpCombos) {
+                    window.game.jumpCombos.onJump();
+                }
             }
-            if (window.game && window.game.jumpCombos) {
-                window.game.jumpCombos.onJump();
-            }
+            this.jumpKeyPressed = true;
+        } else if (!inputState.jump) {
+            this.jumpKeyPressed = false;
         }
 
         // Apply Gravity
@@ -518,6 +540,9 @@ class RobloxPlayer {
 
         this.position.copy(collisionResult.newPosition);
         this.isGrounded = collisionResult.grounded;
+        if (this.isGrounded) {
+            this.canDoubleJump = true;
+        }
 
         // Trigger landing shockwave on hard drop impacts
         if (!wasGrounded && this.isGrounded && preImpactVelY < -14) {

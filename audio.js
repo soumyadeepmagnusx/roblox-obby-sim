@@ -53,6 +53,28 @@ class SoundEngine {
         osc.stop(now + 0.18);
     }
 
+    // Ascending double jump whoosh
+    playDoubleJump() {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.18);
+
+        gain.gain.setValueAtTime(0.20 * this.masterVolume, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.20);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.22);
+    }
+
     // Iconic classic Roblox "OOF!" death sound
     playOof() {
         if (!this.enabled) return;
