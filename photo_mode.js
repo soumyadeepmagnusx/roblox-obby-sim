@@ -21,6 +21,8 @@ class RobloxPhotoMode {
         this.currentFov = camera.fov;
         this.currentRoll = 0;
         this.currentFilter = 'none';
+        this.flySpeedMultiplier = 1.0;
+        this.depthOfField = false;
 
         // Freecam flight state
         this.isFreecam = false;
@@ -100,6 +102,16 @@ class RobloxPhotoMode {
                     🚁 <span>Freecam: OFF</span>
                 </button>
 
+                <!-- Flight Speed Toggle -->
+                <button id="pm-speed-btn" style="background:#2C3E50; border:1px solid #555; color:#FFF; font-size:11px; font-weight:bold; padding:8px 12px; border-radius:8px; cursor:pointer;">
+                    ⚡ Speed: 1.0x
+                </button>
+
+                <!-- Depth of Field Focus Toggle -->
+                <button id="pm-dof-btn" style="background:#2C3E50; border:1px solid #555; color:#FFF; font-size:11px; font-weight:bold; padding:8px 12px; border-radius:8px; cursor:pointer;">
+                    🔍 Focus: Normal
+                </button>
+
                 <!-- Capture Screenshot Button -->
                 <button id="pm-capture-btn" style="background:linear-gradient(135deg, #FF6B00, #FF8E53); border:none; color:#FFF; font-size:13px; font-weight:bold; padding:10px 22px; border-radius:8px; cursor:pointer; box-shadow:0 4px 15px rgba(255,107,0,0.4); display:flex; align-items:center; gap:8px;">
                     📸 <span>Take Photo</span>
@@ -129,6 +141,14 @@ class RobloxPhotoMode {
 
         document.getElementById('pm-freecam-btn').addEventListener('click', () => {
             this.toggleFreecam();
+        });
+
+        document.getElementById('pm-speed-btn').addEventListener('click', () => {
+            this.cycleFlightSpeed();
+        });
+
+        document.getElementById('pm-dof-btn').addEventListener('click', () => {
+            this.toggleDepthOfField();
         });
 
         document.getElementById('pm-capture-btn').addEventListener('click', () => {
@@ -229,11 +249,32 @@ class RobloxPhotoMode {
         }
     }
 
+    cycleFlightSpeed() {
+        const speeds = [0.5, 1.0, 2.5];
+        const idx = speeds.indexOf(this.flySpeedMultiplier);
+        this.flySpeedMultiplier = speeds[(idx + 1) % speeds.length];
+        const btn = document.getElementById('pm-speed-btn');
+        if (btn) btn.innerHTML = `⚡ Speed: ${this.flySpeedMultiplier.toFixed(1)}x`;
+        if (this.sound && this.sound.playStep) this.sound.playStep('stone');
+    }
+
+    toggleDepthOfField() {
+        this.depthOfField = !this.depthOfField;
+        const btn = document.getElementById('pm-dof-btn');
+        if (btn) btn.innerHTML = `🔍 Focus: ${this.depthOfField ? 'Macro DoF' : 'Normal'}`;
+
+        const grid = document.getElementById('pm-grid');
+        if (grid) {
+            grid.style.boxShadow = this.depthOfField ? 'inset 0 0 120px rgba(0,0,0,0.85)' : 'none';
+        }
+        if (this.sound && this.sound.playCoin) this.sound.playCoin();
+    }
+
     update(dt, inputState) {
         if (!this.isActive || !this.isFreecam) return;
 
-        // Drone freecam movement
-        const speed = 25 * dt;
+        // Drone freecam movement with speed multiplier
+        const speed = 25 * this.flySpeedMultiplier * dt;
         const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), this.freecamYaw);
         const right = new THREE.Vector3(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), this.freecamYaw);
 
