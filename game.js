@@ -70,6 +70,7 @@ class RobloxGame {
         this.soundMixer = new RobloxSoundMixer(this.sound, this.music);
         this.hats = new RobloxHeadwearManager(this.scene, this.player, this.sound, this.ui);
         this.spectator = new RobloxSpectatorCam(this.camera, this.scene, this.player, this.network, this.ui, this.sound);
+        this.skinCustomizer = new RobloxSkinCustomizer(this.player, this.sound, this.ui);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;

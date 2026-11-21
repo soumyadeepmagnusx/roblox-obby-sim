@@ -808,6 +808,9 @@
         <button id="btn-spectate" class="hud-btn" onclick="if(window.game && window.game.spectator) window.game.spectator.toggleSpectator()" title="Toggle Spectator Cinema Mode (Key F)">
             👁️ Spectate (F)
         </button>
+        <button id="btn-skin" class="hud-btn" onclick="if(window.game && window.game.skinCustomizer) window.game.skinCustomizer.toggleModal()" title="Customize Avatar Body Colors & Skin">
+            🎨 Skin
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1289,6 +1292,7 @@
     <script src="sound_mixer.js"></script>
     <script src="hats.js"></script>
     <script src="spectator.js"></script>
+    <script src="skin_customizer.js"></script>
     <script src="game.js"></script>
 
     <script>
