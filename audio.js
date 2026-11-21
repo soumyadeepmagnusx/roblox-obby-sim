@@ -40,8 +40,9 @@ class SoundEngine {
         const gain = this.ctx.createGain();
 
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(160, now);
-        osc.frequency.exponentialRampToValueAtTime(420, now + 0.15);
+        const jitter = 0.94 + Math.random() * 0.12;
+        osc.frequency.setValueAtTime(160 * jitter, now);
+        osc.frequency.exponentialRampToValueAtTime(420 * jitter, now + 0.15);
 
         gain.gain.setValueAtTime(0.3 * this.masterVolume, now);
         gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
@@ -297,6 +298,9 @@ class SoundEngine {
         }
 
         osc.type = oscType;
+        const stepJitter = 0.94 + Math.random() * 0.12;
+        startFreq *= stepJitter;
+        endFreq *= stepJitter;
         osc.frequency.setValueAtTime(startFreq, now);
         osc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.05);
 
@@ -308,6 +312,52 @@ class SoundEngine {
 
         osc.start(now);
         osc.stop(now + 0.06);
+    }
+
+    // High-speed air dash sonic whoosh
+    playAirDash() {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(120, now + 0.14);
+
+        gain.gain.setValueAtTime(0.18 * this.masterVolume, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.15);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.16);
+    }
+
+    // Ambient high-altitude wind howling gust
+    playWindGust() {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.linearRampToValueAtTime(180, now + 0.6);
+        osc.frequency.linearRampToValueAtTime(90, now + 1.2);
+
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.08 * this.masterVolume, now + 0.5);
+        gain.gain.linearRampToValueAtTime(0.001, now + 1.3);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 1.35);
     }
 
     // High velocity aerodynamic wind rush sound for free-falling or boosting
