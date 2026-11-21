@@ -74,6 +74,7 @@ class RobloxGame {
         this.levelSystem = new RobloxLevelSystem(this.player, this.particles, this.sound, this.ui, this.collectibles);
         this.wind = new RobloxWindSystem(this.scene, this.player, this.sound, this.ui);
         this.telemetry = new RobloxTelemetry(this.renderer, this.scene, this.network, this.ui);
+        this.clanSystem = new RobloxClanSystem(this.player, this.ui, this.sound);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;

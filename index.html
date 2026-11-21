@@ -814,6 +814,9 @@
         <button id="btn-stats" class="hud-btn" onclick="if(window.game && window.game.telemetry) window.game.telemetry.toggle()" title="Toggle Performance & Ping Telemetry (Key F3)">
             📊 Stats (F3)
         </button>
+        <button id="btn-clan" class="hud-btn" onclick="if(window.game && window.game.clanSystem) window.game.clanSystem.toggleModal()" title="Customize Squad & Clan Tag">
+            🛡️ Clan
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1304,6 +1307,7 @@
     <script src="level_system.js"></script>
     <script src="wind_system.js"></script>
     <script src="telemetry.js"></script>
+    <script src="clans.js"></script>
     <script src="game.js"></script>
 
     <script>
