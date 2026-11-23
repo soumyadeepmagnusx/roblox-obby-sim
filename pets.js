@@ -18,6 +18,9 @@ class RobloxPetManager {
         this.petMesh = null;
         this.petTargetPos = new THREE.Vector3();
         this.bobTime = 0;
+        this.trickTimer = 0;
+        this.activeTrick = 'none';
+        this.trickRotation = 0;
 
         // Inventory: petId -> count/unlocked
         this.unlockedPets = JSON.parse(localStorage.getItem('roblox_pets') || '["doge"]');
@@ -305,6 +308,18 @@ class RobloxPetManager {
         }
     }
 
+    triggerTrick(type = 'backflip') {
+        if (!this.petMesh || this.activeTrick !== 'none') return;
+        this.activeTrick = type;
+        this.trickRotation = 0;
+        this.trickTimer = 0.8; // seconds
+
+        if (this.sound && this.sound.playCoin) this.sound.playCoin();
+        if (this.particleEngine && this.particleEngine.spawnSparkles && this.petMesh.position) {
+            this.particleEngine.spawnSparkles(this.petMesh.position);
+        }
+    }
+
     hatchEgg(collectibles) {
         if (!collectibles || collectibles.coins < 50) {
             this.sound.playOof();
@@ -365,6 +380,20 @@ class RobloxPetManager {
 
             // Look towards player direction
             this.petMesh.rotation.y = THREE.MathUtils.lerp(this.petMesh.rotation.y, facing, 6 * dt);
+
+            // Handle Active Trick Animation
+            if (this.activeTrick !== 'none' && this.trickTimer > 0) {
+                this.trickTimer -= dt;
+                if (this.activeTrick === 'backflip') {
+                    this.petMesh.rotation.x += dt * Math.PI * 3.5;
+                } else if (this.activeTrick === 'spin') {
+                    this.petMesh.rotation.y += dt * Math.PI * 5.0;
+                }
+                if (this.trickTimer <= 0) {
+                    this.activeTrick = 'none';
+                    this.petMesh.rotation.x = 0;
+                }
+            }
 
             // Dragon wings flapping animation
             if (this.petMesh.userData && this.petMesh.userData.leftWing) {
