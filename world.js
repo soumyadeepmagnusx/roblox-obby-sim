@@ -495,6 +495,7 @@ class RobloxWorld {
         this.createVoidDimensionStage();
         this.createCelestialAuroraStage();
         this.createDragonFireSpireStage();
+        this.createQuantumMatrixStage();
     }
 
     createZeroGravityZone() {
@@ -1084,6 +1085,97 @@ class RobloxWorld {
         this.dragonCore = orb;
     }
 
+    createQuantumMatrixStage() {
+        // ==========================================
+        // STAGE 13: QUANTUM CYBER MATRIX
+        // ==========================================
+        // Bridge from Stage 12 Dragon Apex (z: 1057 to 1070)
+        this.addBlock(0, 140, 1064, 6, 1.5, 12, this.mats.gold);
+
+        // Checkpoint 13
+        this.addCheckpoint(13, 0, 141.2, 1076, 6);
+
+        // Quantum Matrix Materials
+        const quantumMatrix = new THREE.MeshStandardMaterial({
+            color: 0x050C1A,
+            metalness: 0.9,
+            roughness: 0.15
+        });
+        const quantumCyan = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x00AAFF,
+            emissiveIntensity: 0.85,
+            roughness: 0.2
+        });
+        const quantumMagenta = new THREE.MeshStandardMaterial({
+            color: 0xFF00AA,
+            emissive: 0xFF0066,
+            emissiveIntensity: 0.85,
+            roughness: 0.2
+        });
+
+        // Ascending Quantum Voxel Steps
+        const matrixSteps = [
+            { x: -5, y: 143.0, z: 1090 },
+            { x:  4, y: 145.5, z: 1102 },
+            { x: -5, y: 148.0, z: 1114 },
+            { x:  4, y: 151.0, z: 1126 },
+            { x: -3, y: 154.0, z: 1138 },
+            { x:  0, y: 157.0, z: 1150 }
+        ];
+
+        matrixSteps.forEach((s, idx) => {
+            const mat = (idx % 2 === 0) ? quantumCyan : quantumMagenta;
+            this.addBlock(s.x, s.y - 1.5, s.z, 5, 3, 5, quantumMatrix);
+            this.addBlock(s.x, s.y + 0.1, s.z, 4.6, 0.25, 4.6, mat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-speed spinning quantum laser hazard beams
+        this.addSpinningHazard(0, 147, 1102, 12, 2.8, 'y');
+        this.addSpinningHazard(0, 153, 1126, 11, -3.0, 'y');
+
+        // Quantum Matrix Portal Torus
+        const portalGeo = new THREE.TorusGeometry(5.0, 0.6, 16, 36);
+        const portalMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x0088FF,
+            emissiveIntensity: 1.0,
+            wireframe: true
+        });
+        const portal = new THREE.Mesh(portalGeo, portalMat);
+        portal.position.set(0, 156, 1138);
+        this.scene.add(portal);
+        this.quantumPortal = portal;
+
+        // Quantum Matrix Apex Zenith Sanctuary
+        this.addBlock(0, 159, 1168, 22, 2.5, 22, quantumMatrix);
+
+        // 4 Cyber Data Monoliths
+        const monoMat = new THREE.MeshStandardMaterial({
+            color: 0x001133,
+            emissive: 0x0066FF,
+            emissiveIntensity: 0.75
+        });
+        this.addBlock(-8, 166, 1160, 2, 12, 2, monoMat);
+        this.addBlock(8, 166, 1160, 2, 12, 2, monoMat);
+        this.addBlock(-8, 166, 1176, 2, 12, 2, monoMat);
+        this.addBlock(8, 166, 1176, 2, 12, 2, monoMat);
+
+        // Floating Quantum Singularity Core
+        const coreGeo = new THREE.OctahedronGeometry(3.0, 0);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0xFF00FF,
+            emissiveIntensity: 1.0,
+            roughness: 0.1
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        core.position.set(0, 166, 1168);
+        this.scene.add(core);
+        this.quantumCore = core;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1401,6 +1493,17 @@ class RobloxWorld {
             this.dragonCore.rotation.y += dt * 1.8;
             this.dragonCore.rotation.x += dt * 0.9;
             this.dragonCore.position.y = 145 + Math.sin(Date.now() * 0.004) * 0.6;
+        }
+
+        // Quantum Cyber Matrix animations in Stage 13
+        if (this.quantumPortal) {
+            this.quantumPortal.rotation.z += dt * 1.5;
+            this.quantumPortal.rotation.x += dt * 0.8;
+        }
+        if (this.quantumCore) {
+            this.quantumCore.rotation.y += dt * 2.5;
+            this.quantumCore.rotation.z += dt * 1.2;
+            this.quantumCore.position.y = 166 + Math.sin(Date.now() * 0.005) * 0.5;
         }
 
         // Checkpoint proximity checks

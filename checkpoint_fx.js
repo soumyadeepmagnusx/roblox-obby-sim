@@ -25,7 +25,8 @@ class RobloxCheckpointFX {
             9: "👑 STAGE 9: SUMMIT OF THE TITANS",
             10: "🌌 STAGE 10: THE VOID DIMENSION",
             11: "🌈 STAGE 11: CELESTIAL AURORA",
-            12: "🐉 STAGE 12: DRAGON FIRE SPIRE"
+            12: "🐉 STAGE 12: DRAGON FIRE SPIRE",
+            13: "⚡ STAGE 13: QUANTUM MATRIX"
         };
 
         this.pillars = [];
