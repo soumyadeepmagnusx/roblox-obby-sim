@@ -13,7 +13,7 @@ class RobloxWeather {
         this.sound = sound;
         this.ui = ui;
 
-        this.modes = ['clear', 'rain', 'snow', 'meteor'];
+        this.modes = ['clear', 'rain', 'snow', 'meteor', 'festival'];
         this.modeIndex = 0;
         this.currentMode = 'clear';
 
@@ -21,11 +21,52 @@ class RobloxWeather {
         this.rainSystem = null;
         this.snowSystem = null;
         this.meteorGroup = null;
+        this.festivalSystem = null;
 
         this.initRain();
         this.initSnow();
         this.initMeteors();
+        this.initFestival();
         this.bindEvents();
+    }
+
+    initFestival() {
+        const count = 450;
+        const geom = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+
+        const palette = [
+            [1.0, 0.85, 0.2],  // Gold
+            [0.2, 0.9, 1.0],   // Cyan
+            [1.0, 0.2, 0.5],   // Crimson
+            [0.2, 1.0, 0.4]    // Emerald
+        ];
+
+        for (let i = 0; i < count; i++) {
+            positions[i * 3 + 0] = (Math.random() - 0.5) * 120;
+            positions[i * 3 + 1] = Math.random() * 55;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 120;
+
+            const c = palette[i % palette.length];
+            colors[i * 3 + 0] = c[0];
+            colors[i * 3 + 1] = c[1];
+            colors[i * 3 + 2] = c[2];
+        }
+
+        geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const mat = new THREE.PointsMaterial({
+            size: 2.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        this.festivalSystem = new THREE.Points(geom, mat);
+        this.festivalSystem.visible = false;
+        this.scene.add(this.festivalSystem);
     }
 
     initRain() {
@@ -140,12 +181,14 @@ class RobloxWeather {
         this.rainSystem.visible = (mode === 'rain');
         this.snowSystem.visible = (mode === 'snow');
         this.meteorGroup.visible = (mode === 'meteor');
+        if (this.festivalSystem) this.festivalSystem.visible = (mode === 'festival');
 
         const labels = {
             clear: '☀️ Clear Sky',
             rain: '🌧️ Downpour Rain',
             snow: '❄️ Winter Snow',
-            meteor: '☄️ Meteor Shower'
+            meteor: '☄️ Meteor Shower',
+            festival: '🎄 Starlight Festival'
         };
 
         const btn = document.getElementById('btn-weather');
@@ -186,6 +229,21 @@ class RobloxWeather {
                 }
             }
             this.snowSystem.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Starlight Festival Update
+        if (this.festivalSystem && this.festivalSystem.visible) {
+            this.festivalSystem.position.set(playerPos.x, playerPos.y, playerPos.z);
+            const pos = this.festivalSystem.geometry.attributes.position.array;
+            for (let i = 0; i < pos.length; i += 3) {
+                pos[i + 1] -= dt * 8; // gentle float
+                pos[i + 0] += Math.sin(Date.now() * 0.003 + i) * dt * 4.0;
+                pos[i + 2] += Math.cos(Date.now() * 0.003 + i) * dt * 4.0;
+                if (pos[i + 1] < -10) {
+                    pos[i + 1] = 45 + Math.random() * 10;
+                }
+            }
+            this.festivalSystem.geometry.attributes.position.needsUpdate = true;
         }
 
         // Meteor Shower Update

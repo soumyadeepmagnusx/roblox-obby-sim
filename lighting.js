@@ -65,6 +65,17 @@ class RobloxLightingEngine {
                 sunColor: 0xFF80AB,
                 sunIntensity: 0.85,
                 sunPos: { x: -80, y: 45, z: 70 }
+            },
+            {
+                id: 'festival',
+                name: '🎄 Holiday Starlight Festival',
+                skyColor: 0x071126,
+                fogColor: 0x0D1F3F,
+                ambientColor: 0x64B5F6,
+                ambientIntensity: 0.65,
+                sunColor: 0xFFD700,
+                sunIntensity: 0.90,
+                sunPos: { x: 30, y: 100, z: 50 }
             }
         ];
 
