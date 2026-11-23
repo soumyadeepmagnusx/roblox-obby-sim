@@ -11,13 +11,13 @@ class RobloxDailyStreakManager {
         this.ui = ui;
 
         this.rewardTiers = [
-            { day: 1, coins: 50, label: 'Day 1' },
-            { day: 2, coins: 100, label: 'Day 2' },
-            { day: 3, coins: 150, label: 'Day 3' },
-            { day: 4, coins: 200, label: 'Day 4' },
-            { day: 5, coins: 300, label: 'Day 5' },
-            { day: 6, coins: 400, label: 'Day 6' },
-            { day: 7, coins: 600, label: 'Day 7 Jackpot' }
+            { day: 1, coins: 50, bonus: 'Starter Coins', icon: '🪙', label: 'Day 1' },
+            { day: 2, coins: 100, bonus: '🌙 Moon Elixir', icon: '🧪', label: 'Day 2' },
+            { day: 3, coins: 150, bonus: 'Double Studs', icon: '💰', label: 'Day 3' },
+            { day: 4, coins: 200, bonus: '⚡ Speed Brew', icon: '⚡', label: 'Day 4' },
+            { day: 5, coins: 300, bonus: '🧲 Magnet Potion', icon: '🧲', label: 'Day 5' },
+            { day: 6, coins: 450, bonus: '🛡️ Lava Shield', icon: '🛡️', label: 'Day 6' },
+            { day: 7, coins: 750, bonus: '👑 Royal Jackpot', icon: '👑', label: 'Day 7 Jackpot' }
         ];
 
         this.streak = parseInt(localStorage.getItem('roblox_daily_streak_count') || '0', 10);
@@ -109,12 +109,15 @@ class RobloxDailyStreakManager {
                     ${tier.label}
                 </div>
                 <div style="font-size: 22px; margin: 4px 0;">
-                    ${tier.day === 7 ? '👑' : '🪙'}
+                    ${tier.icon || '🪙'}
                 </div>
                 <div style="font-size: 13px; font-weight: 800; color: #FFD700;">
                     +${tier.coins}
                 </div>
-                <div style="font-size: 10px; margin-top: 6px; font-weight: bold; color: ${isCurrent ? '#FFD700' : isCompleted ? '#2ECC71' : '#666'};">
+                <div style="font-size: 9px; color: #00F0FF; margin-top: 2px;">
+                    ${tier.bonus || 'Bonus'}
+                </div>
+                <div style="font-size: 10px; margin-top: 4px; font-weight: bold; color: ${isCurrent ? '#FFD700' : isCompleted ? '#2ECC71' : '#666'};">
                     ${isCompleted ? '✓ CLAIMED' : isCurrent ? '⚡ READY' : '🔒 LOCKED'}
                 </div>
             `;
