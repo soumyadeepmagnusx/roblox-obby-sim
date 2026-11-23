@@ -10,6 +10,30 @@ class SoundEngine {
         this.bgmPlaying = false;
         this.bgmTimer = null;
         this.masterVolume = 0.5;
+        this.sfxProfile = 'default'; // 'default', 'retro8bit', 'arcade'
+
+        try {
+            if (typeof localStorage !== 'undefined') {
+                const saved = localStorage.getItem('roblox_sfx_profile');
+                if (saved) this.sfxProfile = saved;
+            }
+        } catch (e) {}
+    }
+
+    setSfxProfile(profile) {
+        this.sfxProfile = profile;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('roblox_sfx_profile', profile);
+            }
+        } catch (e) {}
+    }
+
+    cycleSfxProfile() {
+        const profiles = ['default', 'retro8bit', 'arcade'];
+        const nextIdx = (profiles.indexOf(this.sfxProfile) + 1) % profiles.length;
+        this.setSfxProfile(profiles[nextIdx]);
+        return this.sfxProfile;
     }
 
     init() {
@@ -39,10 +63,22 @@ class SoundEngine {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        osc.type = 'triangle';
         const jitter = 0.94 + Math.random() * 0.12;
-        osc.frequency.setValueAtTime(160 * jitter, now);
-        osc.frequency.exponentialRampToValueAtTime(420 * jitter, now + 0.15);
+
+        if (this.sfxProfile === 'retro8bit') {
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(140 * jitter, now);
+            osc.frequency.setValueAtTime(280 * jitter, now + 0.06);
+            osc.frequency.setValueAtTime(440 * jitter, now + 0.12);
+        } else if (this.sfxProfile === 'arcade') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200 * jitter, now);
+            osc.frequency.exponentialRampToValueAtTime(600 * jitter, now + 0.14);
+        } else {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(160 * jitter, now);
+            osc.frequency.exponentialRampToValueAtTime(420 * jitter, now + 0.15);
+        }
 
         gain.gain.setValueAtTime(0.3 * this.masterVolume, now);
         gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
@@ -147,13 +183,16 @@ class SoundEngine {
         if (!this.enabled) return;
         this.init();
         const now = this.ctx.currentTime;
-        const notes = [987.77, 1318.51]; // B5 -> E6
+        const notes = this.sfxProfile === 'retro8bit' 
+            ? [1046.50, 1318.51, 1567.98] // C6 -> E6 -> G6 Mario-style
+            : (this.sfxProfile === 'arcade' ? [880.00, 1760.00] : [987.77, 1318.51]);
+
         notes.forEach((freq, idx) => {
-            const t = now + idx * 0.07;
+            const t = now + idx * 0.06;
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
 
-            osc.type = 'sine';
+            osc.type = this.sfxProfile === 'retro8bit' ? 'square' : (this.sfxProfile === 'arcade' ? 'triangle' : 'sine');
             osc.frequency.setValueAtTime(freq, t);
 
             gain.gain.setValueAtTime(0.3 * this.masterVolume, t);

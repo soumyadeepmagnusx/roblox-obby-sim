@@ -163,6 +163,19 @@ class RobloxSoundMixer {
                                oninput="if(window.game && window.game.soundMixer) window.game.soundMixer.setAmbienceVolume(this.value)"
                                style="width: 100%; accent-color: #9B59B6; cursor: pointer;">
                     </div>
+
+                    <!-- SFX Sound Profile -->
+                    <div style="background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 13px; font-weight: 600; color: #FFF;">🎧 Sound Profile:</span>
+                            <span id="mixer-val-profile" style="color: #00F0FF; font-weight: bold; font-size: 12px;">Classic</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button id="sfx-prof-default" class="hud-btn" style="flex:1; padding:4px; font-size:11px; justify-content:center;" onclick="if(window.game && window.game.soundMixer) window.game.soundMixer.setProfile('default')">Classic</button>
+                            <button id="sfx-prof-retro8bit" class="hud-btn" style="flex:1; padding:4px; font-size:11px; justify-content:center;" onclick="if(window.game && window.game.soundMixer) window.game.soundMixer.setProfile('retro8bit')">8-Bit NES</button>
+                            <button id="sfx-prof-arcade" class="hud-btn" style="flex:1; padding:4px; font-size:11px; justify-content:center;" onclick="if(window.game && window.game.soundMixer) window.game.soundMixer.setProfile('arcade')">Arcade</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 8px;">
@@ -189,6 +202,14 @@ class RobloxSoundMixer {
     closeModal() {
         const modal = document.getElementById('sound-mixer-modal');
         if (modal) modal.style.display = 'none';
+    }
+
+    setProfile(prof) {
+        if (this.sound && this.sound.setSfxProfile) {
+            this.sound.setSfxProfile(prof);
+            this.updateSliders();
+            if (this.sound.playCoin) this.sound.playCoin();
+        }
     }
 
     updateSliders() {
@@ -218,6 +239,16 @@ class RobloxSoundMixer {
             muteBtn.innerHTML = this.volumes.muted ? '🔇 Unmute All' : '🔊 Mute All';
             muteBtn.classList.toggle('danger', this.volumes.muted);
         }
+
+        const currentProf = (this.sound && this.sound.sfxProfile) || 'default';
+        const profLabel = document.getElementById('mixer-val-profile');
+        if (profLabel) {
+            profLabel.textContent = currentProf === 'retro8bit' ? '8-Bit NES' : (currentProf === 'arcade' ? 'Arcade' : 'Classic');
+        }
+        ['default', 'retro8bit', 'arcade'].forEach(p => {
+            const btn = document.getElementById(`sfx-prof-${p}`);
+            if (btn) btn.classList.toggle('active', currentProf === p);
+        });
     }
 }
 
