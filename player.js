@@ -39,6 +39,14 @@ class RobloxPlayer {
 
         // Ragdoll pieces array for "Break Joints"
         this.ragdollPieces = [];
+        this.deathEffect = 'classic'; // 'classic', 'pixel', 'stardust', 'ghost'
+
+        try {
+            if (typeof localStorage !== 'undefined') {
+                const saved = localStorage.getItem('roblox_death_effect');
+                if (saved) this.deathEffect = saved;
+            }
+        } catch (e) {}
 
         // Build the Roblox avatar rig
         this.group = new THREE.Group();
@@ -227,6 +235,22 @@ class RobloxPlayer {
         this.hasWon = true;
     }
 
+    setDeathEffect(style) {
+        this.deathEffect = style;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('roblox_death_effect', style);
+            }
+        } catch (e) {}
+    }
+
+    cycleDeathEffect() {
+        const effects = ['classic', 'pixel', 'stardust', 'ghost'];
+        const nextIdx = (effects.indexOf(this.deathEffect) + 1) % effects.length;
+        this.setDeathEffect(effects[nextIdx]);
+        return this.deathEffect;
+    }
+
     // Classic Roblox "Break Joints" Ragdoll Explosion on death/reset
     die() {
         if (this.isDead) return;
@@ -244,38 +268,79 @@ class RobloxPlayer {
         // Hide main character rig
         this.group.visible = false;
 
-        // Disintegrate into 6 separate physics blocks
-        const partsInfo = [
-            { geo: new THREE.BoxGeometry(1.2, 1.2, 1.2), color: 0xFFDE00, pos: new THREE.Vector3(0, 2.6, 0) },
-            { geo: new THREE.BoxGeometry(2.0, 2.0, 1.0), color: 0x0D69AB, pos: new THREE.Vector3(0, 1.0, 0) },
-            { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0xFFDE00, pos: new THREE.Vector3(-1.5, 1.0, 0) },
-            { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0xFFDE00, pos: new THREE.Vector3(1.5, 1.0, 0) },
-            { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0x00A859, pos: new THREE.Vector3(-0.5, -1.0, 0) },
-            { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0x00A859, pos: new THREE.Vector3(0.5, -1.0, 0) },
-        ];
-
         this.ragdollPieces = [];
-        partsInfo.forEach(p => {
-            const mat = new THREE.MeshLambertMaterial({ color: p.color });
-            const mesh = new THREE.Mesh(p.geo, mat);
-            mesh.castShadow = true;
-            mesh.position.copy(this.position).add(p.pos);
 
-            // Give random explosion impulse and tumble rotation
-            const vel = new THREE.Vector3(
-                (Math.random() - 0.5) * 16,
-                Math.random() * 12 + 6,
-                (Math.random() - 0.5) * 16
-            );
-            const rotVel = new THREE.Vector3(
-                (Math.random() - 0.5) * 10,
-                (Math.random() - 0.5) * 10,
-                (Math.random() - 0.5) * 10
-            );
-
+        if (this.deathEffect === 'pixel') {
+            // 24 tiny colorful voxel pixel cubes
+            for (let i = 0; i < 24; i++) {
+                const geo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+                const col = [0xFF0055, 0x00FFCC, 0xFFDD00, 0x9933FF][i % 4];
+                const mat = new THREE.MeshBasicMaterial({ color: col });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.copy(this.position).add(new THREE.Vector3(
+                    (Math.random() - 0.5) * 1.5,
+                    Math.random() * 2.5,
+                    (Math.random() - 0.5) * 1.5
+                ));
+                const vel = new THREE.Vector3(
+                    (Math.random() - 0.5) * 22,
+                    Math.random() * 16 + 4,
+                    (Math.random() - 0.5) * 22
+                );
+                const rotVel = new THREE.Vector3(
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15
+                );
+                this.scene.add(mesh);
+                this.ragdollPieces.push({ mesh, vel, rotVel });
+            }
+        } else if (this.deathEffect === 'ghost') {
+            // Floating ascending translucent ghost
+            const geo = new THREE.BoxGeometry(1.8, 3.2, 1.0);
+            const mat = new THREE.MeshBasicMaterial({
+                color: 0x00FFFF,
+                transparent: true,
+                opacity: 0.65
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.copy(this.position).add(new THREE.Vector3(0, 1.5, 0));
+            const vel = new THREE.Vector3(0, 12, 0);
+            const rotVel = new THREE.Vector3(0, 4, 0);
             this.scene.add(mesh);
             this.ragdollPieces.push({ mesh, vel, rotVel });
-        });
+        } else {
+            // Classic R6 6-piece disassembly
+            const partsInfo = [
+                { geo: new THREE.BoxGeometry(1.2, 1.2, 1.2), color: 0xFFDE00, pos: new THREE.Vector3(0, 2.6, 0) },
+                { geo: new THREE.BoxGeometry(2.0, 2.0, 1.0), color: 0x0D69AB, pos: new THREE.Vector3(0, 1.0, 0) },
+                { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0xFFDE00, pos: new THREE.Vector3(-1.5, 1.0, 0) },
+                { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0xFFDE00, pos: new THREE.Vector3(1.5, 1.0, 0) },
+                { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0x00A859, pos: new THREE.Vector3(-0.5, -1.0, 0) },
+                { geo: new THREE.BoxGeometry(1.0, 2.0, 1.0), color: 0x00A859, pos: new THREE.Vector3(0.5, -1.0, 0) },
+            ];
+
+            partsInfo.forEach(p => {
+                const mat = new THREE.MeshLambertMaterial({ color: p.color });
+                const mesh = new THREE.Mesh(p.geo, mat);
+                mesh.castShadow = true;
+                mesh.position.copy(this.position).add(p.pos);
+
+                const vel = new THREE.Vector3(
+                    (Math.random() - 0.5) * 16,
+                    Math.random() * 12 + 6,
+                    (Math.random() - 0.5) * 16
+                );
+                const rotVel = new THREE.Vector3(
+                    (Math.random() - 0.5) * 10,
+                    (Math.random() - 0.5) * 10,
+                    (Math.random() - 0.5) * 10
+                );
+
+                this.scene.add(mesh);
+                this.ragdollPieces.push({ mesh, vel, rotVel });
+            });
+        }
 
         // Respawn after 1.2 seconds
         setTimeout(() => {
