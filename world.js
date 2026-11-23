@@ -494,6 +494,7 @@ class RobloxWorld {
         this.createTitansSummitStage();
         this.createVoidDimensionStage();
         this.createCelestialAuroraStage();
+        this.createDragonFireSpireStage();
     }
 
     createZeroGravityZone() {
@@ -997,6 +998,92 @@ class RobloxWorld {
         this.auroraStar = star;
     }
 
+    createDragonFireSpireStage() {
+        // ==========================================
+        // STAGE 12: DRAGON FIRE SPIRE & MOLTEN HELIX
+        // ==========================================
+        // Bridge from Stage 11 Zenith Platform (z: 936 to 948)
+        this.addBlock(0, 120, 942, 6, 1.5, 12, this.mats.gold);
+
+        // Checkpoint 12
+        this.addCheckpoint(12, 0, 121.2, 954, 6);
+
+        // Dragon Spire Materials
+        const dragonObsidian = new THREE.MeshStandardMaterial({
+            color: 0x141012,
+            roughness: 0.85,
+            metalness: 0.3
+        });
+        const dragonFire = new THREE.MeshStandardMaterial({
+            color: 0xFF2200,
+            emissive: 0xFF4400,
+            emissiveIntensity: 0.9,
+            roughness: 0.2
+        });
+        const dragonGold = new THREE.MeshStandardMaterial({
+            color: 0xFFAA00,
+            emissive: 0xFF6600,
+            emissiveIntensity: 0.7,
+            metalness: 0.8,
+            roughness: 0.2
+        });
+
+        // Ascending Helical Stepping Platforms
+        const dragonSteps = [
+            { x: -5, y: 123.0, z: 968 },
+            { x:  4, y: 125.5, z: 980 },
+            { x: -5, y: 128.0, z: 992 },
+            { x:  4, y: 131.0, z: 1004 },
+            { x: -3, y: 134.0, z: 1016 },
+            { x:  0, y: 137.0, z: 1028 }
+        ];
+
+        dragonSteps.forEach((s, idx) => {
+            const mat = (idx % 2 === 0) ? dragonFire : dragonGold;
+            this.addBlock(s.x, s.y - 1.5, s.z, 5, 3, 5, dragonObsidian);
+            this.addBlock(s.x, s.y + 0.1, s.z, 4.6, 0.25, 4.6, mat);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity spinning dragon fire hazard beams
+        this.addSpinningHazard(0, 127, 980, 12, 2.7, 'y');
+        this.addSpinningHazard(0, 133, 1004, 11, -2.9, 'y');
+
+        // Central Obsidian Dragon Spire Column
+        const spireColGeo = new THREE.CylinderGeometry(2.0, 3.2, 36, 12);
+        const spireCol = new THREE.Mesh(spireColGeo, dragonObsidian);
+        spireCol.position.set(0, 134, 998);
+        this.scene.add(spireCol);
+
+        // Dragon Fire Spire Apex Platform
+        this.addBlock(0, 139, 1046, 22, 2.5, 22, dragonObsidian);
+
+        // 4 Dragon Horn Spires
+        const hornGeo = new THREE.ConeGeometry(1.6, 14, 8);
+        const h1 = new THREE.Mesh(hornGeo, dragonFire);
+        h1.position.set(-8, 146, 1038);
+        const h2 = new THREE.Mesh(hornGeo, dragonFire);
+        h2.position.set(8, 146, 1038);
+        const h3 = new THREE.Mesh(hornGeo, dragonFire);
+        h3.position.set(-8, 146, 1054);
+        const h4 = new THREE.Mesh(hornGeo, dragonFire);
+        h4.position.set(8, 146, 1054);
+        this.scene.add(h1, h2, h3, h4);
+
+        // Floating Dragon Flame Orb
+        const orbGeo = new THREE.DodecahedronGeometry(2.8, 1);
+        const orbMat = new THREE.MeshStandardMaterial({
+            color: 0xFF3300,
+            emissive: 0xFF5500,
+            emissiveIntensity: 1.0,
+            roughness: 0.15
+        });
+        const orb = new THREE.Mesh(orbGeo, orbMat);
+        orb.position.set(0, 145, 1046);
+        this.scene.add(orb);
+        this.dragonCore = orb;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1307,6 +1394,13 @@ class RobloxWorld {
         if (this.auroraStar) {
             this.auroraStar.rotation.y += dt * 2.2;
             this.auroraStar.position.y = 126 + Math.sin(Date.now() * 0.003) * 0.5;
+        }
+
+        // Dragon Fire Spire animations in Stage 12
+        if (this.dragonCore) {
+            this.dragonCore.rotation.y += dt * 1.8;
+            this.dragonCore.rotation.x += dt * 0.9;
+            this.dragonCore.position.y = 145 + Math.sin(Date.now() * 0.004) * 0.6;
         }
 
         // Checkpoint proximity checks
