@@ -817,6 +817,9 @@
         <button id="btn-clan" class="hud-btn" onclick="if(window.game && window.game.clanSystem) window.game.clanSystem.toggleModal()" title="Customize Squad & Clan Tag">
             🛡️ Clan
         </button>
+        <button id="btn-trade" class="hud-btn" onclick="if(window.game && window.game.trading) window.game.trading.open()" title="Open Player & Merchant Trade Window">
+            🤝 Trade
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1308,6 +1311,7 @@
     <script src="wind_system.js"></script>
     <script src="telemetry.js"></script>
     <script src="clans.js"></script>
+    <script src="trading.js"></script>
     <script src="game.js"></script>
 
     <script>
