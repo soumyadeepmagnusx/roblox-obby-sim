@@ -755,6 +755,80 @@ class RobloxMusicPlayer {
                     { f: 392.00, d: 0.40, t: 'triangle' }, // G4
                     { f: 440.00, d: 0.85, t: 'sine' }      // A4
                 ]
+            },
+            {
+                title: "Mone Rekho",
+                artist: "Rabindranath Tagore (Eternal Melodic Classic)",
+                tempo: 135,
+                notes: [
+                    { f: 392.00, d: 0.40, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.40, t: 'sine' },     // A4
+                    { f: 493.88, d: 0.50, t: 'sine' },     // B4
+                    { f: 587.33, d: 0.60, t: 'sine' },     // D5
+                    { f: 523.25, d: 0.40, t: 'triangle' }, // C5
+                    { f: 493.88, d: 0.40, t: 'sine' },     // B4
+                    { f: 440.00, d: 0.50, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.80, t: 'sine' }      // G4
+                ]
+            },
+            {
+                title: "Castlevania - Vampire Killer",
+                artist: "Kinuyo Yamashita (NES Konami Arcade)",
+                tempo: 160,
+                notes: [
+                    { f: 329.63, d: 0.25, t: 'square' },   // E4
+                    { f: 392.00, d: 0.25, t: 'square' },   // G4
+                    { f: 493.88, d: 0.30, t: 'square' },   // B4
+                    { f: 523.25, d: 0.35, t: 'square' },   // C5
+                    { f: 493.88, d: 0.25, t: 'square' },   // B4
+                    { f: 440.00, d: 0.25, t: 'square' },   // A4
+                    { f: 392.00, d: 0.35, t: 'square' },   // G4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 329.63, d: 0.60, t: 'square' }    // E4
+                ]
+            },
+            {
+                title: "Ami Chini Go Chini Tomare",
+                artist: "Rabindranath Tagore (Beloved Timeless Folk)",
+                tempo: 140,
+                notes: [
+                    { f: 440.00, d: 0.35, t: 'sine' },     // A4
+                    { f: 523.25, d: 0.35, t: 'triangle' }, // C5
+                    { f: 587.33, d: 0.45, t: 'sine' },     // D5
+                    { f: 659.25, d: 0.60, t: 'sine' },     // E5
+                    { f: 587.33, d: 0.35, t: 'sine' },     // D5
+                    { f: 523.25, d: 0.40, t: 'triangle' }, // C5
+                    { f: 440.00, d: 0.75, t: 'sine' }      // A4
+                ]
+            },
+            {
+                title: "The Legend of Zelda Overworld",
+                artist: "Koji Kondo (Nintendo NES Masterpiece)",
+                tempo: 150,
+                notes: [
+                    { f: 466.16, d: 0.40, t: 'square' },   // Bb4
+                    { f: 349.23, d: 0.25, t: 'square' },   // F4
+                    { f: 466.16, d: 0.30, t: 'square' },   // Bb4
+                    { f: 523.25, d: 0.25, t: 'square' },   // C5
+                    { f: 587.33, d: 0.30, t: 'square' },   // D5
+                    { f: 622.25, d: 0.50, t: 'triangle' }, // Eb5
+                    { f: 698.46, d: 0.75, t: 'square' }    // F5
+                ]
+            },
+            {
+                title: "Amaro Porano Jaha Chay",
+                artist: "Rabindranath Tagore (Eternal Devotional Classic)",
+                tempo: 130,
+                notes: [
+                    { f: 329.63, d: 0.40, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.40, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 523.25, d: 0.60, t: 'sine' },     // C5
+                    { f: 493.88, d: 0.40, t: 'triangle' }, // B4
+                    { f: 440.00, d: 0.40, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.45, t: 'sine' },     // G4
+                    { f: 329.63, d: 0.85, t: 'sine' }      // E4
+                ]
             }
         ];
     }
