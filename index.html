@@ -823,6 +823,9 @@
         <button id="btn-keybinds" class="hud-btn" onclick="if(window.game && window.game.keybinds) window.game.keybinds.openModal()" title="Customize Keyboard Controls & Hotkeys">
             ⌨️ Keys
         </button>
+        <button id="btn-profile" class="hud-btn" onclick="if(window.game && window.game.profileCard) window.game.profileCard.open()" title="View Player Career Passport & Stats">
+            👤 Profile
+        </button>
         <button id="btn-shift-lock" class="hud-btn" onclick="toggleShiftLockBtn(this)">
             🔒 Shift Lock
         </button>
@@ -1321,6 +1324,7 @@
     <script src="clans.js"></script>
     <script src="trading.js"></script>
     <script src="keybinds.js"></script>
+    <script src="profile_card.js"></script>
     <script src="game.js"></script>
 
     <script>
