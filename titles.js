@@ -17,7 +17,9 @@ class RobloxTitleSystem {
             { id: 'champion', name: '👑 Obby Champion', color: '#FFD700', req: "Reach Stage 6 (Winner's Peak)", check: () => (this.player.maxStageReached || this.player.currentStage) >= 6 || this.player.hasWon },
             { id: 'coin_hoarder', name: '💰 Stud Collector', color: '#F1C40F', req: 'Collect at least 15 golden studs', check: () => (this.player.coins || 0) >= 15 },
             { id: 'speed_demon', name: '🚀 Speed Demon', color: '#E91E63', req: 'Complete a speedrun attempt under 3 minutes', check: () => localStorage.getItem('roblox_obby_pb') !== null },
-            { id: 'roblox_legend', name: '⭐ Roblox Legend', color: '#FFFFFF', req: 'Beat the Obby and collect 30+ studs', check: () => this.player.hasWon && (this.player.coins || 0) >= 30 }
+            { id: 'roblox_legend', name: '⭐ Roblox Legend', color: '#FFFFFF', req: 'Beat the Obby and collect 30+ studs', check: () => this.player.hasWon && (this.player.coins || 0) >= 30 },
+            { id: 'dragon_slayer', name: '🐉 Dragon Conqueror', color: '#FF3300', req: 'Reach Stage 12 (Dragon Fire Spire)', check: () => (this.player.maxStageReached || this.player.currentStage) >= 12 },
+            { id: 'quantum_god', name: '⚡ Quantum Ascendant', color: '#00FFFF', req: 'Reach Stage 13 (Quantum Cyber Matrix)', check: () => (this.player.maxStageReached || this.player.currentStage) >= 13 }
         ];
 
         this.equippedTitleId = localStorage.getItem('roblox_equipped_title') || 'noob';
@@ -73,15 +75,18 @@ class RobloxTitleSystem {
 
         // Border glow
         ctx.strokeStyle = title.color;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 3.0;
+        ctx.shadowColor = title.color;
+        ctx.shadowBlur = 12;
         ctx.stroke();
+        ctx.shadowBlur = 0;
 
         // Prestige Title Tag
         ctx.font = 'bold 20px "Segoe UI", Arial, sans-serif';
         ctx.fillStyle = title.color;
         ctx.textAlign = 'center';
         ctx.shadowColor = title.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 10;
         ctx.fillText(title.name, 170, 36);
         ctx.shadowBlur = 0; // reset
 
