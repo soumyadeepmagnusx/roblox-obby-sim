@@ -253,6 +253,63 @@ class RobloxGhostRunner {
             }
         }
     }
+
+    exportGhostData() {
+        if (!this.bestRunFrames || this.bestRunFrames.length < 2) {
+            if (this.ui) this.ui.showToastBanner('⚠️ No PB ghost recorded yet! Complete a run first.');
+            return null;
+        }
+
+        try {
+            const jsonStr = JSON.stringify(this.bestRunFrames);
+            const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+            if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                navigator.clipboard.writeText(encoded);
+            }
+            if (this.ui) this.ui.showToastBanner('📋 Speedrun Ghost copied to clipboard! Share it with friends.');
+            if (this.sound && this.sound.playCoin) this.sound.playCoin();
+            return encoded;
+        } catch (e) {
+            if (this.ui) this.ui.showToastBanner('❌ Failed to export ghost data.');
+            return null;
+        }
+    }
+
+    importGhostData(inputStr) {
+        if (!inputStr) {
+            inputStr = prompt("Paste your friend's Speedrun Ghost code here:");
+            if (!inputStr) return false;
+        }
+
+        try {
+            let decoded = inputStr;
+            try {
+                decoded = decodeURIComponent(escape(atob(inputStr.trim())));
+            } catch (e) {
+                // If not base64, assume raw JSON
+                decoded = inputStr.trim();
+            }
+
+            const parsed = JSON.parse(decoded);
+            if (!Array.isArray(parsed) || parsed.length < 2) {
+                throw new Error("Invalid ghost frames structure");
+            }
+
+            this.bestRunFrames = parsed.slice(0, this.maxSamples);
+            localStorage.setItem(this.storageKey, JSON.stringify(this.bestRunFrames));
+            this.playbackIdx = 0;
+
+            if (this.ui) {
+                this.ui.showToastBanner('👻 Challenger Ghost imported! Race against your friend!');
+                this.ui.addChatMessage('Speedrun', 'Challenger ghost data successfully loaded! Press X to toggle.', '#00F0FF');
+            }
+            if (this.sound && this.sound.playVictory) this.sound.playVictory();
+            return true;
+        } catch (e) {
+            if (this.ui) this.ui.showToastBanner('❌ Invalid ghost code format!');
+            return false;
+        }
+    }
 }
 
 if (typeof window !== 'undefined') {
