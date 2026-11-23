@@ -470,12 +470,14 @@ class RobloxGame {
             8: 'Stage 8: Inferno Volcanic Core',
             9: 'Stage 9: Summit of the Titans',
             10: 'Stage 10: The Void Dimension',
-            11: 'Stage 11: Celestial Aurora Highway'
+            11: 'Stage 11: Celestial Aurora Highway',
+            12: 'Stage 12: Dragon Fire Spire',
+            13: 'Stage 13: Quantum Cyber Matrix'
         };
 
         list.innerHTML = '';
         let lastSplit = 0;
-        for (let i = 1; i <= 11; i++) {
+        for (let i = 1; i <= 13; i++) {
             const splitTime = storedSplits[i];
             const segment = (splitTime !== undefined) ? (splitTime - lastSplit) : null;
             if (splitTime !== undefined) lastSplit = splitTime;

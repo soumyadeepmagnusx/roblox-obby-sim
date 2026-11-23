@@ -19,7 +19,14 @@ class RobloxStageNavigator {
             { num: 4, name: 'Stage 4: Spinning Beams', desc: 'Rotating obstacle arms and moving platforms.', pos: { x: 0, y: 14.5, z: 175 }, icon: '⚙️' },
             { num: 5, name: 'Stage 5: Vanishing Tiles', desc: 'Disappearing ghost stepping stones and speed boosts.', pos: { x: 0, y: 15.0, z: 232 }, icon: '👻' },
             { num: 6, name: "Stage 6: Winner's Peak", desc: 'The golden champion trophy and mega sky slide!', pos: { x: 0, y: 34.5, z: 290 }, icon: '🏆' },
-            { num: 7, name: 'Bonus: Starlight Sky Realm', desc: 'Secret celestial islands in the clouds with rare gems!', pos: { x: 0, y: 72, z: 100 }, icon: '🌌' }
+            { num: 7, name: 'Stage 7: Cyber Nebula Apex', desc: 'Floating neon hexagonal apex sanctuary.', pos: { x: 0, y: 44, z: 460 }, icon: '🌌' },
+            { num: 8, name: 'Stage 8: Inferno Volcanic Core', desc: 'Boiling magma sea and basalt stepping spires.', pos: { x: 0, y: 50, z: 506 }, icon: '🌋' },
+            { num: 9, name: 'Stage 9: Summit of the Titans', desc: 'Celestial crystal bridges and golden throne.', pos: { x: 0, y: 62, z: 616 }, icon: '👑' },
+            { num: 10, name: 'Stage 10: The Void Dimension', desc: 'Anti-matter stepping blocks and rift vortex.', pos: { x: 0, y: 83, z: 728 }, icon: '🌌' },
+            { num: 11, name: 'Stage 11: Celestial Aurora Highway', desc: 'Iridescent rainbow prism paths to zenith star.', pos: { x: 0, y: 102, z: 848 }, icon: '🌈' },
+            { num: 12, name: 'Stage 12: Dragon Fire Spire', desc: 'Ascending molten helical pillars and dragon horns.', pos: { x: 0, y: 123, z: 968 }, icon: '🐉' },
+            { num: 13, name: 'Stage 13: Quantum Cyber Matrix', desc: 'Phasing cyber voxel matrix and quantum singularity.', pos: { x: 0, y: 143, z: 1090 }, icon: '⚡' },
+            { num: 99, name: 'Bonus: Starlight Sky Realm', desc: 'Secret celestial islands in the clouds with rare gems!', pos: { x: 0, y: 72, z: 100 }, icon: '✨' }
         ];
 
         this.maxUnlockedStage = parseInt(localStorage.getItem('roblox_max_stage') || '1', 10);
