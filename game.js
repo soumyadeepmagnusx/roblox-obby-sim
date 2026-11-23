@@ -76,6 +76,7 @@ class RobloxGame {
         this.telemetry = new RobloxTelemetry(this.renderer, this.scene, this.network, this.ui);
         this.clanSystem = new RobloxClanSystem(this.player, this.ui, this.sound);
         this.trading = new RobloxTradingSystem(this, this.sound, this.particles);
+        this.keybinds = new RobloxKeybindManager(this);
 
         // Speedrun Timer State & Personal Best Persistence
         this.speedrunTime = 0;
