@@ -73,6 +73,9 @@ flowchart TD
 | **System Telemetry** | `F3` (or click 📊) | Toggles live FPS, frame render latency ms, renderer draw calls, and network ping |
 | **Squad & Clan Tags** | Click 🛡️ Clan | Equips clan tag prefix (e.g. `[PRO]`, `[TITN]`, `[VOID]`) in overhead nametag & chat |
 | **Audio Mixer** | Click 🎚️ Audio | Multi-channel volume mixer for Master, Music, SFX, and Ambience channels |
+| **Player Trading** | Click 🤝 Trade | Secure peer-to-peer and merchant NPC trading for coins, pets, and potions |
+| **Custom Keybinds** | Click ⌨️ Keys | Complete hotkey remapping manager with conflict detection and reset defaults |
+| **Career Passport** | Click 👤 Profile | View player level, stats, achievements, and 5-axis career attribute radar |
 | **Prestige Titles & Ranks**| Click Titles 🎖️ | Displays floating rank nameplates (Noob, Jumper, Champion, Legend) |
 | **Obby Quest Board** | `Q` (or click 📜) | Tracks live milestone quests on HUD and grants coin bounties |
 | **Hall of Fame & Records**| Click 🏆 Records | Displays career distance, session playtime, PB speedruns & lobby standings |
@@ -168,8 +171,13 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 38. 🇧🇩 **O Je Mane Na Mana** (Rabindranath Tagore Expressive Raga)
 39. 🎮 **Doom E1M1 - At Doom's Gate** (Bobby Prince Adrenaline Metal Chiptune)
 40. 🇧🇩 **Shei Tumi Keno Eto Ochena Hole** (Ayub Bachu Iconic Rock Ballad)
+41. 🇧🇩 **Mone Rekho** (Rabindranath Tagore Eternal Melodic Classic)
+42. 🎮 **Castlevania - Vampire Killer** (Kinuyo Yamashita NES Konami Arcade)
+43. 🇧🇩 **Ami Chini Go Chini Tomare (Folk)** (Rabindranath Tagore Classic)
+44. 🕹️ **The Legend of Zelda Overworld** (Koji Kondo Nintendo NES Masterpiece)
+45. 🇧🇩 **Amaro Porano Jaha Chay** (Rabindranath Tagore Eternal Devotional Classic)
 
-*Features 40 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
+*Features 45 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
 ---
 
@@ -296,6 +304,34 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **Iridescent Prism Ramps**: Translucent aurora highway with rainbow-tinted crystal paths leading to the sky summit.
 * **Celestial Halo Beacon**: Floating star crown monolith emitting ascending aurora particle beams and golden victory studs.
 
+### 🐉 Stage 12: Dragon Fire Spire & Molten Helix (`world.js`, `checkpoint_fx.js`)
+* **Ascending Molten Helical Pillars**: Obsidian stepping stones twisting around a massive dragon core pillar with spinning flame hurdles.
+* **Dragon Horn Apex Sanctuary**: Floating dragon core sphere emitting volcanic embers with four radiant dragon horn spires.
+
+### ⚡ Stage 13: Quantum Cyber Matrix & Singularity Core (`world.js`, `checkpoint_fx.js`)
+* **Phasing Cyber Voxel Matrix**: Alternating neon cyan and magenta stepping blocks suspended over a quantum abyss.
+* **Quantum Singularity Core**: Giant rotating wireframe torus portal leading to a floating octahedron singularity with cyber monoliths.
+
+### 🤝 Player & Merchant Trading System (`trading.js`)
+* **Interactive Trade Window**: Trade studs, pets (Doge, Kitty, Dragon, Dominus), and potions (Moon Gravity, Speed, Magnet, Shield).
+* **Two-Way Lock & Accept**: Secure lock-in mechanism with instant fair counter-offers from the Obby Merchant NPC.
+
+### ⌨️ In-Game Keybinds Customizer (`keybinds.js`)
+* **Custom Control Remapping**: Remap Jump, Sprint, Grapple, Emotes, Camera, Radar, and menu shortcuts with conflict checking.
+* **Local Persistence**: Keybindings auto-save to `localStorage` with one-click "Reset Defaults" fallback.
+
+### 🎧 Sound Effect Audio Profiles (`audio.js`, `sound_mixer.js`)
+* **Selectable SFX Packs**: Choose between Classic Roblox, 8-Bit Retro NES (square-wave chiptune blips), and Arcade Synth.
+* **Quick Selector**: Instant audio pack switching directly within the Multi-Channel Audio Mixer.
+
+### 🎄 Holiday Starlight Festival Lighting & Weather (`lighting.js`, `weather.js`)
+* **Festival Atmosphere**: Midnight navy lighting with warm holiday golden rim lights and twinkling celestial stars.
+* **Starlight Precipitation**: 450+ multi-colored festive starlight particles floating gracefully around the avatar.
+
+### 👤 Player Career Passport & Profile Card (`profile_card.js`)
+* **Interactive Player Passport**: View level, XP progress, clan tag, equipped prestige title, studs, PB speedrun, and relics.
+* **5-Axis Attribute Radar**: Dynamic canvas radar pentagram graphing Speed, Parkour, Exploration, Wealth, and Prestige.
+
 ### 🆙 Player Level & XP Progression System (`level_system.js`)
 * **Dynamic XP Tracking**: Earn experience points by clearing checkpoints, collecting studs, finding relics, and completing daily quests.
 * **Level-Up Celebrations**: Floating gold XP banner, ascending sound fanfare, and persistent level badges on the HUD.
@@ -324,8 +360,9 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **Squad Customizer**: Equip clan tag prefixes like `[PRO]`, `[TITN]`, `[VOID]`, `[NOOB]`, `[GOD]`, and `[VIP]`.
 * **Overhead Nametags & Chat**: Clan badges dynamically render beside player names in multiplayer 3D nametags and global chat.
 
-### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`)
-* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 11 with Zenith podium finishes.
+### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`, `ghost.js`)
+* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 13 with Apex Zenith podium finishes.
+* **Ghost Export & Import**: Share speedrun PB ghost codes directly to clipboard or import friends' runs to race holographic pacers!
 
 ### 🎚️ Multi-Channel Audio Mixer (`sound_mixer.js`)
 * **Dedicated Channel Faders**: Real-time volume sliders for Master, Music, Sound Effects (SFX), and Ambience with quick EQ presets (Default, Night, Arcade, Bass Boost).
