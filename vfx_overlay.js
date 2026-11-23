@@ -165,6 +165,27 @@ class RobloxVFXOverlay {
                 this.ctx.stroke();
             }
             this.ctx.restore();
+
+            // 5. Chromatic Aberration & Lens Edge Fringe
+            this.ctx.save();
+            this.ctx.globalCompositeOperation = 'screen';
+            const fringeShift = Math.min(8, 2 + (horizSpeed || 15) * 0.15);
+
+            // Cyan peripheral shift
+            const cyanGrad = this.ctx.createRadialGradient(cx - fringeShift, cy, maxR * 0.72, cx, cy, maxR);
+            cyanGrad.addColorStop(0, 'rgba(0, 240, 255, 0)');
+            cyanGrad.addColorStop(1, 'rgba(0, 240, 255, 0.22)');
+            this.ctx.fillStyle = cyanGrad;
+            this.ctx.fillRect(0, 0, w, h);
+
+            // Magenta opposite peripheral shift
+            const magGrad = this.ctx.createRadialGradient(cx + fringeShift, cy, maxR * 0.72, cx, cy, maxR);
+            magGrad.addColorStop(0, 'rgba(255, 0, 128, 0)');
+            magGrad.addColorStop(1, 'rgba(255, 0, 128, 0.22)');
+            this.ctx.fillStyle = magGrad;
+            this.ctx.fillRect(0, 0, w, h);
+
+            this.ctx.restore();
         }
     }
 }
