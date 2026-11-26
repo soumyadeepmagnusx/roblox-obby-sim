@@ -13,6 +13,13 @@ class RobloxTradingSystem {
         this.isLocked = false;
         this.partnerLocked = false;
         this.tradePartnerName = "Obby Merchant";
+        this.historyOpen = false;
+        this.tradeHistory = [];
+        try {
+            if (typeof localStorage !== 'undefined') {
+                this.tradeHistory = JSON.parse(localStorage.getItem('roblox_trade_history') || '[]');
+            }
+        } catch (e) {}
 
         this.inventoryItems = [
             { id: "potion_moon", name: "🌙 Moon Gravity Potion", type: "potion", value: 15 },
@@ -89,11 +96,20 @@ class RobloxTradingSystem {
 
             <!-- Trade Actions -->
             <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.1); padding-top:14px;">
-                <div id="trade-status-msg" style="font-size:13px; color:#00F0FF;">Add items or studs to balance trade.</div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div id="trade-status-msg" style="font-size:13px; color:#00F0FF;">Add items or studs to balance trade.</div>
+                    <button id="toggle-trade-history-btn" style="background:rgba(255,255,255,0.1); border:1px solid #666; color:#DDD; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">📜 History</button>
+                </div>
                 <div style="display:flex; gap:10px;">
                     <button id="lock-trade-btn" style="background:#00CC66; border:none; color:#FFF; padding:8px 18px; border-radius:8px; font-weight:bold; cursor:pointer;">🔒 Lock In</button>
                     <button id="accept-trade-btn" disabled style="background:#555; border:none; color:#AAA; padding:8px 18px; border-radius:8px; font-weight:bold; cursor:not-allowed;">Accept Trade</button>
                 </div>
+            </div>
+
+            <!-- Trade History Drawer -->
+            <div id="trade-history-drawer" style="display:none; margin-top:14px; background:rgba(0,0,0,0.4); border-radius:8px; padding:10px; max-height:140px; overflow-y:auto; border:1px solid #334466;">
+                <div style="font-size:12px; font-weight:bold; color:#FFD700; margin-bottom:6px;">Recent Trade Receipts</div>
+                <div id="trade-history-list" style="font-size:11px; color:#CCC;">No past trades recorded yet.</div>
             </div>
         `;
 
@@ -101,6 +117,7 @@ class RobloxTradingSystem {
 
         // Bind events
         document.getElementById('close-trade-btn')?.addEventListener('click', () => this.close());
+        document.getElementById('toggle-trade-history-btn')?.addEventListener('click', () => this.toggleHistory());
         document.getElementById('lock-trade-btn')?.addEventListener('click', () => this.toggleLock());
         document.getElementById('accept-trade-btn')?.addEventListener('click', () => this.completeTrade());
         document.getElementById('add-trade-item-btn')?.addEventListener('click', () => this.promptAddItem());
@@ -266,6 +283,24 @@ class RobloxTradingSystem {
             if (netCoins !== 0) this.game.addCoins(netCoins);
         }
 
+        // Save to trade receipt history
+        const receipt = {
+            id: 'TRD-' + Date.now().toString(36).toUpperCase(),
+            partner: this.tradePartnerName,
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            gaveCoins: this.myOffer.coins,
+            gaveItems: this.myOffer.items.map(i => i.name),
+            receivedCoins: this.partnerOffer.coins,
+            receivedItems: this.partnerOffer.items.map(i => i.name)
+        };
+        this.tradeHistory.unshift(receipt);
+        if (this.tradeHistory.length > 20) this.tradeHistory.pop();
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('roblox_trade_history', JSON.stringify(this.tradeHistory));
+            }
+        } catch (e) {}
+
         if (this.audio && this.audio.playVictory) this.audio.playVictory();
         if (this.particles && typeof this.particles.confetti === 'function') {
             this.particles.confetti();
@@ -273,6 +308,31 @@ class RobloxTradingSystem {
 
         alert(`🤝 Trade Complete! You traded with ${this.tradePartnerName} successfully!`);
         this.close();
+    }
+
+    toggleHistory() {
+        this.historyOpen = !this.historyOpen;
+        const drawer = document.getElementById('trade-history-drawer');
+        const list = document.getElementById('trade-history-list');
+        if (!drawer) return;
+        drawer.style.display = this.historyOpen ? 'block' : 'none';
+        if (this.historyOpen && list) {
+            if (this.tradeHistory.length === 0) {
+                list.innerHTML = '<em>No past trade receipts yet.</em>';
+            } else {
+                list.innerHTML = this.tradeHistory.map(r => `
+                    <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:6px; margin-bottom:4px;">
+                        <div style="display:flex; justify-content:space-between; color:#FFD700; font-weight:bold;">
+                            <span>${r.id} (${r.partner})</span>
+                            <span style="color:#888;">${r.date}</span>
+                        </div>
+                        <div style="color:#FF7777; margin-top:2px;">Gave: ${r.gaveItems.length ? r.gaveItems.join(', ') : 'None'}${r.gaveCoins ? ` + ${r.gaveCoins}★` : ''}</div>
+                        <div style="color:#77FF77;">Recv: ${r.receivedItems.length ? r.receivedItems.join(', ') : 'None'}${r.receivedCoins ? ` + ${r.receivedCoins}★` : ''}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        if (this.audio && this.audio.playClick) this.audio.playClick();
     }
 }
 
