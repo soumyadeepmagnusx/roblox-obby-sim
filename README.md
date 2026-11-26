@@ -176,8 +176,13 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 43. 🇧🇩 **Ami Chini Go Chini Tomare (Folk)** (Rabindranath Tagore Classic)
 44. 🕹️ **The Legend of Zelda Overworld** (Koji Kondo Nintendo NES Masterpiece)
 45. 🇧🇩 **Amaro Porano Jaha Chay** (Rabindranath Tagore Eternal Devotional Classic)
+46. 🇧🇩 **Phule Phule Dhole Dhole** (Rabindranath Tagore Timeless Folk Lyric)
+47. 🕹️ **Sonic the Hedgehog - Green Hill Zone** (Masato Nakamura SEGA Genesis Classic)
+48. 🇧🇩 **Kotobaro Bhebechinu** (Rabindranath Tagore Expressive Masterpiece)
+49. 🕹️ **Pac-Man Arcade Intro Fanfare** (Toshio Kai Namco Retro Legend)
+50. 🇧🇩 **Pagla Hawa Badal Dine** (James / Bengali Monsoon Rock Classic)
 
-*Features 45 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
+*Features 50 synthesized tracks, an interactive **Master Volume Slider**, **Multi-Channel Mixer**, **Shuffle** & **Loop** playback modes, and real-time neon equalizer bars.*
 
 ---
 
@@ -312,6 +317,14 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **Phasing Cyber Voxel Matrix**: Alternating neon cyan and magenta stepping blocks suspended over a quantum abyss.
 * **Quantum Singularity Core**: Giant rotating wireframe torus portal leading to a floating octahedron singularity with cyber monoliths.
 
+### 🕰️ Stage 14: Chrono Clockwork Towers & Pendulum Horizon (`world.js`, `checkpoint_fx.js`)
+* **Mechanical Brass & Copper Platforms**: 8 rotating clockwork gear cog platforms suspended in the sky with ticking gear animations and watchtower monoliths.
+* **Oscillating Pendulum Hazard**: High-velocity sweeping pendulum blade hurdles, golden roman numeral clock rings, and apex chronometer gear core.
+
+### ❄️ Stage 15: Hyperborean Crystal Glaciers & Frost Spire Summit (`world.js`, `checkpoint_fx.js`)
+* **Low-Friction Ice Physics**: Sub-zero slippery translucent ice blocks that cause avatars to glide and slide with realistic momentum drift.
+* **Frost Spikes & Aurora Apex**: Rotating frost hazard beams, hazardous frozen crystal spikes, and a glowing purple aurora diamond crown.
+
 ### 🤝 Player & Merchant Trading System (`trading.js`)
 * **Interactive Trade Window**: Trade studs, pets (Doge, Kitty, Dragon, Dominus), and potions (Moon Gravity, Speed, Magnet, Shield).
 * **Two-Way Lock & Accept**: Secure lock-in mechanism with instant fair counter-offers from the Obby Merchant NPC.
@@ -361,8 +374,28 @@ Synthesized entirely via the Web Audio API—zero external audio file downloads 
 * **Overhead Nametags & Chat**: Clan badges dynamically render beside player names in multiplayer 3D nametags and global chat.
 
 ### ⏱️ Speedrun Stage Split Breakdown Modal (`game.js`, `ghost.js`)
-* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 13 with Apex Zenith podium finishes.
+* **Full Segment Analysis**: Click on Personal Best (PB) in the HUD to view individual completion times and segment deltas for Stages 1 through 15 with Grandmaster Zenith podium finishes.
 * **Ghost Export & Import**: Share speedrun PB ghost codes directly to clipboard or import friends' runs to race holographic pacers!
+
+### ⚡ Avatar Jump Stamina Meter & Fatigue HUD (`player.js`, `index.html`)
+* **Tactical Fatigue System**: Dynamic stamina gauge reflecting jump effort and sprinting fatigue with progressive automatic recovery.
+* **Depletion Warning**: Color shifts from vibrant cyan to warning orange with audio indicators when stamina is fully depleted.
+
+### 📜 Trade Receipt History Drawer & Transaction Inspector (`trading.js`)
+* **Receipt Manifest**: Persistent local transaction log recording transaction IDs, trade partner usernames, timestamps, and item lists.
+* **Interactive Drawer**: View and inspect past trades directly inside the trading terminal with the History toggle button.
+
+### 🔍 Global Leaderboard Search Filter & Friend Ranking Toggle (`leaderboard.js`)
+* **Instant Username Search**: Real-time keystroke filtering to quickly locate players or rival racers on the lobby leaderboard.
+* **Tab Filtering**: One-click toggle between "All Players" and "Friends / Squad" rankings with Stage 15 progression status.
+
+### 🔊 Procedural Footstep Reverberation & Cave Echo Acoustics (`audio.js`)
+* **Environmental Acoustics**: Real-time audio reverberation and stereo feedback delay simulating enclosed caves, high-altitude halls, and metal clockwork towers.
+* **Dynamic Feedback Filter**: High-frequency dampening tailored to the elevation and architectural density of active stages.
+
+### 📸 Cinematic Bloom & Anamorphic Lens Flare Simulation (`photo_mode.js`)
+* **Studio Post-Processing**: Photorealistic bloom glow rendering with horizontal anamorphic streak flare simulation across bright light sources.
+* **High-Res Export**: Capture dramatic wallpaper screenshots with rule-of-thirds grid alignment and Roblox watermark stamp.
 
 ### 🎚️ Multi-Channel Audio Mixer (`sound_mixer.js`)
 * **Dedicated Channel Faders**: Real-time volume sliders for Master, Music, Sound Effects (SFX), and Ambience with quick EQ presets (Default, Night, Arcade, Bass Boost).
