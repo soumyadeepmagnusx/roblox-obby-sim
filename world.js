@@ -496,6 +496,7 @@ class RobloxWorld {
         this.createCelestialAuroraStage();
         this.createDragonFireSpireStage();
         this.createQuantumMatrixStage();
+        this.createClockworkTowersStage();
     }
 
     createZeroGravityZone() {
@@ -1176,6 +1177,86 @@ class RobloxWorld {
         this.quantumCore = core;
     }
 
+    createClockworkTowersStage() {
+        // ==========================================
+        // STAGE 14: CHRONO CLOCKWORK TOWERS
+        // ==========================================
+        // Bridge from Stage 13 Quantum Apex (z: 1179 to 1192)
+        this.addBlock(0, 160, 1185, 6, 1.5, 12, this.mats.gold);
+
+        // Checkpoint 14
+        this.addCheckpoint(14, 0, 161.2, 1198, 6);
+
+        // Clockwork Brass & Copper Materials
+        const gearBrass = new THREE.MeshStandardMaterial({
+            color: 0xB58838,
+            metalness: 0.85,
+            roughness: 0.25
+        });
+        const clockCopper = new THREE.MeshStandardMaterial({
+            color: 0xC86D3B,
+            metalness: 0.8,
+            roughness: 0.3
+        });
+        const tickingGold = new THREE.MeshStandardMaterial({
+            color: 0xFFD700,
+            emissive: 0x886600,
+            emissiveIntensity: 0.6,
+            metalness: 0.9,
+            roughness: 0.2
+        });
+
+        // 6 Chrono Gear Stepping Blocks
+        const clockSteps = [
+            { x: -5, y: 163.0, z: 1212 },
+            { x:  4, y: 165.5, z: 1224 },
+            { x: -5, y: 168.0, z: 1236 },
+            { x:  4, y: 171.0, z: 1248 },
+            { x: -3, y: 174.0, z: 1260 },
+            { x:  0, y: 177.0, z: 1272 }
+        ];
+
+        clockSteps.forEach((s, idx) => {
+            const mat = (idx % 2 === 0) ? gearBrass : clockCopper;
+            this.addBlock(s.x, s.y - 1.5, s.z, 5, 3, 5, mat);
+            this.addBlock(s.x, s.y + 0.1, s.z, 4.6, 0.25, 4.6, tickingGold);
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity pendulum / gear hazard beams
+        this.addSpinningHazard(0, 167, 1224, 12, 2.7, 'y');
+        this.addSpinningHazard(0, 173, 1248, 11, -2.9, 'y');
+
+        // Central Chrono Gear Ring
+        const ringGeo = new THREE.TorusGeometry(5.0, 0.5, 16, 32);
+        const ring = new THREE.Mesh(ringGeo, tickingGold);
+        ring.position.set(0, 176, 1260);
+        this.scene.add(ring);
+        this.clockGearRing = ring;
+
+        // Chrono Clockwork Apex Sanctuary Platform
+        this.addBlock(0, 179, 1290, 22, 2.5, 22, gearBrass);
+
+        // 4 Mechanical Watch Tower Monoliths
+        const towerGeo = new THREE.CylinderGeometry(1.2, 1.6, 12, 8);
+        const t1 = new THREE.Mesh(towerGeo, clockCopper);
+        t1.position.set(-8, 186, 1282);
+        const t2 = new THREE.Mesh(towerGeo, clockCopper);
+        t2.position.set(8, 186, 1282);
+        const t3 = new THREE.Mesh(towerGeo, clockCopper);
+        t3.position.set(-8, 186, 1298);
+        const t4 = new THREE.Mesh(towerGeo, clockCopper);
+        t4.position.set(8, 186, 1298);
+        this.scene.add(t1, t2, t3, t4);
+
+        // Floating Chrono Core Sphere
+        const clockCoreGeo = new THREE.DodecahedronGeometry(2.8, 0);
+        const clockCore = new THREE.Mesh(clockCoreGeo, tickingGold);
+        clockCore.position.set(0, 186, 1290);
+        this.scene.add(clockCore);
+        this.clockCore = clockCore;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1504,6 +1585,16 @@ class RobloxWorld {
             this.quantumCore.rotation.y += dt * 2.5;
             this.quantumCore.rotation.z += dt * 1.2;
             this.quantumCore.position.y = 166 + Math.sin(Date.now() * 0.005) * 0.5;
+        }
+
+        // Chrono Clockwork animations in Stage 14
+        if (this.clockGearRing) {
+            this.clockGearRing.rotation.z += dt * 1.6;
+        }
+        if (this.clockCore) {
+            this.clockCore.rotation.y += dt * 2.0;
+            this.clockCore.rotation.x += dt * 1.0;
+            this.clockCore.position.y = 186 + Math.sin(Date.now() * 0.004) * 0.5;
         }
 
         // Checkpoint proximity checks

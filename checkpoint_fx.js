@@ -26,7 +26,8 @@ class RobloxCheckpointFX {
             10: "🌌 STAGE 10: THE VOID DIMENSION",
             11: "🌈 STAGE 11: CELESTIAL AURORA",
             12: "🐉 STAGE 12: DRAGON FIRE SPIRE",
-            13: "⚡ STAGE 13: QUANTUM MATRIX"
+            13: "⚡ STAGE 13: QUANTUM MATRIX",
+            14: "⏳ STAGE 14: CHRONO CLOCKWORK"
         };
 
         this.pillars = [];
