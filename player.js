@@ -17,6 +17,8 @@ class RobloxPlayer {
         this.jumpKeyPressed = false;
         this.isDead = false;
         this.health = 100;
+        this.stamina = 100;
+        this.maxStamina = 100;
         this.facingAngle = 0;
 
         // Active checkpoint spawn point
@@ -495,6 +497,20 @@ class RobloxPlayer {
         if (inputState.right) moveX += 1;
 
         const isMoving = (moveX !== 0 || moveZ !== 0);
+
+        // Tactical Sprint with Stamina Management
+        if (inputState.sprint && isMoving && this.stamina > 5) {
+            currentSpeed *= 1.5;
+            this.stamina = Math.max(0, this.stamina - dt * 22);
+        } else {
+            this.stamina = Math.min(this.maxStamina, this.stamina + dt * 25);
+        }
+
+        const stamEl = (typeof document !== 'undefined') ? document.getElementById('stat-stamina') : null;
+        if (stamEl) {
+            stamEl.textContent = `${Math.round(this.stamina)}%`;
+            stamEl.style.color = this.stamina > 30 ? '#00F0FF' : '#FF8800';
+        }
 
         if (isMoving) {
             const moveVec = new THREE.Vector2(moveX, moveZ).normalize();
