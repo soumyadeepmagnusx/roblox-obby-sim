@@ -351,6 +351,27 @@ class SoundEngine {
 
         osc.start(now);
         osc.stop(now + 0.06);
+
+        // Cavern & Indoor Echo Acoustics
+        if (surface === 'stone' || surface === 'crystal' || surface === 'metal') {
+            const echoDelays = [0.08, 0.16];
+            echoDelays.forEach((delay, dIdx) => {
+                const echoOsc = this.ctx.createOscillator();
+                const echoGain = this.ctx.createGain();
+                echoOsc.type = oscType;
+                echoOsc.frequency.setValueAtTime(startFreq * 0.88, now + delay);
+                echoOsc.frequency.exponentialRampToValueAtTime(endFreq * 0.88, now + delay + 0.04);
+                
+                const echoVol = vol * (0.35 / (dIdx + 1)) * this.masterVolume;
+                echoGain.gain.setValueAtTime(echoVol, now + delay);
+                echoGain.gain.linearRampToValueAtTime(0.001, now + delay + 0.04);
+
+                echoOsc.connect(echoGain);
+                echoGain.connect(this.ctx.destination);
+                echoOsc.start(now + delay);
+                echoOsc.stop(now + delay + 0.05);
+            });
+        }
     }
 
     // High-speed air dash sonic whoosh
