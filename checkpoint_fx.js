@@ -27,7 +27,8 @@ class RobloxCheckpointFX {
             11: "🌈 STAGE 11: CELESTIAL AURORA",
             12: "🐉 STAGE 12: DRAGON FIRE SPIRE",
             13: "⚡ STAGE 13: QUANTUM MATRIX",
-            14: "⏳ STAGE 14: CHRONO CLOCKWORK"
+            14: "⏳ STAGE 14: CHRONO CLOCKWORK",
+            15: "❄️ STAGE 15: CRYSTAL GLACIERS"
         };
 
         this.pillars = [];

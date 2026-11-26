@@ -497,6 +497,7 @@ class RobloxWorld {
         this.createDragonFireSpireStage();
         this.createQuantumMatrixStage();
         this.createClockworkTowersStage();
+        this.createCrystalGlaciersStage();
     }
 
     createZeroGravityZone() {
@@ -1257,6 +1258,87 @@ class RobloxWorld {
         this.clockCore = clockCore;
     }
 
+    createCrystalGlaciersStage() {
+        // ==========================================
+        // STAGE 15: HYPERBOREAN CRYSTAL GLACIERS
+        // ==========================================
+        // Bridge from Stage 14 Chrono Apex (z: 1301 to 1314)
+        this.addBlock(0, 180, 1307, 6, 1.5, 12, this.mats.gold);
+
+        // Checkpoint 15
+        this.addCheckpoint(15, 0, 181.2, 1320, 6);
+
+        // Glacial Ice & Crystal Materials
+        const glacialIce = new THREE.MeshStandardMaterial({
+            color: 0x88EEFF,
+            roughness: 0.05,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.88
+        });
+        const frostSpike = new THREE.MeshStandardMaterial({
+            color: 0xE0FFFF,
+            emissive: 0x00D2FF,
+            emissiveIntensity: 0.7,
+            roughness: 0.15
+        });
+        const auroraCrystal = new THREE.MeshStandardMaterial({
+            color: 0xAA00FF,
+            emissive: 0x7700DD,
+            emissiveIntensity: 0.75,
+            roughness: 0.2
+        });
+
+        // 6 Glacial Ice Stepping Blocks (low friction ice)
+        const glacierSteps = [
+            { x: -5, y: 183.0, z: 1334 },
+            { x:  4, y: 185.5, z: 1346 },
+            { x: -5, y: 188.0, z: 1358 },
+            { x:  4, y: 191.0, z: 1370 },
+            { x: -3, y: 194.0, z: 1382 },
+            { x:  0, y: 197.0, z: 1394 }
+        ];
+
+        glacierSteps.forEach((s, idx) => {
+            const mat = (idx % 2 === 0) ? glacialIce : auroraCrystal;
+            this.addBlock(s.x, s.y - 1.5, s.z, 5, 3, 5, mat, 'ice');
+            this.addBlock(s.x, s.y + 0.1, s.z, 4.6, 0.25, 4.6, frostSpike, 'ice');
+            this.addCoin(s.x, s.y + 1.8, s.z);
+        });
+
+        // 2 High-velocity spinning frost hazard beams
+        this.addSpinningHazard(0, 187, 1346, 12, 2.8, 'y');
+        this.addSpinningHazard(0, 193, 1370, 11, -3.0, 'y');
+
+        // Glacial Ice Apex Sanctuary Platform
+        this.addBlock(0, 199, 1414, 24, 2.5, 24, glacialIce);
+
+        // 4 Glacial Ice Crystal Spires
+        const spireGeo = new THREE.ConeGeometry(1.5, 14, 6);
+        const sp1 = new THREE.Mesh(spireGeo, frostSpike);
+        sp1.position.set(-9, 206, 1405);
+        const sp2 = new THREE.Mesh(spireGeo, frostSpike);
+        sp2.position.set(9, 206, 1405);
+        const sp3 = new THREE.Mesh(spireGeo, frostSpike);
+        sp3.position.set(-9, 206, 1423);
+        const sp4 = new THREE.Mesh(spireGeo, frostSpike);
+        sp4.position.set(9, 206, 1423);
+        this.scene.add(sp1, sp2, sp3, sp4);
+
+        // Floating Hyperborean Glacial Core
+        const coreGeo = new THREE.IcosahedronGeometry(3.0, 0);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x00FFFF,
+            emissive: 0x0088FF,
+            emissiveIntensity: 0.95,
+            roughness: 0.1
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        core.position.set(0, 206, 1414);
+        this.scene.add(core);
+        this.glacialCore = core;
+    }
+
     createSkySlide() {
         // Spiral downward slide blocks curving from (0, 32, 345) down to (0, 0, 0)
         const segments = 40;
@@ -1595,6 +1677,13 @@ class RobloxWorld {
             this.clockCore.rotation.y += dt * 2.0;
             this.clockCore.rotation.x += dt * 1.0;
             this.clockCore.position.y = 186 + Math.sin(Date.now() * 0.004) * 0.5;
+        }
+
+        // Hyperborean Crystal Glaciers animations in Stage 15
+        if (this.glacialCore) {
+            this.glacialCore.rotation.y += dt * 2.2;
+            this.glacialCore.rotation.z += dt * 1.1;
+            this.glacialCore.position.y = 206 + Math.sin(Date.now() * 0.005) * 0.6;
         }
 
         // Checkpoint proximity checks
