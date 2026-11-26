@@ -23,6 +23,7 @@ class RobloxPhotoMode {
         this.currentFilter = 'none';
         this.flySpeedMultiplier = 1.0;
         this.depthOfField = false;
+        this.anamorphicFlare = true;
 
         // Freecam flight state
         this.isFreecam = false;
@@ -112,6 +113,11 @@ class RobloxPhotoMode {
                     🔍 Focus: Normal
                 </button>
 
+                <!-- Anamorphic Lens Flare Toggle -->
+                <button id="pm-flare-btn" style="background:rgba(0,240,255,0.25); border:1px solid #00F0FF; color:#FFF; font-size:11px; font-weight:bold; padding:8px 12px; border-radius:8px; cursor:pointer;">
+                    ✨ Flare: ON
+                </button>
+
                 <!-- Capture Screenshot Button -->
                 <button id="pm-capture-btn" style="background:linear-gradient(135deg, #FF6B00, #FF8E53); border:none; color:#FFF; font-size:13px; font-weight:bold; padding:10px 22px; border-radius:8px; cursor:pointer; box-shadow:0 4px 15px rgba(255,107,0,0.4); display:flex; align-items:center; gap:8px;">
                     📸 <span>Take Photo</span>
@@ -149,6 +155,10 @@ class RobloxPhotoMode {
 
         document.getElementById('pm-dof-btn').addEventListener('click', () => {
             this.toggleDepthOfField();
+        });
+
+        document.getElementById('pm-flare-btn').addEventListener('click', () => {
+            this.toggleLensFlare();
         });
 
         document.getElementById('pm-capture-btn').addEventListener('click', () => {
@@ -270,6 +280,17 @@ class RobloxPhotoMode {
         if (this.sound && this.sound.playCoin) this.sound.playCoin();
     }
 
+    toggleLensFlare() {
+        this.anamorphicFlare = !this.anamorphicFlare;
+        const btn = document.getElementById('pm-flare-btn');
+        if (btn) {
+            btn.textContent = `✨ Flare: ${this.anamorphicFlare ? 'ON' : 'OFF'}`;
+            btn.style.background = this.anamorphicFlare ? 'rgba(0,240,255,0.25)' : 'rgba(255,255,255,0.08)';
+            btn.style.borderColor = this.anamorphicFlare ? '#00F0FF' : '#555';
+        }
+        if (this.sound && this.sound.playCoin) this.sound.playCoin();
+    }
+
     update(dt, inputState) {
         if (!this.isActive || !this.isFreecam) return;
 
@@ -333,6 +354,22 @@ class RobloxPhotoMode {
         vigGrad.addColorStop(1, 'rgba(0, 0, 0, 0.35)');
         ctx.fillStyle = vigGrad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Anamorphic Lens Flare & Sunlight Bloom
+        if (this.anamorphicFlare) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            const flareY = canvas.height * 0.38;
+            const flareGrad = ctx.createLinearGradient(0, flareY, canvas.width, flareY);
+            flareGrad.addColorStop(0, 'rgba(0, 240, 255, 0)');
+            flareGrad.addColorStop(0.35, 'rgba(0, 240, 255, 0.25)');
+            flareGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.75)');
+            flareGrad.addColorStop(0.65, 'rgba(0, 240, 255, 0.25)');
+            flareGrad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+            ctx.fillStyle = flareGrad;
+            ctx.fillRect(0, flareY - 3, canvas.width, 6);
+            ctx.restore();
+        }
 
         // Watermark badge with stage info & date
         const stageNum = (this.player && this.player.currentStage !== undefined) ? this.player.currentStage : 1;
