@@ -829,6 +829,76 @@ class RobloxMusicPlayer {
                     { f: 392.00, d: 0.45, t: 'sine' },     // G4
                     { f: 329.63, d: 0.85, t: 'sine' }      // E4
                 ]
+            },
+            {
+                title: "Phule Phule Dhole Dhole",
+                artist: "Rabindranath Tagore (Beloved Spring Classic)",
+                tempo: 140,
+                notes: [
+                    { f: 261.63, d: 0.35, t: 'sine' },     // C4
+                    { f: 329.63, d: 0.35, t: 'sine' },     // E4
+                    { f: 392.00, d: 0.40, t: 'sine' },     // G4
+                    { f: 523.25, d: 0.55, t: 'triangle' }, // C5
+                    { f: 440.00, d: 0.35, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.40, t: 'sine' },     // G4
+                    { f: 329.63, d: 0.75, t: 'sine' }      // E4
+                ]
+            },
+            {
+                title: "Sonic Green Hill Zone",
+                artist: "Masato Nakamura (Sega Mega Drive 16-Bit)",
+                tempo: 155,
+                notes: [
+                    { f: 329.63, d: 0.25, t: 'square' },   // E4
+                    { f: 392.00, d: 0.25, t: 'square' },   // G4
+                    { f: 440.00, d: 0.30, t: 'square' },   // A4
+                    { f: 493.88, d: 0.45, t: 'square' },   // B4
+                    { f: 440.00, d: 0.25, t: 'square' },   // A4
+                    { f: 392.00, d: 0.35, t: 'square' },   // G4
+                    { f: 329.63, d: 0.65, t: 'triangle' }  // E4
+                ]
+            },
+            {
+                title: "Kotobaro Bhebechinu",
+                artist: "Rabindranath Tagore (Timeless Bengali Lyric)",
+                tempo: 130,
+                notes: [
+                    { f: 349.23, d: 0.40, t: 'sine' },     // F4
+                    { f: 392.00, d: 0.35, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.45, t: 'sine' },     // A4
+                    { f: 523.25, d: 0.60, t: 'triangle' }, // C5
+                    { f: 440.00, d: 0.35, t: 'sine' },     // A4
+                    { f: 392.00, d: 0.40, t: 'sine' },     // G4
+                    { f: 349.23, d: 0.80, t: 'sine' }      // F4
+                ]
+            },
+            {
+                title: "Pac-Man Arcade Intro Fanfare",
+                artist: "Toshio Kai (Namco Arcade Classic)",
+                tempo: 165,
+                notes: [
+                    { f: 493.88, d: 0.20, t: 'square' },   // B4
+                    { f: 987.77, d: 0.20, t: 'square' },   // B5
+                    { f: 739.99, d: 0.20, t: 'square' },   // F#5
+                    { f: 622.25, d: 0.20, t: 'square' },   // D#5
+                    { f: 987.77, d: 0.20, t: 'square' },   // B5
+                    { f: 739.99, d: 0.25, t: 'square' },   // F#5
+                    { f: 622.25, d: 0.50, t: 'square' }    // D#5
+                ]
+            },
+            {
+                title: "Pagla Hawa Badal Dine",
+                artist: "Rabindranath Tagore (Joyous Monsoon Rhythm)",
+                tempo: 145,
+                notes: [
+                    { f: 392.00, d: 0.35, t: 'sine' },     // G4
+                    { f: 440.00, d: 0.35, t: 'triangle' }, // A4
+                    { f: 523.25, d: 0.45, t: 'sine' },     // C5
+                    { f: 587.33, d: 0.50, t: 'sine' },     // D5
+                    { f: 523.25, d: 0.35, t: 'sine' },     // C5
+                    { f: 440.00, d: 0.40, t: 'triangle' }, // A4
+                    { f: 392.00, d: 0.75, t: 'sine' }      // G4
+                ]
             }
         ];
     }
