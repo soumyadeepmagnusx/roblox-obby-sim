@@ -21,6 +21,8 @@ class RobloxLeaderboardStats {
 
         this.lastPos = this.player && this.player.position ? this.player.position.clone() : null;
         this._saveTimer = 0;
+        this.searchQuery = "";
+        this.filterTab = "all"; // 'all' or 'friends'
 
         this.initDOM();
     }
@@ -69,10 +71,19 @@ class RobloxLeaderboardStats {
             <!-- Career Statistics Grid -->
             <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;" id="stats-grid"></div>
 
-            <!-- Live Session Standings -->
+            <!-- Live Session Standings & Filter Bar -->
             <div>
-                <div style="font-size:12px; font-weight:bold; color:#AAA; margin-bottom:8px; text-transform:uppercase;">Live Lobby Standings</div>
-                <div id="live-standings-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div style="font-size:12px; font-weight:bold; color:#AAA; text-transform:uppercase;">Live Lobby Standings</div>
+                    <div style="display:flex; gap:6px;">
+                        <button id="lb-tab-all" style="background:#F1C40F; border:none; color:#000; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">🌐 All</button>
+                        <button id="lb-tab-friends" style="background:rgba(255,255,255,0.1); border:1px solid #555; color:#AAA; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">⭐ Friends</button>
+                    </div>
+                </div>
+                <div style="margin-bottom:8px;">
+                    <input id="lb-search-input" type="text" placeholder="🔍 Search player by username..." style="width:100%; box-sizing:border-box; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); color:#FFF; padding:6px 10px; border-radius:6px; font-size:12px; outline:none;" />
+                </div>
+                <div id="live-standings-list" style="display:flex; flex-direction:column; gap:6px; max-height:180px; overflow-y:auto;"></div>
             </div>
 
             <div style="display:flex; gap:10px; margin-top:4px;">
@@ -88,6 +99,34 @@ class RobloxLeaderboardStats {
         modal.appendChild(card);
         document.body.appendChild(modal);
         this.modal = modal;
+
+        const searchInput = modal.querySelector('#lb-search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchQuery = e.target.value.toLowerCase().trim();
+                this.renderModal();
+            });
+        }
+        const tabAll = modal.querySelector('#lb-tab-all');
+        const tabFriends = modal.querySelector('#lb-tab-friends');
+        if (tabAll && tabFriends) {
+            tabAll.addEventListener('click', () => {
+                this.filterTab = 'all';
+                tabAll.style.background = '#F1C40F';
+                tabAll.style.color = '#000';
+                tabFriends.style.background = 'rgba(255,255,255,0.1)';
+                tabFriends.style.color = '#AAA';
+                this.renderModal();
+            });
+            tabFriends.addEventListener('click', () => {
+                this.filterTab = 'friends';
+                tabFriends.style.background = '#00F0FF';
+                tabFriends.style.color = '#000';
+                tabAll.style.background = 'rgba(255,255,255,0.1)';
+                tabAll.style.color = '#AAA';
+                this.renderModal();
+            });
+        }
     }
 
     update(dt) {
@@ -163,7 +202,7 @@ class RobloxLeaderboardStats {
             { label: '🪙 Active Coins', val: `${currentCoins} Studs`, color: '#FFD700' },
             { label: '💀 Session OOFs', val: `${currentDeaths} Deaths`, color: '#FF5555' },
             { label: '⏱️ Total Playtime', val: this.formatDuration(this.stats.totalPlaySeconds), color: '#E040FB' },
-            { label: '🚩 Highest Stage', val: `Stage ${this.stats.highestStage} / 6`, color: '#FF9F43' }
+            { label: '🚩 Highest Stage', val: `Stage ${this.stats.highestStage} / 15`, color: '#FF9F43' }
         ];
 
         grid.innerHTML = statCards.map(s => `
@@ -179,7 +218,8 @@ class RobloxLeaderboardStats {
             name: 'Player1 (You)',
             stage: this.player ? (this.player.currentStage || 1) : 1,
             coins: currentCoins,
-            isLocal: true
+            isLocal: true,
+            isFriend: true
         });
 
         if (this.network && this.network.remotePlayers) {
@@ -188,7 +228,8 @@ class RobloxLeaderboardStats {
                     name: rp.name || `Guest_${id.slice(0, 4)}`,
                     stage: rp.stage || 1,
                     coins: rp.coins || 0,
-                    isLocal: false
+                    isLocal: false,
+                    isFriend: Boolean(rp.isFriend || (rp.name && rp.name.includes('Friend')))
                 });
             });
         }
@@ -196,11 +237,25 @@ class RobloxLeaderboardStats {
         // Sort descending by stage then coins
         players.sort((a, b) => (b.stage - a.stage) || (b.coins - a.coins));
 
-        standings.innerHTML = players.map((p, idx) => `
+        // Filter by tab and search query
+        let filtered = players;
+        if (this.filterTab === 'friends') {
+            filtered = filtered.filter(p => p.isLocal || p.isFriend);
+        }
+        if (this.searchQuery) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(this.searchQuery));
+        }
+
+        if (filtered.length === 0) {
+            standings.innerHTML = '<div style="font-size:12px; color:#888; text-align:center; padding:16px;">No players match the search filter.</div>';
+            return;
+        }
+
+        standings.innerHTML = filtered.map((p, idx) => `
             <div style="display:flex; align-items:center; justify-content:space-between; background:${p.isLocal ? 'rgba(241,196,15,0.16)' : 'rgba(255,255,255,0.04)'}; border:1px solid ${p.isLocal ? '#F1C40F' : 'rgba(255,255,255,0.08)'}; border-radius:8px; padding:8px 14px;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <span style="font-weight:bold; color:${idx === 0 ? '#FFD700' : '#AAA'};">#${idx + 1}</span>
-                    <span style="font-weight:bold; color:${p.isLocal ? '#FFF' : '#CCC'};">${p.name}</span>
+                    <span style="font-weight:bold; color:${p.isLocal ? '#FFF' : '#CCC'};">${p.name} ${p.isFriend && !p.isLocal ? '<span style="color:#00F0FF; font-size:10px;">[Friend]</span>' : ''}</span>
                 </div>
                 <div style="display:flex; gap:14px; font-size:12px;">
                     <span style="color:#00FF88; font-weight:bold;">Stage ${p.stage}</span>
@@ -218,4 +273,9 @@ class RobloxLeaderboardStats {
     }
 }
 
-window.RobloxLeaderboardStats = RobloxLeaderboardStats;
+if (typeof window !== 'undefined') {
+    window.RobloxLeaderboardStats = RobloxLeaderboardStats;
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = RobloxLeaderboardStats;
+}
