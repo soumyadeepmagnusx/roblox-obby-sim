@@ -26,6 +26,8 @@ class RobloxStageNavigator {
             { num: 11, name: 'Stage 11: Celestial Aurora Highway', desc: 'Iridescent rainbow prism paths to zenith star.', pos: { x: 0, y: 102, z: 848 }, icon: '🌈' },
             { num: 12, name: 'Stage 12: Dragon Fire Spire', desc: 'Ascending molten helical pillars and dragon horns.', pos: { x: 0, y: 123, z: 968 }, icon: '🐉' },
             { num: 13, name: 'Stage 13: Quantum Cyber Matrix', desc: 'Phasing cyber voxel matrix and quantum singularity.', pos: { x: 0, y: 143, z: 1090 }, icon: '⚡' },
+            { num: 14, name: 'Stage 14: Chrono Clockwork Towers', desc: 'Rotating brass gear cogs and oscillating pendulum blades.', pos: { x: 0, y: 163.5, z: 1198 }, icon: '🕰️' },
+            { num: 15, name: 'Stage 15: Hyperborean Crystal Glaciers', desc: 'Sub-zero low-friction ice slabs and razor frost spikes.', pos: { x: 0, y: 183.5, z: 1320 }, icon: '❄️' },
             { num: 99, name: 'Bonus: Starlight Sky Realm', desc: 'Secret celestial islands in the clouds with rare gems!', pos: { x: 0, y: 72, z: 100 }, icon: '✨' }
         ];
 
@@ -66,7 +68,7 @@ class RobloxStageNavigator {
         }
 
         const hudStage = document.getElementById('hud-stage');
-        if (hudStage) hudStage.textContent = `${stageNum}/6`;
+        if (hudStage) hudStage.textContent = `${stageNum}/15`;
 
         if (this.ui) {
             this.ui.showToastBanner(`🌀 Teleported to ${stage.name}!`);

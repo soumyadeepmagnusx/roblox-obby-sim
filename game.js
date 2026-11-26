@@ -472,12 +472,14 @@ class RobloxGame {
             10: 'Stage 10: The Void Dimension',
             11: 'Stage 11: Celestial Aurora Highway',
             12: 'Stage 12: Dragon Fire Spire',
-            13: 'Stage 13: Quantum Cyber Matrix'
+            13: 'Stage 13: Quantum Cyber Matrix',
+            14: 'Stage 14: Chrono Clockwork Towers',
+            15: 'Stage 15: Hyperborean Crystal Glaciers'
         };
 
         list.innerHTML = '';
         let lastSplit = 0;
-        for (let i = 1; i <= 13; i++) {
+        for (let i = 1; i <= 15; i++) {
             const splitTime = storedSplits[i];
             const segment = (splitTime !== undefined) ? (splitTime - lastSplit) : null;
             if (splitTime !== undefined) lastSplit = splitTime;
